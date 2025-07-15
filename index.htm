@@ -178,6 +178,37 @@
                 stroke-dashoffset: 0;
             }
         }
+
+        /* Styles for Regenerative Core Animation */
+        #coreAnimationCanvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #regenerative-core {
+            background: linear-gradient(180deg, #0B1523 0%, #1C2B3A 100%);
+        }
+        .core-label {
+            @apply text-center text-sm font-medium text-gray-300 tracking-wider uppercase;
+            color: white;
+        }
+        .core-icon-label {
+            @apply text-center text-xs sm:text-sm font-semibold text-white mt-2;
+            color: white;
+        }
+        .slideshow-container .slide img {
+            animation: kenburns 15s infinite alternate ease-in-out;
+            transform-origin: center;
+        }
+        @keyframes kenburns {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+            100% {
+                transform: scale(1.1) translate(5%, 5%);
+            }
+        }
+
     </style>
 </head>
 <body class="antialiased">
@@ -193,6 +224,7 @@
                 <div class="hidden md:block">
                     <nav class="ml-10 flex items-baseline space-x-4">
                         <a href="#superpower" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-[#365314] border-b-2 border-transparent">The Breakthrough</a>
+                        <a href="#regenerative-core" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-[#365314] border-b-2 border-transparent">The Core</a>
                         <a href="#impact" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-[#365314] border-b-2 border-transparent">Our Impact</a>
                         <a href="#credits" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-[#365314] border-b-2 border-transparent">Carbon Credits</a>
                         <a href="#opportunity" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-[#365314] border-b-2 border-transparent">The Opportunity</a>
@@ -214,8 +246,9 @@
         <div id="mobile-menu" class="md:hidden hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#superpower" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-[#365314]">The Breakthrough</a>
+                <a href="#regenerative-core" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-[#365314]">The Core</a>
                 <a href="#impact" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-[#365314]">Our Impact</a>
-                <a href="#credits" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-[#365314]">Carbon Credits</a>
+                <a href="#credits" class="block nav-link px-3 py-2 rounded-md text-base font-[#365314]">Carbon Credits</a>
                 <a href="#opportunity" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-[#365314]">The Opportunity</a>
                 <a href="#story" class="block nav-link px-3 py-2 rounded-md text-base font-medium text-[#365314]">Our Story</a>
                  <a href="#contact" class="block w-full text-left bg-[#365314] text-white hover:bg-[#D4AF37] hover:text-[#365314] font-bold py-2 px-3 mt-2 rounded-lg transition-colors duration-300">Contact Us</a>
@@ -246,7 +279,6 @@
                         <h3 class="text-3xl font-bold mb-4">The Coconut Superpower</h3>
                         <p class="text-gray-700 mb-4 text-lg">The coconut tree is unlike any other plant on Earth. While a typical tree stores carbon in its trunk over decades, the coconut tree acts like a rapid biological pump, capturing immense amounts of CO₂ and converting it into harvestable biomass multiple times per year.</p>
                         <p class="text-gray-700 text-lg">An extraordinary **85% of its annual carbon capture** is contained in its waste—the husks and fronds. This makes the world's one billion coconut trees a dormant, planetary-scale engine for carbon removal.</p>
-                        <p class="text-gray-700 mb-4 text-lg">For centuries, this potential superpower has been running net-zero – not hurting anything, but not helping either. </p>
                     </div>
                     <div class="text-center">
                          <img src="https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-CoconutCarbonCycle.png" alt="Globe-Eco Carbon Cycle Diagram" class="rounded-lg shadow-lg mx-auto">
@@ -260,21 +292,18 @@
                         <!-- Column 1: Net Zero Animation -->
                         <section class="bg-white p-6 rounded-xl shadow-lg flex flex-col">
                             <h2 class="text-2xl font-bold mb-1 text-red-600">The Problem: A Net-Zero Cycle</h2>
-                            <p class="text-gray-600 mb-4">Millions of tons of carbon-rich biomass generated annually are openly burned, creating a "black carbon smog" that pollutes the air, damages lungs, and releases all the captured CO₂ back into the atmosphere.</p>
+                            <p class="text-gray-600 mb-4">For centuries, this superpower has been running net-zero – not hurting anything, but not helping either. Hundreds of millions of tons of carbon-rich biomass generated annually are openly burned, creating a "black carbon smog" that pollutes the air, damages lungs, and releases all the captured CO₂ back into the atmosphere.</p>
                             <div id="animation-container-v1" class="rounded-lg flex-grow">
                                 <div id="particle-ring-v1">
                                     <!-- CO2 particles are placed here by JS -->
                                 </div>
                             </div>
-                             <div class="mt-4 h-6 text-center">
-                                <p id="status-text-v1" class="text-lg font-semibold text-gray-700"></p>
-                            </div>
                         </section>
-            
+
                         <!-- Column 2: Net Negative Animation -->
                         <section class="bg-white p-6 rounded-xl shadow-lg flex flex-col">
                             <h2 class="text-2xl font-bold mb-1 text-green-600">The Solution: A 5X Removal Cycle</h2>
-                            <p class="text-gray-600 mb-4">Replacing a Net-Zero Cycle with our generative process not only stores the carbon in durable building materials, but creates an economic engine and multiplier effect to increase plantation carbon dioxide removals by a factor of more than 5 times.</p>
+                            <p class="text-gray-600 mb-4">We replace the Net Zero Cycle with a generative process that not only stores the carbon in durable building materials, but creates an economic engine and multiplier effect to increase carbon removal.</p>
                             <div id="animation-container-v2" class="rounded-lg flex-grow">
                                 <img id="tree-v2" src="https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/CoconutTree.png" alt="Coconut Tree">
                                 <img id="frond-v2" src="https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-PalmFrond.png" alt="Palm Frond">
@@ -288,14 +317,57 @@
                                     <path id="path-house-roof" class="drawing-path" d="M 600,260 L 660,200 L 720,260" />
                                 </svg>
                             </div>
-                             <div class="mt-4 h-6 text-center">
-                                <p id="status-text-v2" class="text-lg font-semibold text-gray-700"></p>
-                            </div>
                         </section>
                     </main>
+                    <div class="text-center mt-16">
+                        <h2 class="text-4xl md:text-5xl font-bold">From a Broken Loop to a Virtuous Cycle</h2>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <!-- ================================================== -->
+        <!-- == NEW REGENERATIVE CORE SECTION STARTS HERE == -->
+        <!-- ================================================== -->
+        <section id="regenerative-core" class="py-20 md:py-32 section-fade-in">
+             <div class="w-full max-w-7xl mx-auto px-4">
+                 <h1 class="text-2xl md:text-4xl font-bold text-center mb-2 text-white">The Regenerative Core</h1>
+                 <p class="text-center text-gray-400 mb-6 md:mb-10">An Economic Engine for Sustainable Value Creation</p>
+
+
+                <div class="grid grid-cols-3 gap-4 items-center mt-4">
+                     <div class="text-center">
+                         <p class="core-icon-label">Input</p>
+                     </div>
+                     <div class="text-center">
+                          <p class="core-icon-label">Transformation</p>
+                     </div>
+                     <div class="text-center">
+                         <p class="core-icon-label">Output</p>
+                     </div>
+                    </div>
+
+                <div class="w-full aspect-[2/1] rounded-lg bg-gray-800 border border-gray-700 shadow-2xl shadow-cyan-500/10">
+                    <canvas id="coreAnimationCanvas"></canvas>
+                </div>
+
+                 <div class="grid grid-cols-3 gap-4 items-start mt-4">
+                     <div class="text-center">
+                         <p class="core-icon-label">Natural Resources</p>
+                     </div>
+                     <div class="text-center">
+                          <p class="core-icon-label">Net Negative Technology</p>
+                     </div>
+                     <div class="text-center">
+                         <p class="core-icon-label">Economic Engine</p>
+                     </div>
+                 </div>
+
+            </div>
+        </section>
+        <!-- ================================================== -->
+        <!-- == NEW REGENERATIVE CORE SECTION ENDS HERE == -->
+        <!-- ================================================== -->
 
         <section id="breakthrough" class="py-20 md:py-32 section-fade-in">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -336,14 +408,14 @@
                 </div>
             </div>
         </section>
-        
+
         <section id="impact" class="py-20 md:py-32 bg-white section-fade-in">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl md:text-5xl font-bold">The Impact Multiplier</h2>
                     <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Our solution creates a cascade of positive impacts, from planetary health to human prosperity. We don't just remove carbon; we build a better world.</p>
                 </div>
-                
+
                 <div class="mb-16">
                     <h4 class="text-xl font-bold text-center mb-4">Impacting All 17 UN SDGs</h4>
                     <div class="grid grid-cols-4 sm:grid-cols-6 gap-2 max-w-3xl mx-auto" id="sdg-grid">
@@ -385,7 +457,7 @@
                                     <h3 class="text-3xl font-bold mb-4 text-[#FECACA]">The Old Economic Cycle</h3>
                                     <p class="mb-4 text-lg">Millions of coconut farmers live below the poverty line. Hundreds of millions of tons of valuable raw materials are treated as worthless trash. More importantly, the majority of their trees are senile making them difficult to harvest, leading to minimal production. They lack sufficient profits to make investments in plantation health, like new trees, or modernization through technology. They are trapped in a downward cycle of declining productivity causing generational poverty and putting their families at risk of negative health and social impacts.</p>
                                      <ul class="space-y-2 mt-6">
-                                         <li class="flex items-start"><span class="text-red-400 mr-3 text-2xl">✗</span> <span>Vast Resource Becomes Worthless Trash</span></li>
+                                                                        <li class="flex items-start"><span class="text-red-400 mr-3 text-2xl">✗</span> <span>Vast Resource Becomes Worthless Trash</span></li>
                                          <li class="flex items-start"><span class="text-red-400 mr-3 text-2xl">✗</span> <span>Declining Productivity from Aging Trees</span></li>
                                          <li class="flex items-start"><span class="text-red-400 mr-3 text-2xl">✗</span> <span>No Capital for Reinvestment</span></li>
                                          <li class="flex items-start"><span class="text-red-400 mr-3 text-2xl">✗</span> <span>Downward Spiral of Generational Poverty</span></li>
@@ -554,7 +626,7 @@
             </div>
         </section>
 
-        <section id="story" class="py-20 md:py-32 section-fade-in">
+        <section id="story" class="py-20 md:py-32 bg-white section-fade-in">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                  <div class="text-center mb-16">
                      <h2 class="text-4xl md:text-5xl font-bold">Our Story: A 15-Year Expedition</h2>
@@ -626,279 +698,281 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- CO2 Flow Animation ---
-            const canvas = document.getElementById('co2-animation-canvas');
-            const ctx = canvas.getContext('2d');
-            let particles = [];
-            const numParticles = 300;
-            let animationFrameId;
+            // --- CO2 Flow Animation (Hero) ---
+            const heroCanvas = document.getElementById('co2-animation-canvas');
+            if (heroCanvas) {
+                const ctx = heroCanvas.getContext('2d');
+                let particles = [];
+                const numParticles = 300;
+                let animationFrameId;
 
-            const cpuImage = new Image();
-            cpuImage.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-CPU.png';
+                const cpuImage = new Image();
+                cpuImage.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-CPU.png';
 
-            const sdgImage = new Image();
-            sdgImage.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-SDG-Wheel.png';
+                const sdgImage = new Image();
+                sdgImage.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-SDG-Wheel.png';
 
-            const recycleImage = new Image();
-            recycleImage.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/Recycle.png';
+                const recycleImage = new Image();
+                recycleImage.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/Recycle.png';
 
-            const housePath = new Path2D("M4.39999 37.8L50.4 4.79999L96.4 37.8V83H4.39999V37.8Z");
+                const housePath = new Path2D("M4.39999 37.8L50.4 4.79999L96.4 37.8V83H4.39999V37.8Z");
 
-            let allImagesLoaded = false;
-            Promise.all([
-                new Promise(resolve => { cpuImage.onload = () => resolve(); }),
-                new Promise(resolve => { sdgImage.onload = () => resolve(); }),
-                new Promise(resolve => { recycleImage.onload = () => resolve(); })
-            ]).then(() => {
-                allImagesLoaded = true;
-                if (!animationFrameId) {
-                    resizeCanvas();
-                    animate();
+                let allImagesLoaded = false;
+                Promise.all([
+                    new Promise(resolve => { cpuImage.onload = () => resolve(); }),
+                    new Promise(resolve => { sdgImage.onload = () => resolve(); }),
+                    new Promise(resolve => { recycleImage.onload = () => resolve(); })
+                ]).then(() => {
+                    allImagesLoaded = true;
+                    if (!animationFrameId) {
+                        resizeCanvas();
+                        animate();
+                    }
+                });
+
+                const cpuIcon = { x: 0, y: 0, width: 120, height: 120 };
+                const sdgWheel = { x: 0, y: 0, radius: 0, rotation: 0 };
+
+                const productCycle = {
+                    x: 0, y: 0, size: 0,
+                    state: 'DRAWING_HOUSE',
+                    alpha: 0,
+                    drawProgress: 0,
+                    lastStateChange: 0
+                };
+
+                const socialBenefits = ["Reduce Poverty", "Clean Air & Oceans", "Good Incomes"];
+                let benefitIndex = 0;
+                let benefitAlpha = 0;
+                let benefitState = 'FADING_IN'; // FADING_IN, SHOWING, FADING_OUT
+
+                function resizeCanvas() {
+                    const parent = heroCanvas.parentElement;
+                    heroCanvas.width = parent.offsetWidth;
+                    heroCanvas.height = parent.offsetHeight;
+
+                    const verticalCenter = heroCanvas.height / 2 + 30;
+
+                    cpuIcon.x = heroCanvas.width / 2 - cpuIcon.width / 2;
+                    cpuIcon.y = verticalCenter;
+
+                    sdgWheel.radius = Math.min(heroCanvas.width, heroCanvas.height) * 0.1;
+                    sdgWheel.x = heroCanvas.width * 0.25;
+                    sdgWheel.y = cpuIcon.y + cpuIcon.height/2;
+
+                    productCycle.size = sdgWheel.radius * 2;
+                    productCycle.x = heroCanvas.width * 0.75;
+                    productCycle.y = sdgWheel.y - productCycle.size / 2;
+
+
+                    initParticles();
                 }
-            });
 
-            const cpuIcon = { x: 0, y: 0, width: 120, height: 120 };
-            const sdgWheel = { x: 0, y: 0, radius: 0, rotation: 0 };
+                class Particle {
+                    constructor() { this.reset(); }
+                    reset() {
+                        const edge = Math.floor(Math.random() * 4);
+                        if (edge === 0) { this.x = Math.random() * heroCanvas.width; this.y = -10; }
+                        else if (edge === 1) { this.x = heroCanvas.width + 10; this.y = Math.random() * heroCanvas.height; }
+                        else if (edge === 2) { this.x = Math.random() * heroCanvas.width; this.y = heroCanvas.height + 10; }
+                        else { this.x = -10; this.y = Math.random() * heroCanvas.height; }
 
-            const productCycle = {
-                x: 0, y: 0, size: 0,
-                state: 'DRAWING_HOUSE',
-                alpha: 0,
-                drawProgress: 0,
-                lastStateChange: 0
-            };
-
-            const socialBenefits = ["Reduce Poverty", "Clean Air & Oceans", "Good Incomes"];
-            let benefitIndex = 0;
-            let benefitAlpha = 0;
-            let benefitState = 'FADING_IN'; // FADING_IN, SHOWING, FADING_OUT
-
-            function resizeCanvas() {
-                const parent = canvas.parentElement;
-                canvas.width = parent.offsetWidth;
-                canvas.height = parent.offsetHeight;
-
-                const verticalCenter = canvas.height / 2 + 30;
-
-                cpuIcon.x = canvas.width / 2 - cpuIcon.width / 2;
-                cpuIcon.y = verticalCenter;
-
-                sdgWheel.radius = Math.min(canvas.width, canvas.height) * 0.1;
-                sdgWheel.x = canvas.width * 0.25;
-                sdgWheel.y = cpuIcon.y + cpuIcon.height/2;
-
-                productCycle.size = sdgWheel.radius * 2;
-                productCycle.x = canvas.width * 0.75;
-                productCycle.y = sdgWheel.y - productCycle.size / 2;
-
-
-                initParticles();
-            }
-
-            class Particle {
-                constructor() { this.reset(); }
-                reset() {
-                    const edge = Math.floor(Math.random() * 4);
-                    if (edge === 0) { this.x = Math.random() * canvas.width; this.y = -10; }
-                    else if (edge === 1) { this.x = canvas.width + 10; this.y = Math.random() * canvas.height; }
-                    else if (edge === 2) { this.x = Math.random() * canvas.width; this.y = canvas.height + 10; }
-                    else { this.x = -10; this.y = Math.random() * canvas.height; }
-
-                    this.radius = Math.random() * 2 + 1;
-                    this.opacity = Math.random() * 0.5 + 0.2;
-                    this.speedX = 0;
-                    this.speedY = 0;
-                    this.vx = (Math.random() - 0.5) * 0.2;
-                    this.vy = (Math.random() - 0.5) * 0.2;
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                    ctx.fill();
-                }
-                update() {
-                    const dx = (cpuIcon.x + cpuIcon.width / 2) - this.x;
-                    const dy = cpuIcon.y + cpuIcon.height/2 - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    this.speedX += (dx / distance) * 0.05;
-                    this.speedY += (dy / distance) * 0.05;
-                    this.x += this.speedX + this.vx;
-                    this.y += this.speedY;
-                    this.speedX *= 0.98;
-                    this.speedY *= 0.98;
-                    const distToCPU = Math.sqrt(Math.pow(this.x - (cpuIcon.x + cpuIcon.width/2), 2) + Math.pow(this.y - (cpuIcon.y + cpuIcon.height/2), 2));
-                    if (distToCPU < cpuIcon.width/2) {
-                        this.reset();
+                        this.radius = Math.random() * 2 + 1;
+                        this.opacity = Math.random() * 0.5 + 0.2;
+                        this.speedX = 0;
+                        this.speedY = 0;
+                        this.vx = (Math.random() - 0.5) * 0.2;
+                        this.vy = (Math.random() - 0.5) * 0.2;
+                    }
+                    draw() {
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                        ctx.fill();
+                    }
+                    update() {
+                        const dx = (cpuIcon.x + cpuIcon.width / 2) - this.x;
+                        const dy = cpuIcon.y + cpuIcon.height/2 - this.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        this.speedX += (dx / distance) * 0.05;
+                        this.speedY += (dy / distance) * 0.05;
+                        this.x += this.speedX + this.vx;
+                        this.y += this.speedY;
+                        this.speedX *= 0.98;
+                        this.speedY *= 0.98;
+                        const distToCPU = Math.sqrt(Math.pow(this.x - (cpuIcon.x + cpuIcon.width/2), 2) + Math.pow(this.y - (cpuIcon.y + cpuIcon.height/2), 2));
+                        if (distToCPU < cpuIcon.width/2) {
+                            this.reset();
+                        }
                     }
                 }
-            }
 
-            function initParticles() {
-                particles = [];
-                for (let i = 0; i < numParticles; i++) {
-                    particles.push(new Particle());
-                }
-            }
-
-            const stateDurations = {
-                DRAWING_HOUSE: 3000, SHOWING_HOUSE: 2500, SHOWING_RECYCLE: 2500, FADING_OUT: 1000
-            };
-
-            function updateProductCycleState(now) {
-                if(!productCycle.lastStateChange) productCycle.lastStateChange = now;
-                const elapsed = now - productCycle.lastStateChange;
-
-                switch(productCycle.state) {
-                    case 'DRAWING_HOUSE':
-                        productCycle.alpha = 1;
-                        productCycle.drawProgress = Math.min(1, elapsed / stateDurations.DRAWING_HOUSE);
-                        if (elapsed >= stateDurations.DRAWING_HOUSE) {
-                            productCycle.state = 'SHOWING_HOUSE';
-                            productCycle.lastStateChange = now;
-                        }
-                        break;
-                    case 'SHOWING_HOUSE':
-                        if (elapsed >= stateDurations.SHOWING_HOUSE) {
-                            productCycle.state = 'SHOWING_RECYCLE';
-                            productCycle.lastStateChange = now;
-                        }
-                        break;
-                    case 'SHOWING_RECYCLE':
-                         if (elapsed >= stateDurations.SHOWING_RECYCLE) {
-                            productCycle.state = 'FADING_OUT';
-                            productCycle.lastStateChange = now;
-                        }
-                        break;
-                    case 'FADING_OUT':
-                        productCycle.alpha = 1 - (elapsed / stateDurations.FADING_OUT);
-                        if (productCycle.alpha <= 0) {
-                            productCycle.alpha = 0;
-                            productCycle.state = 'DRAWING_HOUSE';
-                            productCycle.lastStateChange = now;
-                            productCycle.drawProgress = 0;
-                        }
-                        break;
-                }
-            }
-
-            function updateBenefitText() {
-                 switch(benefitState) {
-                    case 'FADING_IN':
-                        benefitAlpha = Math.min(1, benefitAlpha + 0.02);
-                        if(benefitAlpha >= 1) {
-                            benefitState = 'SHOWING';
-                            setTimeout(() => { benefitState = 'FADING_OUT'; }, 2000);
-                        }
-                        break;
-                    case 'FADING_OUT':
-                        benefitAlpha = Math.max(0, benefitAlpha - 0.02);
-                        if(benefitAlpha <= 0) {
-                            benefitState = 'FADING_IN';
-                            benefitIndex = (benefitIndex + 1) % socialBenefits.length;
-                        }
-                        break;
-                }
-            }
-
-            function drawOutputs(now) {
-                if (!allImagesLoaded) return;
-
-                // --- Connecting Lines ---
-                const productCenterX = productCycle.x;
-                const productCenterY = productCycle.y + productCycle.size / 2;
-
-                ctx.beginPath();
-                ctx.moveTo(cpuIcon.x + cpuIcon.width / 2, cpuIcon.y + cpuIcon.height / 2);
-                ctx.lineTo(sdgWheel.x, sdgWheel.y);
-                ctx.moveTo(cpuIcon.x + cpuIcon.width / 2, cpuIcon.y + cpuIcon.height / 2);
-                ctx.lineTo(productCenterX, productCenterY);
-                ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
-                ctx.lineWidth = 3;
-                ctx.stroke();
-
-                // --- CPU ---
-                const pulse = (Math.sin(Date.now() / 650) + 1) / 2;
-                const shadowBlur = 20 + (pulse * 30);
-                const scale = 1 + (pulse * 0.15);
-                const newWidth = cpuIcon.width * scale;
-                const newHeight = cpuIcon.height * scale;
-                const newX = cpuIcon.x - (newWidth - cpuIcon.width) / 2;
-                const newY = cpuIcon.y - (newHeight - cpuIcon.height) / 2;
-                ctx.shadowColor = 'rgba(132, 169, 140, 1)';
-                ctx.shadowBlur = shadowBlur;
-                ctx.drawImage(cpuImage, newX, newY, newWidth, newHeight);
-                ctx.shadowBlur = 0;
-
-                // --- SDG Wheel and Text ---
-                ctx.save();
-                ctx.translate(sdgWheel.x, sdgWheel.y);
-                ctx.rotate(sdgWheel.rotation);
-                ctx.drawImage(sdgImage, -sdgWheel.radius, -sdgWheel.radius, sdgWheel.radius * 2, sdgWheel.radius * 2);
-                ctx.restore();
-                sdgWheel.rotation -= 0.002;
-
-                updateBenefitText();
-                ctx.font = 'bold 12px Inter, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillStyle = `rgba(255, 255, 255, ${benefitAlpha})`;
-                ctx.shadowColor = 'rgba(0,0,0,0.8)';
-                ctx.shadowBlur = 4;
-                ctx.fillText(socialBenefits[benefitIndex], sdgWheel.x, sdgWheel.y + sdgWheel.radius + 25);
-                ctx.shadowBlur = 0;
-
-
-                // --- Product Cycle ---
-                updateProductCycleState(now);
-                ctx.save();
-                ctx.globalAlpha = productCycle.alpha;
-                ctx.translate(productCycle.x, productCycle.y);
-                ctx.scale(productCycle.size/100, productCycle.size/100);
-
-                ctx.strokeStyle = 'white';
-                ctx.lineWidth = 3;
-                ctx.setLineDash([400, 400]);
-                ctx.lineDashOffset = 400 - (productCycle.drawProgress * 400);
-                ctx.stroke(housePath);
-                ctx.setLineDash([]);
-
-                ctx.font = 'bold 12px Inter, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillStyle = 'white';
-                ctx.shadowColor = 'rgba(0,0,0,0.8)';
-                ctx.shadowBlur = 4;
-
-                let textAlpha = 0;
-                if (productCycle.state === 'DRAWING_HOUSE' && productCycle.drawProgress > 0.5) {
-                     textAlpha = (productCycle.drawProgress - 0.5) * 2;
-                } else if (productCycle.state === 'SHOWING_HOUSE' || productCycle.state === 'SHOWING_RECYCLE') {
-                    textAlpha = 1;
+                function initParticles() {
+                    particles = [];
+                    for (let i = 0; i < numParticles; i++) {
+                        particles.push(new Particle());
+                    }
                 }
 
-                ctx.globalAlpha = productCycle.alpha * textAlpha;
-                if (productCycle.state === 'SHOWING_RECYCLE') {
-                     const recycleSize = 65;
-                     ctx.drawImage(recycleImage, (100 - recycleSize) / 2, (88 - recycleSize) / 2 - 5, recycleSize, recycleSize);
-                     ctx.fillText('Local Recyclability = Permanence', 50, 115);
-                } else {
-                     ctx.fillText('CO2 locked for 100+ years', 50, 115);
+                const stateDurations = {
+                    DRAWING_HOUSE: 3000, SHOWING_HOUSE: 2500, SHOWING_RECYCLE: 2500, FADING_OUT: 1000
+                };
+
+                function updateProductCycleState(now) {
+                    if(!productCycle.lastStateChange) productCycle.lastStateChange = now;
+                    const elapsed = now - productCycle.lastStateChange;
+
+                    switch(productCycle.state) {
+                        case 'DRAWING_HOUSE':
+                            productCycle.alpha = 1;
+                            productCycle.drawProgress = Math.min(1, elapsed / stateDurations.DRAWING_HOUSE);
+                            if (elapsed >= stateDurations.DRAWING_HOUSE) {
+                                productCycle.state = 'SHOWING_HOUSE';
+                                productCycle.lastStateChange = now;
+                            }
+                            break;
+                        case 'SHOWING_HOUSE':
+                            if (elapsed >= stateDurations.SHOWING_HOUSE) {
+                                productCycle.state = 'SHOWING_RECYCLE';
+                                productCycle.lastStateChange = now;
+                            }
+                            break;
+                        case 'SHOWING_RECYCLE':
+                             if (elapsed >= stateDurations.SHOWING_RECYCLE) {
+                                productCycle.state = 'FADING_OUT';
+                                productCycle.lastStateChange = now;
+                            }
+                            break;
+                        case 'FADING_OUT':
+                            productCycle.alpha = 1 - (elapsed / stateDurations.FADING_OUT);
+                            if (productCycle.alpha <= 0) {
+                                productCycle.alpha = 0;
+                                productCycle.state = 'DRAWING_HOUSE';
+                                productCycle.lastStateChange = now;
+                                productCycle.drawProgress = 0;
+                            }
+                            break;
+                    }
                 }
-                ctx.restore();
-            }
 
-            function animate(now) {
-                animationFrameId = requestAnimationFrame(animate);
-                if (!productCycle.lastStateChange) productCycle.lastStateChange = now;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => { p.update(); p.draw(); });
-                drawOutputs(now);
-            }
+                function updateBenefitText() {
+                     switch(benefitState) {
+                        case 'FADING_IN':
+                            benefitAlpha = Math.min(1, benefitAlpha + 0.02);
+                            if(benefitAlpha >= 1) {
+                                benefitState = 'SHOWING';
+                                setTimeout(() => { benefitState = 'FADING_OUT'; }, 2000);
+                            }
+                            break;
+                        case 'FADING_OUT':
+                            benefitAlpha = Math.max(0, benefitAlpha - 0.02);
+                            if(benefitAlpha <= 0) {
+                                benefitState = 'FADING_IN';
+                                benefitIndex = (benefitIndex + 1) % socialBenefits.length;
+                            }
+                            break;
+                    }
+                }
 
-            window.addEventListener('resize', () => {
-                if(animationFrameId) cancelAnimationFrame(animationFrameId);
-                resizeCanvas();
-                animate();
-            });
+                function drawOutputs(now) {
+                    if (!allImagesLoaded) return;
+
+                    // --- Connecting Lines ---
+                    const productCenterX = productCycle.x;
+                    const productCenterY = productCycle.y + productCycle.size / 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(cpuIcon.x + cpuIcon.width / 2, cpuIcon.y + cpuIcon.height / 2);
+                    ctx.lineTo(sdgWheel.x, sdgWheel.y);
+                    ctx.moveTo(cpuIcon.x + cpuIcon.width / 2, cpuIcon.y + cpuIcon.height / 2);
+                    ctx.lineTo(productCenterX, productCenterY);
+                    ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+
+                    // --- CPU ---
+                    const pulse = (Math.sin(Date.now() / 650) + 1) / 2;
+                    const shadowBlur = 20 + (pulse * 30);
+                    const scale = 1 + (pulse * 0.15);
+                    const newWidth = cpuIcon.width * scale;
+                    const newHeight = cpuIcon.height * scale;
+                    const newX = cpuIcon.x - (newWidth - cpuIcon.width) / 2;
+                    const newY = cpuIcon.y - (newHeight - cpuIcon.height) / 2;
+                    ctx.shadowColor = 'rgba(132, 169, 140, 1)';
+                    ctx.shadowBlur = shadowBlur;
+                    ctx.drawImage(cpuImage, newX, newY, newWidth, newHeight);
+                    ctx.shadowBlur = 0;
+
+                    // --- SDG Wheel and Text ---
+                    ctx.save();
+                    ctx.translate(sdgWheel.x, sdgWheel.y);
+                    ctx.rotate(sdgWheel.rotation);
+                    ctx.drawImage(sdgImage, -sdgWheel.radius, -sdgWheel.radius, sdgWheel.radius * 2, sdgWheel.radius * 2);
+                    ctx.restore();
+                    sdgWheel.rotation -= 0.002;
+
+                    updateBenefitText();
+                ctx.font = `bold ${Math.max(10, heroCanvas.width * 0.012)}px Inter, sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = `rgba(255, 255, 255, ${benefitAlpha})`;
+                    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                    ctx.shadowBlur = 4;
+                    ctx.fillText(socialBenefits[benefitIndex], sdgWheel.x, sdgWheel.y + sdgWheel.radius + 25);
+                    ctx.shadowBlur = 0;
+
+
+                    // --- Product Cycle ---
+                    updateProductCycleState(now);
+                    ctx.save();
+                    ctx.globalAlpha = productCycle.alpha;
+                    ctx.translate(productCycle.x, productCycle.y);
+                    ctx.scale(productCycle.size/100, productCycle.size/100);
+
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 3;
+                    ctx.setLineDash([400, 400]);
+                    ctx.lineDashOffset = 400 - (productCycle.drawProgress * 400);
+                    ctx.stroke(housePath);
+                    ctx.setLineDash([]);
+
+                    ctx.font = `bold ${Math.max(10, heroCanvas.width * 0.012)}px Inter, sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = 'white';
+                    ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                    ctx.shadowBlur = 4;
+
+                    let textAlpha = 0;
+                    if (productCycle.state === 'DRAWING_HOUSE' && productCycle.drawProgress > 0.5) {
+                         textAlpha = (productCycle.drawProgress - 0.5) * 2;
+                    } else if (productCycle.state === 'SHOWING_HOUSE' || productCycle.state === 'SHOWING_RECYCLE') {
+                        textAlpha = 1;
+                    }
+
+                    ctx.globalAlpha = productCycle.alpha * textAlpha;
+                    if (productCycle.state === 'SHOWING_RECYCLE') {
+                         const recycleSize = 45;
+                         ctx.drawImage(recycleImage, (100 - recycleSize) / 2, (83 - recycleSize) / 2 + 5, recycleSize, recycleSize);
+                         ctx.fillText('Local Recyclability = Permanence', 50, 115);
+                    } else {
+                         ctx.fillText('CO2 locked for 100+ years', 50, 115);
+                    }
+                    ctx.restore();
+                }
+
+                function animate(now) {
+                    animationFrameId = requestAnimationFrame(animate);
+                    if (!productCycle.lastStateChange) productCycle.lastStateChange = now;
+                    ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+                    particles.forEach(p => { p.update(); p.draw(); });
+                    drawOutputs(now);
+                }
+
+                window.addEventListener('resize', () => {
+                    if(animationFrameId) cancelAnimationFrame(animationFrameId);
+                    resizeCanvas();
+                    animate();
+                });
+            }
 
             // --- Slideshow ---
             let slideIndex = 0;
@@ -926,7 +1000,7 @@
                         const ctx = chart.ctx;
                         const yAxis = chart.scales.y;
                         const xAxis = chart.scales.x;
-                        
+
                         // Draw the line
                         ctx.save();
                         ctx.beginPath();
@@ -1170,9 +1244,9 @@
                         if (canvasId === 'peopleChart') chartConfigKey = 'people';
                         else if (canvasId === 'lcaChart') chartConfigKey = 'lca';
                         else if (canvasId === 'growthChart') chartConfigKey = 'growth';
-                        
+
                         const chartConfig = chartData[chartConfigKey];
-                        
+
                         if (chartConfig) {
                              createChart(canvasId, chartConfig);
                         }
@@ -1255,8 +1329,8 @@
             // --- Carbon Cycle Animation Setup ---
             const setupCarbonCycleAnimationV1 = () => {
                 const particleRing = document.getElementById('particle-ring-v1');
-                const statusText = document.getElementById('status-text-v1');
-                
+                if (!particleRing) return;
+
                 function spawnParticleRing() {
                     particleRing.innerHTML = ''; // Clear old particles
                     const numParticles = 12; 
@@ -1273,7 +1347,7 @@
 
                         p.style.left = `${x}%`;
                         p.style.top = `${y}%`;
-                        
+
                         particleRing.appendChild(p);
                     }
                 }
@@ -1281,21 +1355,19 @@
             };
 
             const setupCarbonCycleAnimationV2 = () => {
-                const statusText = document.getElementById('status-text-v2');
-                
-                // House drawing elements
+                const particleContainer = document.getElementById('co2-particle-container-v2');
+                if(!particleContainer) return;
+
                 const pathHouseBase = document.getElementById('path-house-base');
                 const pathHouseRoof = document.getElementById('path-house-roof');
                 let houseLoopTimeout;
 
-                // Particle flow elements
-                const particleContainer = document.getElementById('co2-particle-container-v2');
                 let particleInterval;
                 let particles = [];
                 let animationFrameId_v2;
 
-                // --- House Drawing Functions ---
                 function preparePath(pathElement) {
+                    if(!pathElement) return;
                     const length = pathElement.getTotalLength();
                     pathElement.style.strokeDasharray = length;
                     pathElement.style.strokeDashoffset = length;
@@ -1321,17 +1393,15 @@
                     pathHouseRoof.style.opacity = '0';
                     houseLoopTimeout = setTimeout(drawHouse, 2000);
                 }
-                
-                // --- Particle Flow Functions (JS METHOD) ---
+
                 function spawnParticle() {
                     const particle = {};
                     particle.element = document.createElement('div');
                     particle.element.className = 'co2-particle-v2';
                     particle.element.textContent = 'CO₂';
                     particle.startTime = Date.now();
-                    particle.duration = 2500; // ms
+                    particle.duration = 2500; 
 
-                    // ** Using your manually adjusted Bezier path **
                     particle.p0 = { x: 80, y: -10 }; 
                     particle.p1 = { x: 80, y: 200 }; 
                     particle.p2 = { x: 160, y: 300 }; 
@@ -1340,7 +1410,7 @@
                     particles.push(particle);
                     particleContainer.appendChild(particle.element);
                 }
-                
+
                 function animateParticles() {
                     const now = Date.now();
                     for (let i = particles.length - 1; i >= 0; i--) {
@@ -1354,7 +1424,6 @@
                             continue;
                         }
 
-                        // Cubic Bezier curve calculation
                         const x = Math.pow(1 - t, 3) * p.p0.x + 3 * Math.pow(1 - t, 2) * t * p.p1.x + 3 * (1 - t) * t * t * p.p2.x + t * t * t * p.p3.x;
                         const y = Math.pow(1 - t, 3) * p.p0.y + 3 * Math.pow(1 - t, 2) * t * p.p1.y + 3 * (1 - t) * t * t * p.p2.y + t * t * t * p.p3.y;
 
@@ -1363,29 +1432,505 @@
                     animationFrameId_v2 = requestAnimationFrame(animateParticles);
                 }
 
-                // --- Main Animation Control ---
                 function runAnimation() {
-                    // Clear all previous loops and timeouts
                     clearTimeout(houseLoopTimeout);
                     clearInterval(particleInterval);
                     cancelAnimationFrame(animationFrameId_v2);
                     particleContainer.innerHTML = '';
                     particles = [];
-                    
-                    // Start all animations
+
                     drawHouse();
                     particleInterval = setInterval(spawnParticle, 500);
                     animateParticles();
-                    
-                    // Update text
-                    statusText.textContent = " ";
                 }
                 runAnimation();
             };
 
+            // --- Regenerative Core Animation ---
+            const setupCoreAnimation = () => {
+                const canvas = document.getElementById('coreAnimationCanvas');
+                if (!canvas) return;
+                //canvas.style.backgroundColor = '#0B1523'; // Set the background color
+                const ctx = canvas.getContext('2d');
+                let elements = {};
+                let coreParticles = [];
+                let coreAnimationStarted = false;
+                let coreAnimationFrameId;
+
+                const coreImages = {
+                    frond: new Image(),
+                    tree: new Image(),
+                    sdg: new Image(),
+                    cpu: new Image()
+                };
+
+                let coreLoadedCount = 0;
+                const coreTotalImages = Object.keys(coreImages).length;
+
+                function coreImageLoaded() {
+                    coreLoadedCount++;
+                    if (coreLoadedCount === coreTotalImages && !coreAnimationStarted) {
+                        coreAnimationStarted = true;
+                        coreSetup();
+                        coreAnimate();
+                    }
+                }
+
+                coreImages.frond.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-PalmFrond.png';
+                coreImages.tree.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/CoconutTree.png';
+                coreImages.sdg.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-SDG-Wheel.png';
+                coreImages.cpu.src = 'https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-CPU.png';
+
+                Object.values(coreImages).forEach(img => {
+                    img.onload = coreImageLoaded;
+                    img.onerror = () => console.error(`Failed to load image: ${img.src}`);
+                });
+
+                function coreSetup() {
+                    const parent = canvas.parentElement;
+                    const dpr = window.devicePixelRatio || 1;
+                    canvas.width = parent.clientWidth * dpr;
+                    canvas.height = parent.clientHeight * dpr;
+                    ctx.scale(dpr, dpr);
+
+                    const w = canvas.clientWidth;
+                    const h = canvas.clientHeight;
+
+                    elements = {
+                    tree: { x: w * 0.15, y: h * 0.7, width: w * 0.12, height: (w * 0.12) * (coreImages.tree.height / coreImages.tree.width) },
+                    tree2: { x: w * 0.08, y: h * 0.7, width: w * 0.10, height: (w * 0.10) * (coreImages.tree.height / coreImages.tree.width) },
+                    tree3: { x: w * 0.03, y: h * 0.7, width: w * 0.08, height: (w * 0.08) * (coreImages.tree.height / coreImages.tree.width) },
+                    conveyor: { y: h * 0.7, startX: w * 0.22, endX: w * 0.45 },
+                    fronds: [],
+                    core: { x: w * 0.5, y: h * 0.7, radius: w * 0.07, glow: 1, glowSpeed: 0.05, pulsing: false, pulseDuration: 100, pulseTimer: 0 },
+                    carbonCounter: { value: 0, increment: 0.125 },
+                    sdg: { x: w * 0.5, y: h * 0.25, size: w * 0.08 * 1.5, rotation: 0 },
+                    house: { x: w * 0.8, y: h * 0.7, width: w * 0.1, height: w * 0.075, buildProgress: 0, maxProgress: 100, state: 'ready', completionTime: 0 },
+                    captions: {
+                        texts: [
+                            "CO2 infused plantation waste",
+                            "Funding plantation CO2 productivity", 
+                            "Economic Engine funds CO2-benefits",
+                            "CO2 durably stored"
+                        ],
+                        positions: [
+                            { x: w * 0.15, y: h * 0.85 }, // Lower left
+                            { x: w * 0.15, y: h * 0.15 }, // Upper left
+                            { x: w * 0.85, y: h * 0.15 }, // Upper right
+                            { x: w * 0.85, y: h * 0.85 }  // Lower right
+                        ],
+                        currentIndex: 0,
+                        alpha: 0,
+                        state: 'FADING_IN', // FADING_IN, SHOWING, FADING_OUT
+                        lastChange: Date.now(),
+                        showDuration: 3000, // 3 seconds to read
+                        fadeDuration: 500   // 0.5 seconds to fade
+                    }
+                };
+                    initCoreFronds();
+                }
+
+                function initCoreFronds() {
+                    const w = canvas.clientWidth;
+                    const numFronds = 3;
+                    const spacing = w * 0.15;
+                    elements.fronds = [];
+                    for (let i = 0; i < numFronds; i++) {
+                        elements.fronds.push({
+                            id: i,
+                            x: elements.conveyor.startX - (numFronds - i) * spacing,
+                            y: canvas.clientHeight * 0.7 - 10,
+                            width: w * 0.1,
+                            height: (w * 0.1) * (coreImages.frond.height / coreImages.frond.width),
+                            speed: 2, // Increased by another 30% (1.04 * 1.3)
+                            co2Particle: {
+                                offsetX: (Math.random() * 0.4 + 0.3) * (w * 0.1),
+                                offsetY: (Math.random() - 0.5) * ((w * 0.1) * (coreImages.frond.height / coreImages.frond.width)) * 0.5,
+                                radius: w * 0.008,
+                                opacity: 1
+                            }
+                        });
+                    }
+                }
+
+                function createCoreParticle(originX, originY, type) {
+                     let targetX, targetY, color, life, vx, vy, radius;
+
+                    if (type === 'carbonRay') {
+                        targetX = elements.house.x;
+                        targetY = elements.core.y; 
+                        color = `rgba(150, 150, 150, 0.5)`;
+                        life = 80;
+                        radius = Math.random() * 2 + 1;
+                        vx = (targetX - originX) / life;
+                        vy = (targetY - originY) / life;
+                    } else if (type === 'value') { 
+                        targetX = elements.sdg.x;
+                        targetY = elements.sdg.y;
+                        color = `rgba(252, 211, 77, ${Math.random() * 0.5 + 0.5})`;
+                        life = 120;
+                        radius = Math.random() * 2 + 1;
+                        vx = (targetX - originX) / life;
+                        vy = (targetY - originY) / life;
+                    } else if (type === 'rejuvenation') {
+                        targetX = elements.tree.x;
+                        targetY = elements.tree.y - elements.tree.height / 2;
+                        color = `rgba(74, 222, 128, ${Math.random() * 0.5 + 0.5})`;
+                        life = 120;
+                        radius = Math.random() * 2.5 + 1.5;
+                        vx = (targetX - originX) / life;
+                        vy = (targetY - originY) / life;
+                    }
+
+                    if(vx !== undefined) coreParticles.push({ x: originX, y: originY, vx, vy, radius, color, type, life });
+                }
+
+                function drawCoreScene() {
+                    if (!elements) return;
+                    const { house, sdg, tree, tree2, tree3 } = elements;
+
+                    ctx.save();
+                    ctx.translate(tree3.x, 0);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(coreImages.tree, -tree3.width / 2, tree3.y - tree3.height, tree3.width, tree3.height);
+                    ctx.restore();
+
+                    ctx.save();
+                    ctx.translate(tree2.x, 0);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(coreImages.tree, -tree2.width / 2, tree2.y - tree2.height, tree2.width, tree2.height);
+                    ctx.restore();
+
+                    ctx.save();
+                    ctx.translate(tree.x, 0);
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(coreImages.tree, -tree.width / 2, tree.y - tree.height, tree.width, tree.height);
+                    ctx.restore();
+
+                    ctx.save();
+                    ctx.translate(sdg.x, sdg.y);
+                    ctx.rotate(sdg.rotation);
+                    ctx.drawImage(coreImages.sdg, -sdg.size / 2, -sdg.size / 2, sdg.size, sdg.size);
+                    ctx.restore();
+                }
+
+                function drawCoreConveyor() {
+                    if (!elements || !elements.conveyor) return;
+                    const { y, startX, endX } = elements.conveyor;
+                    ctx.strokeStyle = '#475569';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(startX, y);
+                    ctx.lineTo(endX, y);
+                    ctx.stroke();
+                }
+
+                function drawCoreFronds() {
+                    if (!elements || !elements.fronds) return;
+                    elements.fronds.forEach(frond => {
+                        ctx.drawImage(coreImages.frond, frond.x, frond.y - frond.height, frond.width, frond.height);
+                        const p = frond.co2Particle;
+                        if (p && p.opacity > 0) {
+                            ctx.globalAlpha = p.opacity;
+                            const pX = frond.x + p.offsetX;
+                            const pY = frond.y - frond.height/2 + p.offsetY;
+                            ctx.fillStyle = `rgba(203, 213, 225, 1)`;
+                            ctx.beginPath();
+                            ctx.arc(pX, pY, p.radius, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.fillStyle = 'black';
+                            ctx.font = `bold ${p.radius * 1.2}px Inter`;
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText('C', pX, pY);
+                            ctx.globalAlpha = 1;
+                        }
+                    });
+                }
+
+                function drawMainCore() {
+                    if (!elements || !elements.core) return;
+                    const { x, y, radius, glow } = elements.core;
+                    const glowRadius = radius * 1.2 * glow;
+                    const gradGlow = ctx.createRadialGradient(x, y, radius * 0.7, x, y, glowRadius);
+                    gradGlow.addColorStop(0, 'rgba(56, 189, 248, 0.5)');
+                    gradGlow.addColorStop(1, 'rgba(56, 189, 248, 0)');
+                    ctx.fillStyle = gradGlow;
+                    ctx.beginPath();
+                    ctx.arc(x, y, glowRadius, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    const gradCore = ctx.createRadialGradient(x, y, 0, x, y, radius);
+                    gradCore.addColorStop(0, 'rgba(207, 250, 254, 1)');
+                    gradCore.addColorStop(0.7, 'rgba(56, 189, 248, 1)');
+                    gradCore.addColorStop(1, 'rgba(14, 116, 144, 1)');
+                    ctx.fillStyle = gradCore;
+                    ctx.beginPath();
+                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    const logoSize = radius * 1.2;
+                    ctx.drawImage(coreImages.cpu, x - logoSize / 2, y - logoSize / 2, logoSize, logoSize);
+                }
+
+                function drawCoreCarbonCounter() {
+                    if (!elements || !elements.core) return;
+                    const { x, y } = elements.core;
+                    ctx.fillStyle = 'white';
+                    ctx.font = `bold ${canvas.clientWidth * 0.015}px Inter`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`Carbon Dioxide: ${Math.floor(elements.carbonCounter.value)} T`, x, y + elements.core.radius + 25);
+                }
+
+                function drawCoreParticles() {
+                    const sdg = elements.sdg;
+                    coreParticles.forEach((p, index) => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.life--;
+
+                        let remove = p.life <= 0;
+                        if (p.type === 'value') {
+                            const dx = p.x - sdg.x;
+                            const dy = p.y - sdg.y;
+                            if (Math.sqrt(dx * dx + dy * dy) < sdg.size / 2) remove = true;
+                        } else if (p.type === 'carbonRay') {
+                           if (p.x >= elements.house.x) remove = true;
+                        }
+
+                        if (remove) {
+                            if (p.type === 'carbonRay' && elements.house.buildProgress < elements.house.maxProgress && elements.house.state === 'building') {
+                                elements.house.buildProgress += 2;
+                                // Check if house just completed
+                                if (elements.house.buildProgress >= elements.house.maxProgress) {
+                                    elements.house.state = 'completed';
+                                    elements.house.completionTime = Date.now();
+                                }
+                            }
+                            coreParticles.splice(index, 1);
+                        } else {
+                            ctx.beginPath();
+                            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                            ctx.fillStyle = p.color;
+                            ctx.fill();
+                        }
+                    });
+                }
+
+                function drawCoreBuildingHouse() {
+                    if (!elements || !elements.house) return;
+                    const { x, y, width, height, buildProgress, state } = elements.house;
+                    ctx.strokeStyle = '#64748b';
+                    ctx.lineWidth = 2;
+
+                    // Only draw if there's progress or house is completed
+                    if (buildProgress > 0 || state === 'completed') {
+                        const currentProgress = Math.min(buildProgress, 100);
+
+                        // Foundation
+                        if (currentProgress > 0) {
+                            ctx.fillStyle = '#94a3b8';
+                            const foundationHeight = height * 0.1;
+                            ctx.fillRect(x, y - foundationHeight, width, foundationHeight);
+                            ctx.strokeRect(x, y - foundationHeight, width, foundationHeight);
+                        }
+
+                        // Walls
+                        const wallProgress = Math.max(0, Math.min(1, (currentProgress - 10) / 50));
+                        if (wallProgress > 0) {
+                            const maxWallHeight = height * 0.375;
+                            const wallHeight = maxWallHeight * wallProgress;
+                            ctx.fillStyle = '#d1d5db';
+                            ctx.fillRect(x, y - height * 0.1 - wallHeight, width, wallHeight);
+                            ctx.strokeRect(x, y - height * 0.1 - wallHeight, width, wallHeight);
+                        }
+
+                        // Roof
+                        const roofProgress = Math.max(0, (currentProgress - 60) / 40);
+                        if (roofProgress > 0) {
+                            ctx.fillStyle = '#4b5563';
+                            ctx.globalAlpha = roofProgress;
+                            ctx.beginPath();
+                            ctx.moveTo(x - 5, y - height * 0.475);
+                            ctx.lineTo(x + width / 2, y - height * 0.75);
+                            ctx.lineTo(x + width + 5, y - height * 0.475);
+                            ctx.closePath();
+                            ctx.fill();
+                            ctx.stroke();
+                            ctx.globalAlpha = 1;
+                        }
+                    }
+                }
+
+                function updateCaptions(now) {
+                     if (!elements || !elements.captions) return;
+                     const { captions } = elements;
+                     const { state, fadeDuration, showDuration } = captions;
+                     const elapsed = now - captions.lastChange;
+
+                     switch(state) {
+                        case 'FADING_IN':
+                            captions.alpha = Math.min(1, captions.alpha + elapsed / fadeDuration);
+                            if(captions.alpha >= 1) {
+                                captions.alpha = 1;
+                                captions.state = 'SHOWING';
+                                captions.lastChange = now;
+                            }
+                            break;
+                        case 'SHOWING':
+                            if(elapsed >= showDuration) {
+                                captions.state = 'FADING_OUT';
+                                captions.lastChange = now;
+                            }
+                            break;
+                        case 'FADING_OUT':
+                            captions.alpha = Math.max(0, captions.alpha - elapsed / fadeDuration);
+                            if(captions.alpha <= 0) {
+                                captions.alpha = 0;
+                                captions.state = 'FADING_IN';
+                                captions.currentIndex = (captions.currentIndex - 1 + captions.texts.length) % captions.texts.length;
+                                captions.lastChange = now;
+                            }
+                            break;
+                    }
+                }
+
+                function drawCoreCaptions() {
+                    if (!elements || !elements.captions) return;
+                    const { captions } = elements;
+                    const { texts, positions, currentIndex, alpha } = captions;
+                    const position = positions[currentIndex];
+
+                    ctx.save();
+                    ctx.globalAlpha = alpha;
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.font = `bold ${canvas.clientWidth * 0.015}px Inter`;
+                    ctx.textAlign = 'center';
+                    ctx.fillText(texts[currentIndex], position.x, position.y);
+                    ctx.restore();
+                }
+
+                function coreUpdate() {
+                    if (!elements || !elements.core || !elements.fronds || !elements.house || !elements.sdg) return;
+                    const { core, fronds, house, sdg } = elements;
+                    const spacing = canvas.clientWidth * 0.15;
+                    const totalConveyorLength = spacing * fronds.length;
+
+                    sdg.rotation -= 0.002;
+
+                    fronds.forEach(frond => {
+                        const prevX = frond.x;
+                        frond.x += frond.speed;
+
+                        const distanceToCore = (core.x - core.radius) - (frond.x + frond.width * 0.8);
+                        if (frond.co2Particle) frond.co2Particle.opacity = Math.max(0, distanceToCore / 50);
+
+                        // Check if frond just entered the core's influence zone
+                        const coreInfluenceZone = core.x - core.radius * 2;
+                        const justEnteredZone = prevX < coreInfluenceZone && frond.x >= coreInfluenceZone;
+
+                        if (frond.x > core.x - core.radius) {
+                            frond.x -= totalConveyorLength;
+
+                            // Only start building if house is ready
+                            if (house.state === 'ready') {
+                                house.state = 'building';
+                            }
+
+                            if (frond.co2Particle) frond.co2Particle.opacity = 1;
+                        }
+
+                        // Trigger pulse when frond enters core influence zone
+                        if (justEnteredZone) {
+                            core.pulsing = true;
+                            core.pulseTimer = core.pulseDuration;
+                            core.glowSpeed = Math.abs(core.glowSpeed); // Ensure we start with positive glow direction
+                        }
+                    });
+
+                    if (core.pulsing) {
+                        // More dynamic pulsing with smoother transitions
+                        core.glow += core.glowSpeed;
+
+                        // Smoother pulse cycle with variable speed
+                        if (core.glow >= 1.8) {
+                            core.glowSpeed = -0.08; // Faster fade down
+                        } else if (core.glow <= 1.0) {
+                            core.glowSpeed = 0.06; // Slower build up
+                        }
+
+                        if (core.pulseTimer > 0) {
+                            core.pulseTimer--;
+                            elements.carbonCounter.value += elements.carbonCounter.increment;
+                        } else {
+                            core.pulsing = false;
+                            // Ensure we end at normal glow
+                            core.glow = Math.max(1.0, core.glow - 0.05);
+                        }
+                    } else {
+                        // Gentle return to baseline when not pulsing
+                        if (core.glow > 1.0) {
+                            core.glow = Math.max(1.0, core.glow - 0.03);
+                        } else {
+                            core.glow = 1.0;
+                        }
+                    }
+
+                    // Continuously create particles flowing from fronds to house
+                    if (Math.random() > 0.7) {
+                        createCoreParticle(core.x, core.y, 'carbonRay');
+                    }
+
+                    if (house.state === 'building' && house.buildProgress > 0 && house.buildProgress < house.maxProgress) {
+                        if (Math.random() > 0.8) {
+                            createCoreParticle(house.x + house.width / 2, house.y - house.height / 2, 'value');
+                        }
+                    }
+
+                    if (Math.random() > 0.95) {
+                        createCoreParticle(sdg.x, sdg.y, 'rejuvenation');
+                    }
+
+                    // Handle house state transitions
+                    if (house.state === 'completed' && Date.now() - house.completionTime > 4000) {
+                        // Reset house with visual fade effect
+                        house.buildProgress = 0;
+                        house.state = 'ready';
+                        house.completionTime = 0;
+                    }
+
+                    updateCaptions(Date.now());
+                }
+
+                function coreAnimate() {
+                    coreAnimationFrameId = requestAnimationFrame(coreAnimate);
+                    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+                    drawCoreScene();
+                    drawCoreConveyor();
+                    drawMainCore();
+                    drawCoreCarbonCounter();
+                    drawCoreFronds();
+                    drawCoreBuildingHouse();
+                    drawCoreParticles();
+                    drawCoreCaptions();
+
+                    coreUpdate();
+
+                 }
+
+                window.addEventListener('resize', () => {
+                    if(coreAnimationStarted) coreSetup();
+                });
+            }
+
+
             // Initialize all animations on DOM load
             setupCarbonCycleAnimationV1();
             setupCarbonCycleAnimationV2();
+            setupCoreAnimation();
+
+
         });
     </script>
 </body>
