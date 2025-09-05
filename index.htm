@@ -274,7 +274,7 @@
             font-size: 1.25rem;
             line-height: 1.75rem;
             text-align: center;
-            max-w-4xl;
+            max-width: 56rem;
             z-index: 10;
             text-shadow: 0 0 10px rgba(0,0,0,0.7);
             margin-top: 2rem;
@@ -410,11 +410,28 @@
             object-position: center 20%;
         }
 
-        .modal-overlay {
-            transition: opacity 0.3s ease;
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .modal-container {
-            transition: transform 0.3s ease;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+        }
+        .modal {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .modal.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .modal.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
     </style>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
@@ -1139,37 +1156,37 @@
                         <source src="https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/Adventure.webm" type="video/webm">
                         <source src="https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/Adventure.mp4" type="video/mp4">
                     </video>
-                    
+
                     <!-- Text and Logo Overlay on right side -->
                     <div class="absolute inset-0 flex flex-col justify-center text-center text-white p-8" style="left: 50%; right: 0;">
                         <!-- COCONUTS Title -->
                         <h1 class="text-3xl md:text-5xl lg:text-7xl font-bold tracking-widest mb-3" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">
                             COCONUTS
                         </h1>
-                        
+
                         <!-- Save the World Subtitle -->
                         <h2 class="text-lg md:text-xl lg:text-2xl font-light mb-6" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">
                             Save the World
                         </h2>
-                        
+
                         <!-- Globe-Eco Logo -->
                         <div class="mb-6">
                             <img src="https://raw.githubusercontent.com/ge-mgressek/ge-public-assets/main/GE-CropX.png" 
                                  alt="Globe-Eco Logo" 
                                  class="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mx-auto">
                         </div>
-                        
+
                         <!-- People Planet Prosperity -->
                         <h3 class="text-base md:text-lg lg:text-xl font-light mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">
                             people. planet. prosperity.
                         </h3>
-                        
+
                         <!-- Email -->
                         <p class="text-sm md:text-base lg:text-lg font-medium" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">
                             Innovation in Harmony
                         </p>
                     </div>
-                    
+
                     </div>
 
                 <!-- Adventure Ticket positioned below video, centered above heading -->
@@ -1190,182 +1207,129 @@
                 </div>
 
                 <!-- Contact Cards  -->
-                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="container mx-auto p-4 md:p-8 text-white">
+                    <h1 class="text-4xl font-bold text-center mb-12">Get in Touch</h1>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8" id="contact-grid">
                         <!-- Card 1: For Nations & Leaders -->
-                        <div class="bg-gradient-to-br from-blue-900 to-blue-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-blue-700">
-                            <div>
-                                <div class="flex items-center justify-center bg-blue-600 rounded-full w-12 h-12 mb-4 mx-auto">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9m-9 9a9 9 0 00-9-9"></path></svg>
+                        <div id="card-nations" class="card bg-blue-800 p-6 rounded-lg flex flex-col cursor-pointer" data-modal="modal-nations" data-email="sovereign.partnerships@globe-eco.com">
+                            <div class="mb-4">
+                                <div class="bg-blue-600 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h1a2 2 0 002-2v-1a2 2 0 012-2h1.945M12 11v3m0 0v3m0-3h3m-3 0h-3m-2.945 3H9a2 2 0 012-2h2a2 2 0 012 2h2.055M12 11V3m0 0a2 2 0 00-2 2v3a2 2 0 002 2a2 2 0 002-2V5a2 2 0 00-2-2z"></path></svg>
                                 </div>
-                                <h3 class="text-xl font-bold text-center mb-3 text-white">For Nations & Leaders</h3>
-                                <p class="text-white text-sm mb-4 text-center">Explore how Globe-Eco can help achieve your nation's climate and development goals, while creating prosperity for your citizens.</p>
-                                <p class="text-sm font-medium text-blue-300 text-center">sovereign.partnerships@globe-eco.com</p>
                             </div>
-                            <button data-modal-target="nations-modal" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 w-full">Contact Us</button>
+                            <h2 class="text-xl font-bold mb-2">For Nations & Leaders</h2>
+                            <p class="text-blue-200 text-sm flex-grow">Explore how Globe-Eco can help achieve your nation's climate and development goals, while creating prosperity for your citizens.</p>
+                            <button class="mt-4 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg w-full">Contact Us</button>
                         </div>
 
-                        <!-- Card 2: For Investors & Financial Institutions -->
-                        <div class="bg-gradient-to-br from-green-900 to-green-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-green-700">    
-                            <div>
-                                <div class="flex items-center justify-center bg-green-600 rounded-full w-12 h-12 mb-4 mx-auto">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01V5M12 20v-1m0-1v-1m0-1v-.01M12 16v-1m0-1V14m0 2.01V15M4 12H3m1 0h-.01M6 12H5m2.01 0H6M20 12h-1m-1 0h-1m-1 0h-.01M18 12h-1m-2.01 0H15"></path></svg>
+                        <!-- Card 2: For Investors -->
+                        <div id="card-investors" class="card bg-green-800 p-6 rounded-lg flex flex-col cursor-pointer" data-modal="modal-investors" data-email="investors@globe-eco.com">
+                            <div class="mb-4">
+                                <div class="bg-green-600 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01"></path></svg>
                                 </div>
-                                <h3 class="text-xl font-bold text-center mb-3 text-white">For Investors & Financial Institutions</h3>
-                                <p class="text-white text-sm mb-4 text-center">Access the investment thesis for a de-risked, gigaton-scale opportunity in the carbon removal and sustainable materials markets.</p>
-                                <p class="text-sm font-medium text-green-300 text-center">investors@globe-eco.com</p>
                             </div>
-                            <button data-modal-target="investors-modal" class="mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 w-full">Contact Us</button>
+                            <h2 class="text-xl font-bold mb-2">For Investors & Financial Institutions</h2>
+                            <p class="text-green-200 text-sm flex-grow">Access the investment thesis for a de-risked, gigaton-scale opportunity in the carbon removal and sustainable materials markets.</p>
+                            <button class="mt-4 bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg w-full">Contact Us</button>
                         </div>
 
-                        <!-- Card 3: For Corporate Climate Leaders -->
-                        <div class="bg-gradient-to-br from-amber-900 to-amber-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-amber-700">
-                            <div>
-                                <div class="flex items-center justify-center bg-orange-600 rounded-full w-12 h-12 mb-4 mx-auto">
+                        <!-- Card 3: For Corporate Leaders -->
+                        <div id="card-corporate" class="card bg-orange-800 p-6 rounded-lg flex flex-col cursor-pointer" data-modal="modal-corporate" data-email="carbon.credits@globe-eco.com">
+                            <div class="mb-4">
+                                <div class="bg-orange-600 w-12 h-12 rounded-full flex items-center justify-center">
                                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                 </div>
-                                <h3 class="text-xl font-bold text-center mb-3 text-white">For Corporate Climate Leaders</h3>
-                                <p class="text-white text-sm mb-4 text-center">Secure a reliable supply of high-integrity, permanent carbon removal credits to meet your net-zero commitments with verifiable, co-beneficial impacts.</p>
-                                <p class="text-sm font-medium text-orange-300 text-center">carbon.credits@globe-eco.com</p>
                             </div>
-                            <button data-modal-target="corporate-modal" class="mt-6 bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 w-full">Contact Us</button>
+                            <h2 class="text-xl font-bold mb-2">For Corporate Climate Leaders</h2>
+                            <p class="text-orange-200 text-sm flex-grow">Secure a reliable supply of high-integrity, permanent carbon removal credits to meet your net-zero commitments with verifiable, co-beneficial impacts.</p>
+                            <button class="mt-4 bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg w-full">Contact Us</button>
                         </div>
 
-                        <!-- Card 4: For Media, Partners & Inquiries -->
-                        <div class="bg-gradient-to-br from-purple-900 to-purple-800 p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-purple-700">
-                            <div>
-                                <div class="flex items-center justify-center w-12 h-12 bg-purple-600 rounded-full mx-auto mb-4">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
-                                    </svg>
+                        <!-- Card 4: For Media & Inquiries -->
+                        <div id="card-inquiries" class="card bg-purple-800 p-6 rounded-lg flex flex-col cursor-pointer" data-modal="modal-inquiries" data-email="info@globe-eco.com">
+                            <div class="mb-4">
+                                <div class="bg-purple-600 w-12 h-12 rounded-full flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
                                 </div>
-                                <h3 class="text-xl font-bold text-center mb-3 text-white">For Media, Partners & Inquiries</h3>
-                                <p class="text-white text-sm mb-4 text-center">For all other inquiries, including media, potential collaborations, and other interested parties, please reach out to our general team.</p>
-                                <p class="text-sm font-medium text-purple-300 text-center">info@globe-eco.com</p>
                             </div>
-                            <button data-modal-target="media-modal" class="mt-6 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 w-full">Contact Us</button>
+                            <h2 class="text-xl font-bold mb-2">For Media, Partners & Inquiries</h2>
+                            <p class="text-purple-200 text-sm flex-grow">For all other inquiries, including media, potential collaborations, and other interested parties, please reach out to our general team.</p>
+                            <button class="mt-4 bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg w-full">Contact Us</button>
                         </div>
-                    </div>
-
-                    <!-- Modals -->
-                    <!-- Nations Modal -->
-                    <div id="nations-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0">
-                        <div class="modal-container bg-blue-900 border border-blue-700 rounded-lg shadow-xl p-8 w-full max-w-md transform scale-95">
-                            <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-2xl font-bold">Contact: Nations & Leaders</h2>
-                                <button class="modal-close text-blue-200 hover:text-white text-3xl leading-none">&times;</button>
-                            </div>
-                            <form class="contact-form" data-email-to="sovereign.partnerships@globe-eco.com">
-                                <div class="mb-4">
-                                    <label for="nations-name" class="block text-blue-200 text-sm font-bold mb-2">Name</label>
-                                    <input type="text" id="nations-name" name="name" class="w-full bg-blue-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="nations-email" class="block text-blue-200 text-sm font-bold mb-2">Email</label>
-                                    <input type="email" id="nations-email" name="email" class="w-full bg-blue-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="nations-message" class="block text-blue-200 text-sm font-bold mb-2">Message/Interests</label>
-                                    <textarea id="nations-message" name="message" rows="4" class="w-full bg-blue-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
-                                </div>
-                                <!-- Add Turnstile Widget. Replace YOUR_SITE_KEY -->
-                                <div class="cf-turnstile mb-4" data-sitekey="1x00000000000000000000AA"></div>
-                                <div class="form-error text-red-400 text-sm mb-4 h-5"></div>
-                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Investors Modal -->
-                    <div id="investors-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0">
-                        <div class="modal-container bg-green-900 border border-green-700 rounded-lg shadow-xl p-8 w-full max-w-md transform scale-95">
-                            <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-2xl font-bold">Contact: Investors</h2>
-                                <button class="modal-close text-green-200 hover:text-white text-3xl leading-none">&times;</button>
-                            </div>
-                            <form class="contact-form" data-email-to="investors@globe-eco.com">
-                                <div class="mb-4">
-                                    <label for="investors-name" class="block text-green-200 text-sm font-bold mb-2">Name</label>
-                                    <input type="text" id="investors-name" name="name" class="w-full bg-green-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="investors-email" class="block text-green-200 text-sm font-bold mb-2">Email</label>
-                                    <input type="email" id="investors-email" name="email" class="w-full bg-green-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="investors-message" class="block text-green-200 text-sm font-bold mb-2">Message/Interests</label>
-                                    <textarea id="investors-message" name="message" rows="4" class="w-full bg-green-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500" required></textarea>
-                                </div>
-                                <!-- Add Turnstile Widget. Replace YOUR_SITE_KEY -->
-                                <div class="cf-turnstile mb-4" data-sitekey="0x4AAAAAAAEbCxQrYtV7MogX"></div>
-                                <div class="form-error text-red-400 text-sm mb-4 h-5"></div>
-                                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Corporate Modal -->
-                    <div id="corporate-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0">
-                        <div class="modal-container bg-orange-900 border border-orange-700 rounded-lg shadow-xl p-8 w-full max-w-md transform scale-95">
-                            <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-2xl font-bold">Contact: Corporate Leaders</h2>
-                                <button class="modal-close text-orange-200 hover:text-white text-3xl leading-none">&times;</button>
-                            </div>
-                            <form class="contact-form" data-email-to="carbon.credits@globe-eco.com">
-                                <div class="mb-4">
-                                    <label for="corporate-name" class="block text-orange-200 text-sm font-bold mb-2">Name</label>
-                                    <input type="text" id="corporate-name" name="name" class="w-full bg-orange-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="corporate-email" class="block text-orange-200 text-sm font-bold mb-2">Email</label>
-                                    <input type="email" id="corporate-email" name="email" class="w-full bg-orange-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="corporate-message" class="block text-orange-200 text-sm font-bold mb-2">Message/Interests</label>
-                                    <textarea id="corporate-message" name="message" rows="4" class="w-full bg-orange-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-500" required></textarea>
-                                </div>
-                                <!-- Add Turnstile Widget. Replace YOUR_SITE_KEY -->
-                                <div class="cf-turnstile mb-4" data-sitekey="0x4AAAAAAAEbCxQrYtV7MogX"></div>
-                                <div class="form-error text-red-400 text-sm mb-4 h-5"></div>
-                                <button type="submit" class="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Media Modal -->
-                    <div id="media-modal" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0">
-                        <div class="modal-container bg-purple-900 border border-purple-700 rounded-lg shadow-xl p-8 w-full max-w-md transform scale-95">
-                            <div class="flex justify-between items-center mb-4">
-                                <h2 class="text-2xl font-bold">Contact: Media & Partners</h2>
-                                <button class="modal-close text-purple-200 hover:text-white text-3xl leading-none">&times;</button>
-                            </div>
-                            <form class="contact-form" data-email-to="info@globe-eco.com">
-                                <div class="mb-4">
-                                    <label for="media-name" class="block text-purple-200 text-sm font-bold mb-2">Name</label>
-                                    <input type="text" id="media-name" name="name" class="w-full bg-purple-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="media-email" class="block text-purple-200 text-sm font-bold mb-2">Email</label>
-                                    <input type="email" id="media-email" name="email" class="w-full bg-purple-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500" required>
-                                </div>
-                                <div class="mb-6">
-                                    <label for="media-message" class="block text-purple-200 text-sm font-bold mb-2">Message/Interests</label>
-                                    <textarea id="media-message" name="message" rows="4" class="w-full bg-purple-800 text-white rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-purple-500" required></textarea>
-                                </div>
-                                <!-- Add Turnstile Widget. Replace YOUR_SITE_KEY -->
-                                <div class="cf-turnstile mb-4" data-sitekey="0x4AAAAAAAEbCxQrYtV7MogX"></div>
-                                <div class="form-error text-red-400 text-sm mb-4 h-5"></div>
-                                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-
-                    <!-- Success Message -->
-                    <div id="success-message" class="fixed top-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hidden">
-                        Your message has been sent successfully!
                     </div>
                 </div>
-            </div>
+
+                <!-- Modals (Initially Hidden) -->
+                <!-- Nations Modal -->
+                <div id="modal-nations" class="fixed inset-0 modal-backdrop flex items-center justify-center p-4 hidden modal">
+                    <div class="bg-blue-900 border border-blue-700 rounded-lg p-8 w-full max-w-md relative shadow-2xl">
+                        <button class="absolute top-4 right-4 text-blue-300 hover:text-white">&times;</button>
+                        <h2 class="text-2xl font-bold mb-4" style="color: white !important;">Contact: Nations & Leaders</h2>
+                        <form>
+                            <div class="mb-4"><label for="name-nations" class="block text-blue-200 mb-2">Name</label><input type="text" id="name-nations" name="name" class="w-full bg-blue-800 border border-blue-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required></div>
+                            <div class="mb-4"><label for="email-nations" class="block text-blue-200 mb-2">Email</label><input type="email" id="email-nations" name="email" class="w-full bg-blue-800 border border-blue-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required></div>
+                            <div class="mb-4"><label for="message-nations" class="block text-blue-200 mb-2">Message/Interests</label><textarea id="message-nations" name="message" rows="4" class="w-full bg-blue-800 border border-blue-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea></div>
+                            <!-- ** Use test key for localhost development ** -->
+                            <div class="cf-turnstile mb-4" data-sitekey="1x00000000000000000000AA"></div>
+                            <div class="error-message text-red-400 text-sm mb-4"></div>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Investors Modal -->
+                <div id="modal-investors" class="fixed inset-0 modal-backdrop flex items-center justify-center p-4 hidden modal">
+                    <div class="bg-green-900 border border-green-700 rounded-lg p-8 w-full max-w-md relative shadow-2xl">
+                        <button class="absolute top-4 right-4 text-green-300 hover:text-white">&times;</button>
+                        <h2 class="text-2xl font-bold mb-4" style="color: white !important;">Contact: Investors</h2>
+                        <form>
+                            <div class="mb-4"><label for="name-investors" class="block text-green-200 mb-2">Name</label><input type="text" id="name-investors" name="name" class="w-full bg-green-800 border border-green-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-green-500" required></div>
+                            <div class="mb-4"><label for="email-investors" class="block text-green-200 mb-2">Email</label><input type="email" id="email-investors" name="email" class="w-full bg-green-800 border border-green-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-green-500" required></div>
+                            <div class="mb-4"><label for="message-investors" class="block text-green-200 mb-2">Message/Interests</label><textarea id="message-investors" name="message" rows="4" class="w-full bg-green-800 border border-green-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-green-500" required></textarea></div>
+                            <!-- ** Use test key for localhost development ** -->
+                            <div class="cf-turnstile mb-4" data-sitekey="1x00000000000000000000AA"></div>
+                            <div class="error-message text-red-400 text-sm mb-4"></div>
+                            <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Corporate Modal -->
+                <div id="modal-corporate" class="fixed inset-0 modal-backdrop flex items-center justify-center p-4 hidden modal">
+                    <div class="bg-orange-900 border border-orange-700 rounded-lg p-8 w-full max-w-md relative shadow-2xl">
+                        <button class="absolute top-4 right-4 text-orange-300 hover:text-white">&times;</button>
+                        <h2 class="text-2xl font-bold mb-4" style="color: white !important;">Contact: Corporate Climate Leaders</h2>
+                        <form>
+                            <div class="mb-4"><label for="name-corporate" class="block text-orange-200 mb-2">Name</label><input type="text" id="name-corporate" name="name" class="w-full bg-orange-800 border border-orange-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" required></div>
+                            <div class="mb-4"><label for="email-corporate" class="block text-orange-200 mb-2">Email</label><input type="email" id="email-corporate" name="email" class="w-full bg-orange-800 border border-orange-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" required></div>
+                            <div class="mb-4"><label for="message-corporate" class="block text-orange-200 mb-2">Message/Interests</label><textarea id="message-corporate" name="message" rows="4" class="w-full bg-orange-800 border border-orange-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" required></textarea></div>
+                            <!-- ** Use test key for localhost development ** -->
+                            <div class="cf-turnstile mb-4" data-sitekey="1x00000000000000000000AA"></div>
+                            <div class="error-message text-red-400 text-sm mb-4"></div>
+                            <button type="submit" class="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-2 px-4 rounded-lg">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Inquiries Modal -->
+                <div id="modal-inquiries" class="fixed inset-0 modal-backdrop flex items-center justify-center p-4 hidden modal">
+                    <div class="bg-purple-900 border border-purple-700 rounded-lg p-8 w-full max-w-md relative shadow-2xl">
+                        <button class="absolute top-4 right-4 text-purple-300 hover:text-white">&times;</button>
+                        <h2 class="text-2xl font-bold mb-4" style="color: white !important;">Contact: Media, Partners & Inquiries</h2>
+                        <form>
+                            <div class="mb-4"><label for="name-inquiries" class="block text-purple-200 mb-2">Name</label><input type="text" id="name-inquiries" name="name" class="w-full bg-purple-800 border border-purple-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" required></div>
+                            <div class="mb-4"><label for="email-inquiries" class="block text-purple-200 mb-2">Email</label><input type="email" id="email-inquiries" name="email" class="w-full bg-purple-800 border border-purple-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" required></div>
+                            <div class="mb-4"><label for="message-inquiries" class="block text-purple-200 mb-2">Message/Interests</label><textarea id="message-inquiries" name="message" rows="4" class="w-full bg-purple-800 border border-purple-600 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500" required></textarea></div>
+                            <!-- ** Use test key for localhost development ** -->
+                            <div class="cf-turnstile mb-4" data-sitekey="1x00000000000000000000AA"></div>
+                            <div class="error-message text-red-400 text-sm mb-4"></div>
+                            <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg">Submit</button>
+                        </form>
+                    </div>
+                </div>
+
         </section>
 
         <footer id="contact" class="bg-gray-800 text-white py-8">
@@ -2613,128 +2577,165 @@
             setupCoreAnimation();
 
         //250903 Add form processing
-        
-            const modalButtons = document.querySelectorAll('[data-modal-target]');
-            const closeButtons = document.querySelectorAll('.modal-close');
-            const contactForms = document.querySelectorAll('.contact-form');
-            const successMessage = document.getElementById('success-message');
 
-            const isValidEmail = (email) => {
-                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                return re.test(String(email).toLowerCase());
-            };
+            const contactGrid = document.getElementById('contact-grid');
+            const modals = document.querySelectorAll('.modal');
+            const closeButtons = document.querySelectorAll('.modal button[class*="absolute"]');
+            let activeEmail = '';
 
-            // --- Modal Control ---
-            const openModal = (modal) => {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    modal.querySelector('.modal-container').classList.remove('scale-95');
-                }, 10);
-            };
+            function openModal(modalId, email) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('visible');
+                    activeEmail = email;
+                }
+            }
 
-            const closeModal = (modal) => {
-                modal.classList.add('opacity-0');
-                modal.querySelector('.modal-container').classList.add('scale-95');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    // Reset Turnstile widget on close
-                    const widget = modal.querySelector('.cf-turnstile');
-                    if (widget && typeof turnstile !== 'undefined') {
-                        turnstile.reset(widget);
+            function closeModal(modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('visible');
+                const form = modal.querySelector('form');
+                if (form) {
+                    form.reset();
+                    clearError(form);
+                    // Reset Turnstile widget if it exists
+                    if (window.turnstile) {
+                        const widget = form.querySelector('.cf-turnstile');
+                        if (widget) {
+                            turnstile.reset(widget);
+                        }
                     }
-                }, 300);
-            };
+                }
+            }
 
-            modalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const modalId = button.getAttribute('data-modal-target');
-                    const modal = document.getElementById(modalId);
-                    if (modal) {
-                        openModal(modal);
+            // Add event listener to the specific contact grid
+            if (contactGrid) {
+                contactGrid.addEventListener('click', (e) => {
+                    // Find the card that was clicked by traversing up the DOM tree
+                    const card = e.target.closest('.card');
+                    if (card) {
+                        const modalId = card.dataset.modal;
+                        const email = card.dataset.email;
+                        if (modalId && email) {
+                            openModal(modalId, email);
+                        }
                     }
                 });
-            });
+            }
+
 
             closeButtons.forEach(button => {
                 button.addEventListener('click', () => {
-                    const modal = button.closest('.modal-overlay');
-                    if (modal) {
+                    closeModal(button.closest('.modal'));
+                });
+            });
+
+            modals.forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
                         closeModal(modal);
                     }
                 });
+                const form = modal.querySelector('form');
+                if (form) {
+                    form.addEventListener('submit', (e) => handleSubmit(e, form));
+                }
             });
 
-            document.querySelectorAll('.modal-overlay').forEach(modal => {
-                modal.addEventListener('click', (event) => {
-                    if (event.target === modal) {
-                        closeModal(modal);
+            function showError(form, message) {
+                const errorDiv = form.querySelector('.error-message');
+                errorDiv.textContent = message;
+            }
+
+            function clearError(form) {
+                const errorDiv = form.querySelector('.error-message');
+                errorDiv.textContent = '';
+            }
+
+            function isValidEmailFormat(email) {
+                const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+
+            async function handleSubmit(e, form) {
+                e.preventDefault();
+                clearError(form);
+                const submitButton = form.querySelector('button[type="submit"]');
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+
+                const formData = new FormData(form);
+                const name = formData.get('name');
+                const email = formData.get('email');
+                const message = formData.get('message');
+                const token = formData.get('cf-turnstile-response');
+
+                if (!name || !email || !message) {
+                    showError(form, 'Please fill out all required fields.');
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit';
+                    return;
+                }
+
+                if (!isValidEmailFormat(email)) {
+                    showError(form, 'Please enter a valid email address.');
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit';
+                    return;
+                }
+
+                if (!token) {
+                    showError(form, 'CAPTCHA challenge failed. Please refresh and try again.');
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Submit';
+                    return;
+                }
+
+                try {
+                    // **IMPORTANT: REPLACE WITH YOUR WORKER URL**
+                    const response = await fetch('https://api.globe-eco.com', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                             // Cache-busting headers
+                            'Cache-Control': 'no-cache',
+                            'Pragma': 'no-cache',
+                            'Expires': '0',
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            message: message,
+                            emailTo: activeEmail,
+                            token: token,
+                        }),
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        // Replace form content with success message only
+                        form.innerHTML = `<div class="text-center"><h3 class="text-2xl font-bold text-green-400 mb-2">Thank You!</h3><p class="text-white">Your message has been sent successfully.</p></div>`;
+                    } else {
+                        // **UPDATED:** Display the detailed error from the worker
+                        showError(form, result.message || 'An unknown server error occurred.');
                     }
-                });
+                } catch (error) {
+                    showError(form, 'A network error occurred. Please try again.');
+                } finally {
+                    // Re-enable the button only if there was an error and the form wasn't replaced
+                    if (form.querySelector('button[type="submit"]')) {
+                         submitButton.disabled = false;
+                         submitButton.textContent = 'Submit';
+                    }
+                }
+            }
             });
 
-            // --- Form Submission ---
-            contactForms.forEach(form => {
-                form.addEventListener('submit', async (event) => {
-                    event.preventDefault();
-                    const submitButton = form.querySelector('button[type="submit"]');
-                    const errorDiv = form.querySelector('.form-error');
-                    errorDiv.textContent = ''; // Clear previous errors
 
-                    // Client-side validation
-                    const emailInput = form.querySelector('input[type="email"]');
-                    if (!isValidEmail(emailInput.value)) {
-                        errorDiv.textContent = 'Please enter a valid email address.';
-                        return;
-                    }
-
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Sending...';
-
-                    const formData = new FormData(form);
-                    const data = {
-                        name: formData.get('name'),
-                        email: formData.get('email'),
-                        message: formData.get('message'),
-                        emailTo: form.dataset.emailTo,
-                        // Include the Turnstile response token
-                        token: formData.get('cf-turnstile-response')
-                    };
-
-                    try {
-                        const response = await fetch('https://api.globe-eco.com', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(data)
-                        });
-
-                        const result = await response.json();
-
-                        if (response.ok) {
-                            closeModal(form.closest('.modal-overlay'));
-                            form.reset();
-                            successMessage.classList.remove('hidden');
-                            setTimeout(() => {
-                                successMessage.classList.add('hidden');
-                            }, 5000);
-                        } else {
-                           errorDiv.textContent = result.message || 'An error occurred.';
-                        }
-                    } catch (error) {
-                        console.error('Error submitting form:', error);
-                        errorDiv.textContent = 'There was an error sending your message.';
-                    } finally {
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Submit';
-                    }
-                });
-            });
-        
-        
         // End form processing
-        
-        
-        });
+
 
             // JavaScript code to fix formatting and line breaks
             const mobileMenuButton = document.getElementById('mobile-menu-button');
