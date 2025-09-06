@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ge-mgressek/ge-public-assets#readme",
   "devDependencies": {
+    "sharp": "^0.34.3",
     "vite": "^7.1.4",
     "vite-plugin-image-optimizer": "^2.0.2"
   }
