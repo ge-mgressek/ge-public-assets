@@ -1,3 +1,15 @@
+// 1. Static imports for single assets - needed for  proper bundling
+import palmFrondUrl from '/assets/images/GE-PalmFrond.png';
+import coconutTreeUrl from '/assets/images/CoconutTree.png';
+import sdgWheelUrl from '/assets/images/GE-SDG-Wheel.png';
+import cpuUrl from '/assets/images/GE-CPU.png';
+
+// 2. Glob imports for dynamic assets
+// Import all the SDG goal images at once using a glob pattern.
+// The `{ eager: true }` option loads them immediately.
+const sdgImageModules = import.meta.glob('/assets/images/E-WEB-Goal-*.png', { eager: true });
+
+
 document.addEventListener('DOMContentLoaded', () => {
 
             // --- CO2 Flow Animation (Hero) ---
@@ -489,6 +501,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const sdgGrid = document.getElementById('sdg-grid');
             const sdgTooltip = document.getElementById('sdg-tooltip');
+/*
             sdgData.forEach(goal => {
                 const item = document.createElement('div');
                 item.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
@@ -506,12 +519,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 sdgGrid.appendChild(item);
             });
+*/
+            // 1. Import all the SDG goal images at once using a glob pattern.
+            // The `{ eager: true }` option loads them immediately.
+            const sdgImageModules = import.meta.glob('/assets/images/E-WEB-Goal-*.png', { eager: true });
+
+            sdgData.forEach(goal => {
+                const item = document.createElement('div');
+                item.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
+
+                const img = document.createElement('img');
+                
+                // 2. Construct the path key just like you were before.
+                const imagePath = `/assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
+                
+                // 3. Look up the correct image URL from the object we created.
+                // The `.default` property holds the final URL.
+                img.src = sdgImageModules[imagePath].default;
+
+                img.alt = `SDG Goal ${goal.id}`;
+                img.className = 'w-full h-auto';
+                item.appendChild(img);
+
+                item.addEventListener('mouseover', () => {
+                    sdgTooltip.textContent = goal.description;
+                });
+                item.addEventListener('mouseout', () => {
+                    sdgTooltip.textContent = 'Hover over a goal to see our contribution.';
+                });
+                sdgGrid.appendChild(item);
+            });
+
 
             // --- Add Dynamic Globe-Eco Tile ---
             const dynamicTile = document.createElement('div');
             dynamicTile.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
             const dynamicImg = document.createElement('img');
-            dynamicImg.src = './assets/images/GE-Logo-Tile.png';
+            dynamicImg.src = '/assets/images/GE-Logo-Tile.png';
             dynamicImg.alt = 'Globe-Eco Logo';
             dynamicImg.className = 'w-full h-auto';
             dynamicTile.appendChild(dynamicImg);
@@ -779,11 +823,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         coreAnimate();
                     }
                 }
+/*
+                coreImages.frond.src = '/assets/images/GE-PalmFrond.png';
+                coreImages.tree.src = '/assets/images/CoconutTree.png';
+                coreImages.sdg.src = '/assets/images/GE-SDG-Wheel.png';
+                coreImages.cpu.src = '/assets/images/GE-CPU.png';
 
-                coreImages.frond.src = './assets/images/GE-PalmFrond.png';
-                coreImages.tree.src = './assets/images/CoconutTree.png';
-                coreImages.sdg.src = './assets/images/GE-SDG-Wheel.png';
-                coreImages.cpu.src = './assets/images/GE-CPU.png';
+                Object.values(coreImages).forEach(img => {
+                    img.onload = coreImageLoaded;
+                    img.onerror = () => console.error(`Failed to load image: ${img.src}`);
+                });
+*/
+                // 1. Import each image at the top of your script file
+
+
+                // ... (the rest of your script)
+
+                // 2. Use the imported variables to set the src attributes
+                coreImages.frond.src = palmFrondUrl;
+                coreImages.tree.src = coconutTreeUrl;
+                coreImages.sdg.src = sdgWheelUrl;
+                coreImages.cpu.src = cpuUrl;
 
                 Object.values(coreImages).forEach(img => {
                     img.onload = coreImageLoaded;
