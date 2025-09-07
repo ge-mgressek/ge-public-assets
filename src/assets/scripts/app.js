@@ -9,13 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 let animationFrameId;
 
                 const cpuImage = new Image();
-                cpuImage.src = '/assets/images/GE-CPU.png';
+                cpuImage.src = './assets/images/GE-CPU.png';
 
                 const sdgImage = new Image();
-                sdgImage.src = '/assets/images/GE-SDG-Wheel.png';
+                sdgImage.src = './assets/images/GE-SDG-Wheel.png';
 
                 const recycleImage = new Image();
-                recycleImage.src = '/assets/images/Recycle.png';
+                recycleImage.src = './assets/images/Recycle.png';
 
                 const housePath = new Path2D("M4.39999 37.8L50.4 4.79999L96.4 37.8V83H4.39999V37.8Z");
 
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 benefitAlpha = Math.max(0, benefitAlpha - 0.02);
                                 if(benefitAlpha <= 0) {
                                     benefitState = 'FADING_IN';
-                                    benefitIndex = (benefitIndex + 1) % socialBenefits.length;
+                                    benefitIndex = (benefitIndex + 1) % sdgData.length;
                                 }
                                 break;
                         }
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fillStyle = `rgba(255, 255, 255, ${benefitAlpha})`;
                     ctx.shadowColor = 'rgba(0,0,0,0.8)';
                     ctx.shadowBlur = 4;
-                    ctx.fillText(socialBenefits[benefitIndex], sdgWheel.x, sdgWheel.y + sdgWheel.radius + 25);
+                    ctx.fillText(sdgData[benefitIndex].name, sdgWheel.x, sdgWheel.y + sdgWheel.radius + 25);
                     ctx.shadowBlur = 0;
 
 
@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const item = document.createElement('div');
                 item.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
                 const img = document.createElement('img');
-                img.src = `/assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
+                img.src = `./assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
                 img.alt = `SDG Goal ${goal.id}`;
                 img.className = 'w-full h-auto';
                 item.appendChild(img);
@@ -511,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dynamicTile = document.createElement('div');
             dynamicTile.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
             const dynamicImg = document.createElement('img');
-            dynamicImg.src = '/assets/images/GE-Logo-Tile.png';
+            dynamicImg.src = './assets/images/GE-Logo-Tile.png';
             dynamicImg.alt = 'Globe-Eco Logo';
             dynamicImg.className = 'w-full h-auto';
             dynamicTile.appendChild(dynamicImg);
@@ -780,10 +780,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                coreImages.frond.src = '/assets/images/GE-PalmFrond.png';
-                coreImages.tree.src = '/assets/images/CoconutTree.png';
-                coreImages.sdg.src = '/assets/images/GE-SDG-Wheel.png';
-                coreImages.cpu.src = '/assets/images/GE-CPU.png';
+                coreImages.frond.src = './assets/images/GE-PalmFrond.png';
+                coreImages.tree.src = './assets/images/CoconutTree.png';
+                coreImages.sdg.src = './assets/images/GE-SDG-Wheel.png';
+                coreImages.cpu.src = './assets/images/GE-CPU.png';
 
                 Object.values(coreImages).forEach(img => {
                     img.onload = coreImageLoaded;
