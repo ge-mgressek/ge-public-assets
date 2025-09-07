@@ -3,6 +3,10 @@ import palmFrondUrl from '/assets/images/GE-PalmFrond.png';
 import coconutTreeUrl from '/assets/images/CoconutTree.png';
 import sdgWheelUrl from '/assets/images/GE-SDG-Wheel.png';
 import cpuUrl from '/assets/images/GE-CPU.png';
+import cpuImageUrl from '/assets/images/GE-CPU.png';
+import sdgWheelImageUrl from '/assets/images/GE-SDG-Wheel.png';
+import recycleImageUrl from '/assets/images/Recycle.png';
+import dynamicImgUrl from '/assets/images/GE-Logo-Tile.png';
 
 // 2. Glob imports for dynamic assets
 // Import all the SDG goal images at once using a glob pattern.
@@ -21,13 +25,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 let animationFrameId;
 
                 const cpuImage = new Image();
-                cpuImage.src = './assets/images/GE-CPU.png';
+                cpuImage.src = cpuImageUrl;
 
                 const sdgImage = new Image();
-                sdgImage.src = './assets/images/GE-SDG-Wheel.png';
+                sdgImage.src = sdgWheelImageUrl;
 
                 const recycleImage = new Image();
-                recycleImage.src = './assets/images/Recycle.png';
+                recycleImage.src = recycleImageUrl;
 
                 const housePath = new Path2D("M4.39999 37.8L50.4 4.79999L96.4 37.8V83H4.39999V37.8Z");
 
@@ -555,7 +559,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dynamicTile = document.createElement('div');
             dynamicTile.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
             const dynamicImg = document.createElement('img');
-            dynamicImg.src = '/assets/images/GE-Logo-Tile.png';
+            dynamicImg.src = dynamicImgUrl;
             dynamicImg.alt = 'Globe-Eco Logo';
             dynamicImg.className = 'w-full h-auto';
             dynamicTile.appendChild(dynamicImg);
