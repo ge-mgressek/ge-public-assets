@@ -4,6 +4,9 @@
 export async function onRequest(context) {
   const response = await context.next();
 
+  // Add test header to verify middleware is running
+  response.headers.set('X-Middleware-Test', 'Running');
+
   // Hand the promise to waitUntil so the write can complete after the response
   context.waitUntil(writeAE(context.env.ANALYTICS, context.request, response.status));
 
