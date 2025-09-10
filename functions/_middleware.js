@@ -1,39 +1,30 @@
 // File: functions/_middleware.js
-
+// This middleware captures analytics data for each request and logs it using
+// the Analytics Engine (AE) bound to the environment variable ANALYTICS.
 export async function onRequest(context) {
-  // Always call next() to continue to the requested page
   const response = await context.next();
 
-  // Use waitUntil to perform analytics in the background without blocking the response
-  context.waitUntil(logAnalytics(context));
+  // Hand the promise to waitUntil so the write can complete after the response
+  context.waitUntil(writeAE(context.env.ANALYTICS, context.request, response.status));
 
   return response;
 }
 
-async function logAnalytics(context) {
-  // Get the binding to our Analytics Engine dataset
-  const analytics = context.env.ANALYTICS;
-
-  // Get data from the request and Cloudflare's metadata
-  const request = context.request;
-  const cf = request.cf;
+async function writeAE(analytics, request, status) {
   const url = new URL(request.url);
+  const cf = request.cf || {};
 
-  // Send the data point to the Analytics Engine
-  analytics.writeDataPoint({
-    // Use indexes for data you want to filter or group by in your queries.
-    // Index names (index1, index2, etc.) are fixed. You decide what they represent.
-    // We'll map: index1=Path, index2=Country, index3=Status
-    "indexes": [
-      url.pathname,         // index1: The page path (e.g., '/', '/about')
-      cf.country ?? 'XX',   // index2: Visitor's country code (e.g., 'US')
-      response.status       // index3: The response status code (e.g., 200)
+  // Return the promise so waitUntil can track it
+  return analytics.writeDataPoint({
+    indexes: [
+      url.pathname,           // index1: path
+      cf.country || 'XX',     // index2: country
+      status                  // index3: HTTP status
     ],
-    // Use blobs for high-cardinality data you just want to store and view.
-    "blobs": [
-      request.headers.get('User-Agent') ?? '', // blob1: User-Agent
-      request.headers.get('Referer') ?? '',    // blob2: Referrer
-      cf.ray,                                  // blob3: Cloudflare Ray ID
+    blobs: [
+      request.headers.get('user-agent') || '',
+      request.headers.get('referer') || '',
+      cf.ray || request.headers.get('cf-ray') || ''
     ],
   });
 }
