@@ -524,8 +524,17 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
 
-            const sdgGrid = document.getElementById('sdg-grid');
-            const sdgTooltip = document.getElementById('sdg-tooltip');
+            // Wrap critical content loading to prevent errors from blocking display
+            try {
+                const sdgGrid = document.getElementById('sdg-grid');
+                const sdgTooltip = document.getElementById('sdg-tooltip');
+
+                if (!sdgGrid || !sdgTooltip) {
+                    console.error('SDG elements not found in DOM');
+                    return;
+                }
+                
+                console.log('Starting SDG grid loading with', sdgData.length, 'items');
 /*
             sdgData.forEach(goal => {
                 const item = document.createElement('div');
@@ -556,7 +565,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // 3. Look up the correct image URL from the object we created.
                 // The `.default` property holds the final URL.
-                img.src = sdgImageModules[imagePath].default;
+                if (sdgImageModules[imagePath] && sdgImageModules[imagePath].default) {
+                    img.src = sdgImageModules[imagePath].default;
+                } else {
+                    console.error('SDG image not found:', imagePath);
+                    return; // Skip this item if image not found
+                }
 
                 img.alt = `SDG Goal ${goal.id}`;
                 img.className = 'w-full h-auto';
@@ -593,12 +607,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const fadeObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        console.log('Making section visible:', entry.target.id);
                         entry.target.classList.add('visible');
                     }
                 });
             }, { threshold: 0.1 });
 
             document.querySelectorAll('.section-fade-in').forEach(section => {
+                console.log('Observing section:', section.id);
                 fadeObserver.observe(section);
             });
 
@@ -647,6 +663,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }, { threshold: 0.5 });
 
             sdgObserver.observe(sdgGridForAnimation);
+
+            } catch (error) {
+                console.error('Error loading SDG grid and charts:', error);
+            }
 
             // --- Unmute Button Logic ---
             const unmuteButton = document.getElementById('unmute-button');
