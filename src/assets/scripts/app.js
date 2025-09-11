@@ -14,6 +14,27 @@ import dynamicImgUrl from '/assets/images/GE-Logo-Tile.png';
 const sdgImageModules = import.meta.glob('/assets/images/E-WEB-Goal-*.png', { eager: true });
 
 
+// SDG data needed by the hero animation
+const sdgData = [
+    { id: 1, name: 'No Poverty', color: '#E5243B', description: 'Provides a +250% income increase to farmers, lifting families from <$2/day.' },
+    { id: 2, name: 'Zero Hunger', color: '#DDA63A', description: 'Promotes sustainable agriculture and improves food security through intercropping.' },
+    { id: 3, name: 'Good Health and Well-being', color: '#4C9F38', description: 'Reduces air pollution by eliminating biomass burning, improving respiratory health.' },
+    { id: 4, name: 'Quality Education', color: '#C5192D', description: 'Provides materials for building schools and increased family income supports education.' },
+    { id: 5, name: 'Gender Equality', color: '#FF3A21', description: 'Empowers women in rural communities with new economic opportunities.' },
+    { id: 6, name: 'Clean Water and Sanitation', color: '#26BDE2', description: 'Protects watersheds by reducing deforestation and land degradation.' },
+    { id: 7, name: 'Affordable and Clean Energy', color: '#FCC30B', description: 'CPUs are self-powered by biomass gasification, providing off-grid energy.' },
+    { id: 8, name: 'Decent Work and Economic Growth', color: '#A21942', description: 'Creates thousands of high-tech jobs and stimulates local economies.' },
+    { id: 9, name: 'Industry, Innovation and Infrastructure', color: '#FD6925', description: 'Builds resilient, sustainable infrastructure with carbon-negative materials.' },
+    { id: 10, name: 'Reduced Inequality', color: '#DD1367', description: 'Reduces inequality by providing wealth creation opportunities in rural areas.' },
+    { id: 11, name: 'Sustainable Cities and Communities', color: '#FD9D24', description: 'Supplies sustainable, affordable building materials for housing and public works.' },
+    { id: 12, name: 'Responsible Consumption and Production', color: '#BF8B2E', description: 'Creates a circular economy model by upcycling agricultural waste.' },
+    { id: 13, name: 'Climate Action', color: '#3F7E44', description: 'Delivers gigaton-scale, permanent carbon dioxide removal.' },
+    { id: 14, name: 'Life Below Water', color: '#0A97D9', description: 'Stay tuned: Diverts thousands of tons of plastic waste, preventing it from reaching oceans.' },
+    { id: 15, name: 'Life on Land', color: '#56C02B', description: 'Reduces demand for logging, protecting forests and biodiversity.' },
+    { id: 16, name: 'Peace, Justice and Strong Institutions', color: '#00689D', description: 'Promotes fair trade practices and economic stability in developing regions.' },
+    { id: 17, name: 'Partnerships for the Goals', color: '#19486A', description: 'Forms public-private partnerships to mobilize investment for the SDGs.' },
+];
+
 document.addEventListener('DOMContentLoaded', () => {
 
             // --- CO2 Flow Animation (Hero) ---
@@ -483,25 +504,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 charts[id] = new Chart(ctx, config);
             };
 
-            const sdgData = [
-                { id: 1, name: 'No Poverty', color: '#E5243B', description: 'Provides a +250% income increase to farmers, lifting families from <$2/day.' },
-                { id: 2, name: 'Zero Hunger', color: '#DDA63A', description: 'Promotes sustainable agriculture and improves food security through intercropping.' },
-                { id: 3, name: 'Good Health and Well-being', color: '#4C9F38', description: 'Reduces air pollution by eliminating biomass burning, improving respiratory health.' },
-                { id: 4, name: 'Quality Education', color: '#C5192D', description: 'Provides materials for building schools and increased family income supports education.' },
-                { id: 5, name: 'Gender Equality', color: '#FF3A21', description: 'Empowers women in rural communities with new economic opportunities.' },
-                { id: 6, name: 'Clean Water and Sanitation', color: '#26BDE2', description: 'Protects watersheds by reducing deforestation and land degradation.' },
-                { id: 7, name: 'Affordable and Clean Energy', color: '#FCC30B', description: 'CPUs are self-powered by biomass gasification, providing off-grid energy.' },
-                { id: 8, name: 'Decent Work and Economic Growth', color: '#A21942', description: 'Creates thousands of high-tech jobs and stimulates local economies.' },
-                { id: 9, name: 'Industry, Innovation and Infrastructure', color: '#FD6925', description: 'Builds resilient, sustainable infrastructure with carbon-negative materials.' },
-                { id: 10, name: 'Reduced Inequality', color: '#DD1367', description: 'Reduces inequality by providing wealth creation opportunities in rural areas.' },
-                { id: 11, name: 'Sustainable Cities and Communities', color: '#FD9D24', description: 'Supplies sustainable, affordable building materials for housing and public works.' },
-                { id: 12, name: 'Responsible Consumption and Production', color: '#BF8B2E', description: 'Creates a circular economy model by upcycling agricultural waste.' },
-                { id: 13, name: 'Climate Action', color: '#3F7E44', description: 'Delivers gigaton-scale, permanent carbon dioxide removal.' },
-                { id: 14, name: 'Life Below Water', color: '#0A97D9', description: 'Stay tuned: Diverts thousands of tons of plastic waste, preventing it from reaching oceans.' },
-                { id: 15, name: 'Life on Land', color: '#56C02B', description: 'Reduces demand for logging, protecting forests and biodiversity.' },
-                { id: 16, name: 'Peace, Justice and Strong Institutions', color: '#00689D', description: 'Promotes fair trade practices and economic stability in developing regions.' },
-                { id: 17, name: 'Partnerships for the Goals', color: '#19486A', description: 'Forms public-private partnerships to mobilize investment for the SDGs.' },
-            ];
 
             const sdgGrid = document.getElementById('sdg-grid');
             const sdgTooltip = document.getElementById('sdg-tooltip');
@@ -524,10 +526,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 sdgGrid.appendChild(item);
             });
 */
-            // 1. Import all the SDG goal images at once using a glob pattern.
-            // The `{ eager: true }` option loads them immediately.
-            const sdgImageModules = import.meta.glob('/assets/images/E-WEB-Goal-*.png', { eager: true });
-
             sdgData.forEach(goal => {
                 const item = document.createElement('div');
                 item.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
