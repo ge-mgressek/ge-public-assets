@@ -35,6 +35,21 @@ const sdgData = [
     { id: 17, name: 'Partnerships for the Goals', color: '#19486A', description: 'Forms public-private partnerships to mobilize investment for the SDGs.' },
 ];
 
+// Add better error instrumentation
+window.addEventListener('error', (event) => {
+    console.error('Global error:', {
+        message: event.message || 'Unknown error',
+        filename: event.filename,
+        line: event.lineno,
+        column: event.colno,
+        error: event.error
+    });
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason);
+});
+
 document.addEventListener('DOMContentLoaded', () => {
 
             // --- CO2 Flow Animation (Hero) ---
@@ -91,9 +106,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 function resizeCanvas() {
                     const parent = heroCanvas.parentElement;
-                    if (parent.offsetWidth === 0 || parent.offsetHeight === 0) return; // Guard against zero dimensions
-                    heroCanvas.width = parent.offsetWidth;
-                    heroCanvas.height = parent.offsetHeight;
+                    if (!parent || parent.offsetWidth === 0 || parent.offsetHeight === 0) return; // Guard against zero dimensions
+                    try {
+                        heroCanvas.width = parent.offsetWidth;
+                        heroCanvas.height = parent.offsetHeight;
+                    } catch (error) {
+                        console.error('Canvas resize error:', error);
+                        return;
+                    }
 
                     const verticalCenter = heroCanvas.height / 2 + 30;
 
@@ -256,11 +276,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.shadowBlur = 0;
 
                     // --- SDG Wheel and Text ---
-                    ctx.save();
-                    ctx.translate(sdgWheel.x, sdgWheel.y);
-                    ctx.rotate(sdgWheel.rotation);
-                    ctx.drawImage(sdgImage, -sdgWheel.radius, -sdgWheel.radius, sdgWheel.radius * 2, sdgWheel.radius * 2);
-                    ctx.restore();
+                    if (sdgWheel.radius > 0) {
+                        ctx.save();
+                        ctx.translate(sdgWheel.x, sdgWheel.y);
+                        ctx.rotate(sdgWheel.rotation);
+                        ctx.drawImage(sdgImage, -sdgWheel.radius, -sdgWheel.radius, sdgWheel.radius * 2, sdgWheel.radius * 2);
+                        ctx.restore();
+                    }
                     sdgWheel.rotation -= 0.002;
 
                     updateBenefitText();
@@ -275,10 +297,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // --- Product Cycle ---
                     updateProductCycleState(now);
-                    ctx.save();
-                    ctx.globalAlpha = productCycle.alpha;
-                    ctx.translate(productCycle.x, productCycle.y);
-                    ctx.scale(productCycle.size/100, productCycle.size/100);
+                    if (productCycle.size > 0 && Number.isFinite(productCycle.alpha) && productCycle.alpha > 0) {
+                        ctx.save();
+                        ctx.globalAlpha = productCycle.alpha;
+                        ctx.translate(productCycle.x, productCycle.y);
+                        ctx.scale(productCycle.size/100, productCycle.size/100);
 
                     ctx.strokeStyle = 'white';
                     ctx.lineWidth = 3;
@@ -309,11 +332,16 @@ document.addEventListener('DOMContentLoaded', () => {
                          ctx.fillText('CO2 locked for 100+ years', 50, 115);
                     }
                     ctx.restore();
+                    }
                 }
 
                 function animate(now) {
                     animationFrameId = requestAnimationFrame(animate);
                     try {
+                        // Guard against zero-sized canvas
+                        if (!heroCanvas.width || !heroCanvas.height) {
+                            return;
+                        }
                         if (!productCycle.lastStateChange) productCycle.lastStateChange = now;
                         ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
                         particles.forEach(p => { p.update(); p.draw(); });
@@ -353,30 +381,42 @@ document.addEventListener('DOMContentLoaded', () => {
             const povertyLinePlugin = {
                 id: 'povertyLine',
                 afterDraw: (chart) => {
-                    const lineValue = 1332; // Approx $3.65/day * 365
-                    if (chart.config.type === 'bar' && chart.options.indexAxis === 'y') {
-                        const ctx = chart.ctx;
-                        const yAxis = chart.scales.y;
-                        const xAxis = chart.scales.x;
+                    try {
+                        // Guard against invalid chart state
+                        if (!chart.chartArea || !chart.width || !chart.height || chart.width <= 0 || chart.height <= 0) {
+                            return;
+                        }
+                        if (!chart.scales?.x || !chart.scales?.y || typeof chart.scales.x.getPixelForValue !== 'function') {
+                            return;
+                        }
+                        
+                        const lineValue = 1332; // Approx $3.65/day * 365
+                        if (chart.config.type === 'bar' && chart.options.indexAxis === 'y') {
+                            const ctx = chart.ctx;
+                            const yAxis = chart.scales.y;
+                            const xAxis = chart.scales.x;
 
-                        // Draw the line
-                        ctx.save();
-                        ctx.beginPath();
-                        ctx.moveTo(xAxis.getPixelForValue(lineValue), yAxis.top);
-                        ctx.lineTo(xAxis.getPixelForValue(lineValue), yAxis.bottom);
-                        ctx.lineWidth = 2;
-                        ctx.strokeStyle = '#ef4444';
-                        ctx.setLineDash([6, 6]);
-                        ctx.stroke();
-                        ctx.restore();
+                            // Draw the line
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.moveTo(xAxis.getPixelForValue(lineValue), yAxis.top);
+                            ctx.lineTo(xAxis.getPixelForValue(lineValue), yAxis.bottom);
+                            ctx.lineWidth = 2;
+                            ctx.strokeStyle = '#ef4444';
+                            ctx.setLineDash([6, 6]);
+                            ctx.stroke();
+                            ctx.restore();
 
-                        // Draw the text
-                        ctx.save();
-                        ctx.fillStyle = '#ef4444';
-                        ctx.textAlign = 'center';
-                        ctx.font = '12px Inter, sans-serif';
-                        ctx.fillText('Poverty Line', xAxis.getPixelForValue(lineValue), chart.chartArea.bottom + 35); 
-                        ctx.restore();
+                            // Draw the text
+                            ctx.save();
+                            ctx.fillStyle = '#ef4444';
+                            ctx.textAlign = 'center';
+                            ctx.font = '12px Inter, sans-serif';
+                            ctx.fillText('Poverty Line', xAxis.getPixelForValue(lineValue), chart.chartArea.bottom + 35); 
+                            ctx.restore();
+                        }
+                    } catch (error) {
+                        console.error('Chart plugin error:', error);
                     }
                 }
             };
