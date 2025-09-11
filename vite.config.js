@@ -6,6 +6,11 @@ export default defineConfig({
   build: {
     outDir: '../dist'
   },
+  server: {
+    host: '0.0.0.0',
+    port: 5000,
+    strictPort: true
+  },
   plugins: [
     ViteImageOptimizer(),
   ],
