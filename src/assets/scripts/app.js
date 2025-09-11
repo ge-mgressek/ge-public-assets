@@ -63,9 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     new Promise(resolve => { recycleImage.onload = () => resolve(); })
                 ]).then(() => {
                     allImagesLoaded = true;
-                    if (!animationFrameId) {
+                    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+                    if (!animationFrameId && !isMobile) {
                         resizeCanvas();
                         animate();
+                    } else if (isMobile) {
+                        // Skip animation on mobile to prevent errors from blocking content
+                        console.log('Hero animation disabled on mobile for stability');
                     }
                 });
 
@@ -87,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 function resizeCanvas() {
                     const parent = heroCanvas.parentElement;
+                    if (parent.offsetWidth === 0 || parent.offsetHeight === 0) return; // Guard against zero dimensions
                     heroCanvas.width = parent.offsetWidth;
                     heroCanvas.height = parent.offsetHeight;
 
@@ -124,6 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         this.vy = (Math.random() - 0.5) * 0.2;
                     }
                     draw() {
+                        if (!Number.isFinite(this.x) || !Number.isFinite(this.y) || !Number.isFinite(this.radius)) return;
                         ctx.beginPath();
                         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
                         ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
@@ -132,13 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     update() {
                         const dx = (cpuIcon.x + cpuIcon.width / 2) - this.x;
                         const dy = cpuIcon.y + cpuIcon.height/2 - this.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        const distance = Math.hypot(dx, dy) || 1; // Guard against divide-by-zero
                         this.speedX += (dx / distance) * 0.05;
                         this.speedY += (dy / distance) * 0.05;
                         this.x += this.speedX + this.vx;
                         this.y += this.speedY;
                         this.speedX *= 0.98;
                         this.speedY *= 0.98;
+                        
+                        // Reset particle if any values become non-finite
+                        if (!Number.isFinite(this.x) || !Number.isFinite(this.y) || !Number.isFinite(this.speedX) || !Number.isFinite(this.speedY)) {
+                            this.reset();
+                            return;
+                        }
+                        
                         const distToCPU = Math.sqrt(Math.pow(this.x - (cpuIcon.x + cpuIcon.width/2), 2) + Math.pow(this.y - (cpuIcon.y + cpuIcon.height/2), 2));
                         if (distToCPU < cpuIcon.width/2) {
                             this.reset();
@@ -300,10 +313,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 function animate(now) {
                     animationFrameId = requestAnimationFrame(animate);
-                    if (!productCycle.lastStateChange) productCycle.lastStateChange = now;
-                    ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
-                    particles.forEach(p => { p.update(); p.draw(); });
-                    drawOutputs(now);
+                    try {
+                        if (!productCycle.lastStateChange) productCycle.lastStateChange = now;
+                        ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+                        particles.forEach(p => { p.update(); p.draw(); });
+                        drawOutputs(now);
+                    } catch (error) {
+                        console.error('Hero animation error:', error);
+                        cancelAnimationFrame(animationFrameId);
+                        animationFrameId = null;
+                    }
                 }
 
                 window.addEventListener('resize', () => {
