@@ -582,7 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const item = document.createElement('div');
                 item.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
                 const img = document.createElement('img');
-                img.src = `./assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
+                img.src = `/src/assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
                 img.alt = `SDG Goal ${goal.id}`;
                 img.className = 'w-full h-auto';
                 item.appendChild(img);
@@ -603,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = document.createElement('img');
                 
                 // 2. Construct the path key just like you were before.
-                const imagePath = `/assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
+                const imagePath = `/src/assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
                 
                 // 3. Look up the correct image URL from the object we created.
                 // The `.default` property holds the final URL.
