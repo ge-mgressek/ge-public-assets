@@ -8,10 +8,44 @@ import sdgWheelImageUrl from '/assets/images/GE-SDG-Wheel.png';
 import recycleImageUrl from '/assets/images/Recycle.png';
 import dynamicImgUrl from '/assets/images/GE-Logo-Tile.png';
 
-// 2. Glob imports for dynamic assets
-// Import all the SDG goal images at once using a glob pattern.
-// The `{ eager: true }` option loads them immediately.
-const sdgImageModules = import.meta.glob('/assets/images/E-WEB-Goal-*.png', { eager: true });
+// 2. Individual imports for SDG images to avoid Vite glob transformation issues
+import goal01 from '/assets/images/E-WEB-Goal-01.png';
+import goal02 from '/assets/images/E-WEB-Goal-02.png';
+import goal03 from '/assets/images/E-WEB-Goal-03.png';
+import goal04 from '/assets/images/E-WEB-Goal-04.png';
+import goal05 from '/assets/images/E-WEB-Goal-05.png';
+import goal06 from '/assets/images/E-WEB-Goal-06.png';
+import goal07 from '/assets/images/E-WEB-Goal-07.png';
+import goal08 from '/assets/images/E-WEB-Goal-08.png';
+import goal09 from '/assets/images/E-WEB-Goal-09.png';
+import goal10 from '/assets/images/E-WEB-Goal-10.png';
+import goal11 from '/assets/images/E-WEB-Goal-11.png';
+import goal12 from '/assets/images/E-WEB-Goal-12.png';
+import goal13 from '/assets/images/E-WEB-Goal-13.png';
+import goal14 from '/assets/images/E-WEB-Goal-14.png';
+import goal15 from '/assets/images/E-WEB-Goal-15.png';
+import goal16 from '/assets/images/E-WEB-Goal-16.png';
+import goal17 from '/assets/images/E-WEB-Goal-17.png';
+
+const sdgImageModules = {
+    '/assets/images/E-WEB-Goal-01.png': { default: goal01 },
+    '/assets/images/E-WEB-Goal-02.png': { default: goal02 },
+    '/assets/images/E-WEB-Goal-03.png': { default: goal03 },
+    '/assets/images/E-WEB-Goal-04.png': { default: goal04 },
+    '/assets/images/E-WEB-Goal-05.png': { default: goal05 },
+    '/assets/images/E-WEB-Goal-06.png': { default: goal06 },
+    '/assets/images/E-WEB-Goal-07.png': { default: goal07 },
+    '/assets/images/E-WEB-Goal-08.png': { default: goal08 },
+    '/assets/images/E-WEB-Goal-09.png': { default: goal09 },
+    '/assets/images/E-WEB-Goal-10.png': { default: goal10 },
+    '/assets/images/E-WEB-Goal-11.png': { default: goal11 },
+    '/assets/images/E-WEB-Goal-12.png': { default: goal12 },
+    '/assets/images/E-WEB-Goal-13.png': { default: goal13 },
+    '/assets/images/E-WEB-Goal-14.png': { default: goal14 },
+    '/assets/images/E-WEB-Goal-15.png': { default: goal15 },
+    '/assets/images/E-WEB-Goal-16.png': { default: goal16 },
+    '/assets/images/E-WEB-Goal-17.png': { default: goal17 }
+};
 
 
 // SDG data needed by the hero animation
