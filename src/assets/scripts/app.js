@@ -78,13 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     new Promise(resolve => { recycleImage.onload = () => resolve(); })
                 ]).then(() => {
                     allImagesLoaded = true;
-                    const isMobile = window.matchMedia('(max-width: 767px)').matches;
-                    if (!animationFrameId && !isMobile) {
+                    console.log('Hero animation enabled for all devices');
+                    if (!animationFrameId) {
                         resizeCanvas();
                         animate();
-                    } else if (isMobile) {
-                        // Skip animation on mobile to prevent errors from blocking content
-                        console.log('Hero animation disabled on mobile for stability');
                     }
                 });
 
