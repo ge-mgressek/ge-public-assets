@@ -1,7 +1,7 @@
-// Mobile-optimized Globe-Eco animations with immediate startup
+// Globe-Eco Mobile-Optimized Animations
 console.log('Loading Globe-Eco animations...');
 
-// Asset imports for animations
+// Asset imports
 import palmFrondUrl from '/assets/images/GE-PalmFrond.png';
 import coconutTreeUrl from '/assets/images/CoconutTree.png';
 import sdgWheelUrl from '/assets/images/GE-SDG-Wheel.png';
@@ -65,15 +65,15 @@ const sdgData = [
     { id: 14, name: 'Life Below Water', color: '#0A97D9', description: 'Stay tuned: Diverts thousands of tons of plastic waste, preventing it from reaching oceans.' },
     { id: 15, name: 'Life on Land', color: '#56C02B', description: 'Reduces demand for logging, protecting forests and biodiversity.' },
     { id: 16, name: 'Peace, Justice and Strong Institutions', color: '#00689D', description: 'Promotes fair trade practices and economic stability in developing regions.' },
-    { id: 17, name: 'Partnerships for the Goals', color: '#19486A', description: 'Forms public-private partnerships to mobilize investment for the SDGs.' },
+    { id: 17, name: 'Partnerships for the Goals', color: '#19486A', description: 'Forms public-private partnerships to mobilize investment for the SDGs.' }
 ];
 
-// Mobile detection and animation settings
+// Mobile detection and settings
 const isMobile = window.innerWidth < 768;
 const maxParticles = isMobile ? 120 : 300;
 console.log(`Device: ${isMobile ? 'Mobile' : 'Desktop'}, Max particles: ${maxParticles}`);
 
-// Global animation variables
+// Animation variables
 let heroAnimationActive = false;
 let animationFrameId = null;
 let heroCanvas = null;
@@ -81,50 +81,7 @@ let heroCtx = null;
 let canvasWidth = 0;
 let canvasHeight = 0;
 
-// Hero animation setup with immediate start
-function setupHeroAnimation() {
-    heroCanvas = document.getElementById('co2-animation-canvas');
-    if (!heroCanvas) {
-        console.error('Hero canvas not found');
-        return false;
-    }
-
-    heroCtx = heroCanvas.getContext('2d');
-    if (!heroCtx) {
-        console.error('Could not get 2D context');
-        return false;
-    }
-
-    // Mobile-optimized canvas setup with proper DPI handling
-    const container = heroCanvas.parentElement;
-    if (!container) {
-        console.error('Hero canvas parent not found');
-        return false;
-    }
-    
-    const containerRect = container.getBoundingClientRect();
-    const ratio = window.devicePixelRatio || 1;
-    
-    // Store CSS dimensions for drawing logic
-    canvasWidth = containerRect.width;
-    canvasHeight = containerRect.height;
-    
-    // Set canvas buffer size (actual pixels)
-    heroCanvas.width = canvasWidth * ratio;
-    heroCanvas.height = canvasHeight * ratio;
-    
-    // Set canvas CSS size (display size)
-    heroCanvas.style.width = canvasWidth + 'px';
-    heroCanvas.style.height = canvasHeight + 'px';
-    
-    // Scale context for high DPI
-    heroCtx.scale(ratio, ratio);
-    
-    console.log(`Hero canvas setup: CSS ${canvasWidth}x${canvasHeight}, buffer ${heroCanvas.width}x${heroCanvas.height}, ratio: ${ratio}`);
-    return true;
-}
-
-// Particle system for hero animation
+// Particle class
 class Particle {
     constructor(x, y, type = 'co2') {
         this.x = x;
@@ -142,16 +99,12 @@ class Particle {
         this.x += this.speedX;
         this.y += this.speedY;
         this.life -= this.decay;
-        
-        // Gravity effect
-        this.speedY += 0.1;
-        
+        this.speedY += 0.1; // Gravity
         return this.life > 0;
     }
 
     draw(ctx) {
         if (!ctx) return;
-        
         ctx.save();
         ctx.globalAlpha = this.life;
         ctx.fillStyle = this.color;
@@ -162,7 +115,49 @@ class Particle {
     }
 }
 
-// Hero animation with mobile optimization
+// Setup hero animation
+function setupHeroAnimation() {
+    heroCanvas = document.getElementById('co2-animation-canvas');
+    if (!heroCanvas) {
+        console.error('Hero canvas not found');
+        return false;
+    }
+
+    heroCtx = heroCanvas.getContext('2d');
+    if (!heroCtx) {
+        console.error('Could not get 2D context');
+        return false;
+    }
+
+    const container = heroCanvas.parentElement;
+    if (!container) {
+        console.error('Hero canvas parent not found');
+        return false;
+    }
+
+    const containerRect = container.getBoundingClientRect();
+    const ratio = window.devicePixelRatio || 1;
+
+    // Store CSS dimensions for drawing logic
+    canvasWidth = containerRect.width;
+    canvasHeight = containerRect.height;
+
+    // Set canvas buffer size (actual pixels)
+    heroCanvas.width = canvasWidth * ratio;
+    heroCanvas.height = canvasHeight * ratio;
+
+    // Set canvas CSS size (display size)
+    heroCanvas.style.width = canvasWidth + 'px';
+    heroCanvas.style.height = canvasHeight + 'px';
+
+    // Scale context for high DPI
+    heroCtx.scale(ratio, ratio);
+
+    console.log(`Hero canvas setup: CSS ${canvasWidth}x${canvasHeight}, buffer ${heroCanvas.width}x${heroCanvas.height}, ratio: ${ratio}`);
+    return true;
+}
+
+// Start hero animation
 function startHeroAnimation() {
     if (heroAnimationActive) return;
     
@@ -185,7 +180,7 @@ function startHeroAnimation() {
         // Clear canvas using CSS dimensions
         heroCtx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        // Add new particles (mobile-optimized frequency)
+        // Add new particles
         if (particles.length < maxParticles && Math.random() < (isMobile ? 0.3 : 0.5)) {
             particles.push(new Particle(
                 Math.random() * canvasWidth,
@@ -220,17 +215,15 @@ function stopHeroAnimation() {
     console.log('Hero animation stopped');
 }
 
-// SDG Grid Animation
+// Setup SDG Grid
 function setupSDGGrid() {
     const gridContainer = document.getElementById('sdg-grid');
     if (!gridContainer) {
-        console.error('SDG grid container not found');
+        console.log('SDG grid container not found');
         return;
     }
 
     console.log('Starting SDG grid loading with', sdgData.length, 'items');
-    
-    // Clear existing content
     gridContainer.innerHTML = '';
 
     sdgData.forEach((goal, index) => {
@@ -255,7 +248,6 @@ function setupSDGGrid() {
 
         gridContainer.appendChild(goalElement);
 
-        // Animate in with mobile-optimized timing
         setTimeout(() => {
             goalElement.classList.remove('opacity-0', 'translate-y-4');
             goalElement.classList.add('opacity-100', 'translate-y-0', 'transition-all', 'duration-500');
@@ -263,7 +255,7 @@ function setupSDGGrid() {
     });
 }
 
-// Intersection Observer for scroll animations
+// Setup scroll animations
 function setupScrollAnimations() {
     const observerOptions = {
         threshold: isMobile ? 0.1 : 0.3,
@@ -280,20 +272,19 @@ function setupScrollAnimations() {
         });
     }, observerOptions);
 
-    // Observe all main sections
     const sections = document.querySelectorAll('main section[id]');
     sections.forEach(section => {
         observer.observe(section);
     });
 }
 
-// Mobile menu functionality
+// Setup mobile menu
 function setupMobileMenu() {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     
     if (!mobileMenuButton || !mobileMenu) {
-        console.error('Mobile menu elements not found');
+        console.log('Mobile menu elements not found');
         return;
     }
 
@@ -310,7 +301,7 @@ function setupMobileMenu() {
     console.log('Mobile menu setup complete');
 }
 
-// Navigation scroll highlighting
+// Setup navigation
 function setupNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('main section[id]');
@@ -342,7 +333,6 @@ function setupNavigation() {
         });
     }
 
-    // Throttled scroll handler for better mobile performance
     let scrollTimeout;
     window.addEventListener('scroll', () => {
         if (scrollTimeout) clearTimeout(scrollTimeout);
@@ -350,7 +340,7 @@ function setupNavigation() {
     });
 }
 
-// Resize handler for responsive animations
+// Setup resize handler
 function setupResizeHandler() {
     let resizeTimeout;
     window.addEventListener('resize', () => {
@@ -365,95 +355,18 @@ function setupResizeHandler() {
     });
 }
 
-// Form handling with mobile optimization
-function setupFormHandling() {
-    const contactForm = document.getElementById('contact-form');
-    if (!contactForm) {
-        console.log('Contact form not found');
-        return;
-    }
-
-    function showError(form, message) {
-        const existingError = form.querySelector('.error-message');
-        if (existingError) existingError.remove();
-
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4';
-        errorDiv.textContent = message;
-        form.insertBefore(errorDiv, form.firstChild);
-    }
-
-    function clearError(form) {
-        const existingError = form.querySelector('.error-message');
-        if (existingError) existingError.remove();
-    }
-
-    function isValidEmailFormat(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        clearError(contactForm);
-        
-        const submitButton = contactForm.querySelector('button[type="submit"]');
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = 'Submitting...';
-        }
-
-        const formData = new FormData(contactForm);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const message = formData.get('message');
-        const token = formData.get('cf-turnstile-response');
-
-        // Validation
-        if (!name || !email || !message) {
-            showError(contactForm, 'Please fill out all required fields.');
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
-            }
-            return;
-        }
-
-        if (!isValidEmailFormat(email)) {
-            showError(contactForm, 'Please enter a valid email address.');
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Submit';
-            }
-            return;
-        }
-
-        // Success message for demo
-        contactForm.innerHTML = `
-            <div class="text-center">
-                <h3 class="text-2xl font-bold text-green-400 mb-2">Thank You!</h3>
-                <p class="text-white">Your message has been received. We'll get back to you soon!</p>
-            </div>
-        `;
-    });
-
-    console.log('Form handling setup complete');
-}
-
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Globe-Eco mobile animations initializing...');
     
     try {
-        // Setup core functionality
         setupMobileMenu();
         setupNavigation();
         setupScrollAnimations();
-        setupFormHandling();
         setupResizeHandler();
         setupSDGGrid();
         
-        // Start hero animation immediately on render
+        // Start hero animation immediately
         setTimeout(() => {
             startHeroAnimation();
         }, 100);
@@ -463,15 +376,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
         console.error('Critical error initializing animations:', error);
     }
-    
-    // Add global error handler to catch remaining exceptions
-    window.addEventListener('error', (event) => {
-        console.warn('Global error caught (may be from other scripts):', event.error);
-    });
-    
-    window.addEventListener('unhandledrejection', (event) => {
-        console.warn('Unhandled promise rejection caught:', event.reason);
-    });
 });
 
 // Export for debugging
