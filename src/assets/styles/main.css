@@ -4,6 +4,13 @@ body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #3653
             flex-direction: column;
             height: 100vh;
         }
+        
+        /* Mobile portrait: Add 30% more vertical space to prevent text overlap */
+        @media (max-width: 767px) and (orientation: portrait) {
+            .hero-display-area {
+                height: 130vh;
+            }
+        }
         .animation-wrapper {
             position: relative;
             flex-grow: 1; /* Allows this area to fill available space */
