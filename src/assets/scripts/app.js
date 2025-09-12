@@ -178,6 +178,32 @@ function setupSDGGrid() {
     console.log('SDG grid setup complete');
 }
 
+// Setup scroll animations and section visibility
+function setupScrollAnimations() {
+    const observerOptions = {
+        threshold: isMobile ? 0.1 : 0.3,
+        rootMargin: '50px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = entry.target;
+                target.classList.add('visible');
+                console.log('Section visible:', target.id);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections with fade-in animation
+    const fadeInSections = document.querySelectorAll('.section-fade-in');
+    fadeInSections.forEach(section => {
+        observer.observe(section);
+    });
+
+    console.log('Scroll animations setup complete');
+}
+
 // Simple navigation highlighting
 function setupNavigation() {
     const navLinks = document.querySelectorAll('.nav-link');
@@ -216,6 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Initializing Globe-Eco animations...');
     
     setupMobileMenu();
+    setupScrollAnimations();
     setupNavigation();
     setupSDGGrid();
     
