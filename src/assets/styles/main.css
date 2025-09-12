@@ -5,10 +5,13 @@ body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #3653
             height: 100vh;
         }
         
-        /* Mobile portrait: Add 30% more vertical space to prevent text overlap */
+        /* Mobile portrait: Allow container to grow and guarantee animation space */
         @media (max-width: 767px) and (orientation: portrait) {
             .hero-display-area {
-                height: 130vh;
+                min-height: 130dvh; /* Use min-height instead of fixed height */
+            }
+            .animation-wrapper {
+                min-height: 60vh; /* Guarantee minimum animation canvas space */
             }
         }
         .animation-wrapper {
@@ -33,6 +36,23 @@ body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #3653
             padding: 2rem 2rem;
             color: white;
             text-align: center;
+        }
+        
+        /* Mobile portrait: Reduce hero banner padding to give more space to animation */
+        @media (max-width: 767px) and (orientation: portrait) {
+            .hero-banner {
+                padding: 1rem 1.5rem;
+                font-size: 0.95rem;
+                line-height: 1.4;
+            }
+            .hero-banner h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+            .hero-banner h2 {
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+            }
         }
         .text-glow { text-shadow: 0 0 8px rgba(212, 175, 55, 0.7); }
         .nav-link { transition: color 0.3s, border-bottom-color 0.3s; }
