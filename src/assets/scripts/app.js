@@ -467,23 +467,124 @@ function setupNavigation() {
     console.log('Navigation setup complete');
 }
 
+// Core Animation for regenerative core section
+function setupCoreAnimation() {
+    const canvas = document.getElementById('coreAnimationCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size
+    function resizeCoreCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const ratio = window.devicePixelRatio || 1;
+        
+        canvas.width = rect.width * ratio;
+        canvas.height = rect.height * ratio;
+        canvas.style.width = rect.width + 'px';
+        canvas.style.height = rect.height + 'px';
+        
+        ctx.scale(ratio, ratio);
+    }
+    
+    resizeCoreCanvas();
+
+    // Animation variables
+    let coreAnimationActive = true;
+    let time = 0;
+
+    function animateCore() {
+        if (!coreAnimationActive) return;
+
+        try {
+            const canvasWidth = canvas.width / (window.devicePixelRatio || 1);
+            const canvasHeight = canvas.height / (window.devicePixelRatio || 1);
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            // Animation calculations
+            time += 0.02;
+            const centerX = canvasWidth / 2;
+            const centerY = canvasHeight / 2;
+
+            // Draw flowing particles between input/process/output
+            const inputX = canvasWidth * 0.15;
+            const processX = canvasWidth * 0.5;
+            const outputX = canvasWidth * 0.85;
+            const y = centerY;
+
+            // Input section (green particles)
+            ctx.fillStyle = '#22c55e';
+            ctx.globalAlpha = 0.7 + 0.3 * Math.sin(time);
+            ctx.beginPath();
+            ctx.arc(inputX, y, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Process section (blue particles)
+            ctx.fillStyle = '#3b82f6';
+            ctx.globalAlpha = 0.7 + 0.3 * Math.sin(time + Math.PI / 3);
+            ctx.beginPath();
+            ctx.arc(processX, y, 12, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Output section (gold particles)
+            ctx.fillStyle = '#fbbf24';
+            ctx.globalAlpha = 0.7 + 0.3 * Math.sin(time + 2 * Math.PI / 3);
+            ctx.beginPath();
+            ctx.arc(outputX, y, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Draw connecting flows
+            ctx.globalAlpha = 0.6;
+            ctx.strokeStyle = '#60a5fa';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(inputX + 15, y);
+            ctx.lineTo(processX - 15, y);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(processX + 15, y);
+            ctx.lineTo(outputX - 15, y);
+            ctx.stroke();
+
+            ctx.globalAlpha = 1;
+            
+            requestAnimationFrame(animateCore);
+        } catch (error) {
+            console.error('Core animation error:', error);
+            coreAnimationActive = false;
+        }
+    }
+
+    animateCore();
+    console.log('Core animation setup complete');
+}
+
 // Initialize everything
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Initializing Globe-Eco animations...');
     
-    setupMobileMenu();
-    setupScrollAnimations();
-    setupNavigation();
-    setupSDGGrid();
-    setupParticleRing();
-    setupPathDrawing();
-    
-    // Start hero animation
-    setTimeout(() => {
-        startHeroAnimation();
-    }, 100);
-    
-    console.log('All animations initialized');
+    try {
+        setupMobileMenu();
+        setupScrollAnimations();
+        setupNavigation();
+        setupSDGGrid();
+        setupParticleRing();
+        setupPathDrawing();
+        setupCoreAnimation();
+        
+        // Start hero animation
+        setTimeout(() => {
+            startHeroAnimation();
+        }, 100);
+        
+        console.log('All animations initialized');
+    } catch (error) {
+        console.error('Error during initialization:', error);
+    }
 });
 
 // Window resize handler
