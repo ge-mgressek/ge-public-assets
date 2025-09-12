@@ -2,10 +2,9 @@ import { defineConfig } from 'vite';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 export default defineConfig({
-  root: '.',
   build: {
-    outDir: './dist',
-    emptyOutDir: true
+    // This is true by default when outDir is inside root, but it's fine to be explicit.
+    emptyOutDir: true 
   },
   server: {
     host: '0.0.0.0',
