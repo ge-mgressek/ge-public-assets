@@ -1,17 +1,17 @@
 // 1. Static imports for single assets - needed for  proper bundling
-import palmFrondUrl from '/assets/images/GE-PalmFrond.png';
-import coconutTreeUrl from '/assets/images/CoconutTree.png';
-import sdgWheelUrl from '/assets/images/GE-SDG-Wheel.png';
-import cpuUrl from '/assets/images/GE-CPU.png';
-import cpuImageUrl from '/assets/images/GE-CPU.png';
-import sdgWheelImageUrl from '/assets/images/GE-SDG-Wheel.png';
-import recycleImageUrl from '/assets/images/Recycle.png';
-import dynamicImgUrl from '/assets/images/GE-Logo-Tile.png';
+import palmFrondUrl from '/src/assets/images/GE-PalmFrond.png';
+import coconutTreeUrl from '/src/assets/images/CoconutTree.png';
+import sdgWheelUrl from '/src/assets/images/GE-SDG-Wheel.png';
+import cpuUrl from '/src/assets/images/GE-CPU.png';
+import cpuImageUrl from '/src/assets/images/GE-CPU.png';
+import sdgWheelImageUrl from '/src/assets/images/GE-SDG-Wheel.png';
+import recycleImageUrl from '/src/assets/images/Recycle.png';
+import dynamicImgUrl from '/src/assets/images/GE-Logo-Tile.png';
 
 // 2. Glob imports for dynamic assets
 // Import all the SDG goal images at once using a glob pattern.
 // The `{ eager: true }` option loads them immediately.
-const sdgImageModules = import.meta.glob('/assets/images/E-WEB-Goal-*.png', { eager: true });
+const sdgImageModules = import.meta.glob('/src/assets/images/E-WEB-Goal-*.png', { eager: true });
 
 
 // SDG data needed by the hero animation
