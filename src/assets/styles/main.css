@@ -9,8 +9,8 @@ body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #3653
         @media (max-width: 767px) and (orientation: portrait) {
             .hero-display-area {
                 height: 100svh; /* Use stable viewport height */
-                min-height: 130svh; /* Fallback for browsers without svh */
-                min-height: 130vh;
+                min-height: 100svh; /* Fallback for browsers without svh */
+                min-height: 100vh;
             }
             .animation-wrapper {
                 min-height: 51svh; /* Reduced by 15% with stable units */
