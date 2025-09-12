@@ -1,51 +1,10 @@
-// Globe-Eco Mobile-Optimized Animations
+// Globe-Eco Mobile-Optimized Animations - Clean Version
 console.log('Loading Globe-Eco animations...');
 
-// Asset imports
-import palmFrondUrl from '/assets/images/GE-PalmFrond.png';
-import coconutTreeUrl from '/assets/images/CoconutTree.png';
-import sdgWheelUrl from '/assets/images/GE-SDG-Wheel.png';
-import cpuUrl from '/assets/images/GE-CPU.png';
-import recycleImageUrl from '/assets/images/Recycle.png';
-
-// SDG goal imports
-import goal01 from '/assets/images/E-WEB-Goal-01.png';
-import goal02 from '/assets/images/E-WEB-Goal-02.png';
-import goal03 from '/assets/images/E-WEB-Goal-03.png';
-import goal04 from '/assets/images/E-WEB-Goal-04.png';
-import goal05 from '/assets/images/E-WEB-Goal-05.png';
-import goal06 from '/assets/images/E-WEB-Goal-06.png';
-import goal07 from '/assets/images/E-WEB-Goal-07.png';
-import goal08 from '/assets/images/E-WEB-Goal-08.png';
-import goal09 from '/assets/images/E-WEB-Goal-09.png';
-import goal10 from '/assets/images/E-WEB-Goal-10.png';
-import goal11 from '/assets/images/E-WEB-Goal-11.png';
-import goal12 from '/assets/images/E-WEB-Goal-12.png';
-import goal13 from '/assets/images/E-WEB-Goal-13.png';
-import goal14 from '/assets/images/E-WEB-Goal-14.png';
-import goal15 from '/assets/images/E-WEB-Goal-15.png';
-import goal16 from '/assets/images/E-WEB-Goal-16.png';
-import goal17 from '/assets/images/E-WEB-Goal-17.png';
-
-const sdgImageModules = {
-    '/assets/images/E-WEB-Goal-01.png': { default: goal01 },
-    '/assets/images/E-WEB-Goal-02.png': { default: goal02 },
-    '/assets/images/E-WEB-Goal-03.png': { default: goal03 },
-    '/assets/images/E-WEB-Goal-04.png': { default: goal04 },
-    '/assets/images/E-WEB-Goal-05.png': { default: goal05 },
-    '/assets/images/E-WEB-Goal-06.png': { default: goal06 },
-    '/assets/images/E-WEB-Goal-07.png': { default: goal07 },
-    '/assets/images/E-WEB-Goal-08.png': { default: goal08 },
-    '/assets/images/E-WEB-Goal-09.png': { default: goal09 },
-    '/assets/images/E-WEB-Goal-10.png': { default: goal10 },
-    '/assets/images/E-WEB-Goal-11.png': { default: goal11 },
-    '/assets/images/E-WEB-Goal-12.png': { default: goal12 },
-    '/assets/images/E-WEB-Goal-13.png': { default: goal13 },
-    '/assets/images/E-WEB-Goal-14.png': { default: goal14 },
-    '/assets/images/E-WEB-Goal-15.png': { default: goal15 },
-    '/assets/images/E-WEB-Goal-16.png': { default: goal16 },
-    '/assets/images/E-WEB-Goal-17.png': { default: goal17 }
-};
+// Mobile detection and settings
+const isMobile = window.innerWidth < 768;
+const maxParticles = isMobile ? 120 : 300;
+console.log(`Device: ${isMobile ? 'Mobile' : 'Desktop'}, Max particles: ${maxParticles}`);
 
 // SDG data
 const sdgData = [
@@ -67,11 +26,6 @@ const sdgData = [
     { id: 16, name: 'Peace, Justice and Strong Institutions', color: '#00689D', description: 'Promotes fair trade practices and economic stability in developing regions.' },
     { id: 17, name: 'Partnerships for the Goals', color: '#19486A', description: 'Forms public-private partnerships to mobilize investment for the SDGs.' }
 ];
-
-// Mobile detection and settings
-const isMobile = window.innerWidth < 768;
-const maxParticles = isMobile ? 120 : 300;
-console.log(`Device: ${isMobile ? 'Mobile' : 'Desktop'}, Max particles: ${maxParticles}`);
 
 // Animation variables
 let heroAnimationActive = false;
@@ -117,9 +71,10 @@ class Particle {
 
 // Setup hero animation
 function setupHeroAnimation() {
+    console.log('Setting up hero animation...');
     heroCanvas = document.getElementById('co2-animation-canvas');
     if (!heroCanvas) {
-        console.error('Hero canvas not found');
+        console.error('Hero canvas with id "co2-animation-canvas" not found');
         return false;
     }
 
@@ -159,7 +114,10 @@ function setupHeroAnimation() {
 
 // Start hero animation
 function startHeroAnimation() {
-    if (heroAnimationActive) return;
+    if (heroAnimationActive) {
+        console.log('Hero animation already active');
+        return;
+    }
     
     console.log('Starting hero animation...');
     if (!setupHeroAnimation()) {
@@ -217,9 +175,10 @@ function stopHeroAnimation() {
 
 // Setup SDG Grid
 function setupSDGGrid() {
+    console.log('Setting up SDG grid...');
     const gridContainer = document.getElementById('sdg-grid');
     if (!gridContainer) {
-        console.log('SDG grid container not found');
+        console.error('SDG grid container with id "sdg-grid" not found');
         return;
     }
 
@@ -233,12 +192,10 @@ function setupSDGGrid() {
         goalElement.style.animationDelay = `${index * 0.1}s`;
 
         const imagePath = `/assets/images/E-WEB-Goal-${goal.id.toString().padStart(2, '0')}.png`;
-        const imageModule = sdgImageModules[imagePath];
-        const imageSrc = imageModule ? imageModule.default : imagePath;
 
         goalElement.innerHTML = `
             <div class="aspect-square flex flex-col items-center justify-center p-2 sm:p-4 text-white">
-                <img src="${imageSrc}" alt="SDG ${goal.id}" class="w-8 h-8 sm:w-12 sm:h-12 mb-1 sm:mb-2 object-contain">
+                <img src="${imagePath}" alt="SDG ${goal.id}" class="w-8 h-8 sm:w-12 sm:h-12 mb-1 sm:mb-2 object-contain">
                 <h3 class="text-xs sm:text-sm font-bold text-center leading-tight">${goal.name}</h3>
             </div>
             <div class="absolute inset-0 bg-black bg-opacity-90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-2 sm:p-4 flex items-center justify-center">
@@ -253,10 +210,13 @@ function setupSDGGrid() {
             goalElement.classList.add('opacity-100', 'translate-y-0', 'transition-all', 'duration-500');
         }, index * (isMobile ? 50 : 100));
     });
+    
+    console.log('SDG grid setup complete');
 }
 
 // Setup scroll animations
 function setupScrollAnimations() {
+    console.log('Setting up scroll animations...');
     const observerOptions = {
         threshold: isMobile ? 0.1 : 0.3,
         rootMargin: '50px'
@@ -276,10 +236,13 @@ function setupScrollAnimations() {
     sections.forEach(section => {
         observer.observe(section);
     });
+    
+    console.log('Scroll animations setup complete');
 }
 
 // Setup mobile menu
 function setupMobileMenu() {
+    console.log('Setting up mobile menu...');
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     
@@ -290,11 +253,13 @@ function setupMobileMenu() {
 
     mobileMenuButton.addEventListener('click', () => {
         mobileMenu.classList.toggle('hidden');
+        console.log('Mobile menu toggled');
     });
 
     document.querySelectorAll('#mobile-menu a').forEach(link => {
         link.addEventListener('click', () => {
             mobileMenu.classList.add('hidden');
+            console.log('Mobile menu closed');
         });
     });
 
@@ -303,6 +268,7 @@ function setupMobileMenu() {
 
 // Setup navigation
 function setupNavigation() {
+    console.log('Setting up navigation...');
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('main section[id]');
 
@@ -338,10 +304,13 @@ function setupNavigation() {
         if (scrollTimeout) clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(updateActiveNav, isMobile ? 100 : 50);
     });
+    
+    console.log('Navigation setup complete');
 }
 
 // Setup resize handler
 function setupResizeHandler() {
+    console.log('Setting up resize handler...');
     let resizeTimeout;
     window.addEventListener('resize', () => {
         if (resizeTimeout) clearTimeout(resizeTimeout);
@@ -353,6 +322,7 @@ function setupResizeHandler() {
             }
         }, 250);
     });
+    console.log('Resize handler setup complete');
 }
 
 // Initialize everything when DOM is ready
@@ -366,10 +336,10 @@ document.addEventListener('DOMContentLoaded', () => {
         setupResizeHandler();
         setupSDGGrid();
         
-        // Start hero animation immediately
+        // Start hero animation after a short delay
         setTimeout(() => {
             startHeroAnimation();
-        }, 100);
+        }, 200);
         
         console.log('All Globe-Eco animations initialized successfully');
         
