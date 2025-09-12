@@ -11,38 +11,146 @@ let heroAnimationActive = false;
 let animationId = null;
 let particles = [];
 
-// Simple particle class
-class SimpleParticle {
+// Enhanced particle class with sophisticated effects
+class EnhancedParticle {
     constructor(canvasWidth, canvasHeight) {
         this.x = Math.random() * canvasWidth;
         this.y = canvasHeight + 20;
-        this.speedX = (Math.random() - 0.5) * 1;
-        this.speedY = -(Math.random() * 2 + 1);
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.speedY = -(Math.random() * 3 + 1.5);
         this.life = 1;
-        this.size = Math.random() * 3 + 1;
-        this.color = Math.random() > 0.5 ? '#ff6b6b' : '#4ecdc4';
+        this.maxLife = 1;
+        this.size = Math.random() * 4 + 2;
+        this.rotation = 0;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+        
+        // Enhanced color system
+        const colorTypes = ['co2', 'capture', 'organic', 'energy'];
+        this.type = colorTypes[Math.floor(Math.random() * colorTypes.length)];
+        
+        switch(this.type) {
+            case 'co2':
+                this.color = `hsl(${Math.random() * 60 + 340}, 80%, 60%)`; // Red-orange
+                break;
+            case 'capture':
+                this.color = `hsl(${Math.random() * 60 + 160}, 70%, 55%)`; // Green-cyan
+                break;
+            case 'organic':
+                this.color = `hsl(${Math.random() * 40 + 40}, 60%, 50%)`; // Yellow-green
+                break;
+            case 'energy':
+                this.color = `hsl(${Math.random() * 60 + 200}, 75%, 65%)`; // Blue-cyan
+                break;
+        }
+        
+        // Physics properties
+        this.gravity = 0.05;
+        this.wind = (Math.random() - 0.5) * 0.02;
+        this.pulse = Math.random() * Math.PI * 2;
     }
 
     update() {
+        // Enhanced physics
+        this.speedY += this.gravity;
+        this.speedX += this.wind;
         this.x += this.speedX;
         this.y += this.speedY;
-        this.life -= 0.01;
-        return this.life > 0 && this.y > -50;
+        
+        // Rotation and pulsing
+        this.rotation += this.rotationSpeed;
+        this.pulse += 0.1;
+        
+        // Life decay with elegant fade
+        this.life -= 0.008;
+        
+        // Boundary conditions
+        return this.life > 0 && this.y > -100;
     }
 
     draw(ctx) {
         if (!ctx) return;
+        
         ctx.save();
-        ctx.globalAlpha = this.life;
+        ctx.globalAlpha = this.life * 0.8;
+        
+        // Move to particle position
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        
+        // Pulsing size effect
+        const pulseSize = this.size + Math.sin(this.pulse) * 0.5;
+        
+        // Draw outer glow
+        ctx.globalAlpha = this.life * 0.3;
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(0, 0, pulseSize * 2, 0, Math.PI * 2);
         ctx.fill();
+        
+        // Draw main particle
+        ctx.globalAlpha = this.life * 0.9;
+        ctx.beginPath();
+        ctx.arc(0, 0, pulseSize, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw bright center
+        ctx.globalAlpha = this.life;
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, 0, pulseSize * 0.3, 0, Math.PI * 2);
+        ctx.fill();
+        
         ctx.restore();
     }
 }
 
-// Simple hero animation
+// Setup video background for hero
+function setupHeroVideo() {
+    const animationWrapper = document.querySelector('.animation-wrapper');
+    if (!animationWrapper) return;
+
+    // Create video element
+    const video = document.createElement('video');
+    video.id = 'hero-background-video';
+    video.autoplay = true;
+    video.muted = true;
+    video.loop = true;
+    video.playsInline = true;
+    video.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+        opacity: 0.7;
+    `;
+
+    // Add video sources
+    const webmSource = document.createElement('source');
+    webmSource.src = '/assets/videos/GE-CO2 Volumetric.webm';
+    webmSource.type = 'video/webm';
+
+    const mp4Source = document.createElement('source');
+    mp4Source.src = '/assets/videos/GE-CO2 Volumetric.mp4';
+    mp4Source.type = 'video/mp4';
+
+    video.appendChild(webmSource);
+    video.appendChild(mp4Source);
+
+    // Insert video before canvas
+    const canvas = document.getElementById('co2-animation-canvas');
+    if (canvas) {
+        canvas.style.zIndex = '2';
+        canvas.style.position = 'relative';
+        animationWrapper.insertBefore(video, canvas);
+    }
+
+    console.log('Hero video background setup complete');
+}
+
+// Enhanced hero animation with sophisticated particles
 function startHeroAnimation() {
     if (heroAnimationActive) return;
     
@@ -58,16 +166,21 @@ function startHeroAnimation() {
         return;
     }
 
-    // Set canvas size
+    // Set canvas size with higher resolution
     function resizeCanvas() {
         const rect = canvas.parentElement.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height;
+        const ratio = window.devicePixelRatio || 1;
+        
+        canvas.width = rect.width * ratio;
+        canvas.height = rect.height * ratio;
         canvas.style.width = rect.width + 'px';
         canvas.style.height = rect.height + 'px';
+        
+        ctx.scale(ratio, ratio);
     }
     
     resizeCanvas();
+    setupHeroVideo();
     heroAnimationActive = true;
     particles = [];
 
@@ -75,12 +188,19 @@ function startHeroAnimation() {
         if (!heroAnimationActive) return;
 
         try {
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const canvasWidth = canvas.width / (window.devicePixelRatio || 1);
+            const canvasHeight = canvas.height / (window.devicePixelRatio || 1);
+            
+            // Clear canvas with slight fade effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.02)';
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-            // Add new particles
-            if (particles.length < maxParticles && Math.random() < 0.3) {
-                particles.push(new SimpleParticle(canvas.width, canvas.height));
+            // Add new particles with varied spawn patterns
+            if (particles.length < maxParticles) {
+                const spawnRate = Math.random();
+                if (spawnRate < 0.4) {
+                    particles.push(new EnhancedParticle(canvasWidth, canvasHeight));
+                }
             }
 
             // Update and draw particles
@@ -101,7 +221,7 @@ function startHeroAnimation() {
     }
 
     animate();
-    console.log('Hero animation started successfully');
+    console.log('Enhanced hero animation started successfully');
 }
 
 // Simple mobile menu
@@ -178,6 +298,116 @@ function setupSDGGrid() {
     console.log('SDG grid setup complete');
 }
 
+// Setup particle ring animation for Net Zero section
+function setupParticleRing() {
+    const ringContainer = document.getElementById('particle-ring-v1');
+    if (!ringContainer) return;
+
+    const numParticles = 16;
+    const radius = 120;
+    
+    for (let i = 0; i < numParticles; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'co2-particle-v1';
+        particle.style.cssText = `
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #ff6b6b, #ff4757);
+            border-radius: 50%;
+            animation-delay: ${i * 0.2}s;
+        `;
+        
+        const angle = (i / numParticles) * Math.PI * 2;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        
+        particle.style.left = `calc(50% + ${x}px)`;
+        particle.style.top = `calc(50% + ${y}px)`;
+        
+        ringContainer.appendChild(particle);
+    }
+    
+    console.log('Particle ring animation setup complete');
+}
+
+// Setup path drawing animation for Net Negative section
+function setupPathDrawing() {
+    const svg = document.getElementById('drawing-svg-v2');
+    if (!svg) return;
+
+    const paths = svg.querySelectorAll('path');
+    paths.forEach((path, index) => {
+        const length = path.getTotalLength();
+        path.style.strokeDasharray = length;
+        path.style.strokeDashoffset = length;
+        path.style.animation = `drawPath 3s ease-in-out ${index * 0.5}s forwards`;
+    });
+
+    // Setup particle container animation
+    const particleContainer = document.getElementById('co2-particle-container-v2');
+    if (particleContainer) {
+        setupFlowingParticles(particleContainer);
+    }
+    
+    console.log('Path drawing animation setup complete');
+}
+
+// Setup flowing particles for Net Negative section
+function setupFlowingParticles(container) {
+    const particles = [];
+    const maxFlowParticles = isMobile ? 15 : 25;
+    
+    function createFlowParticle() {
+        const particle = document.createElement('div');
+        particle.className = 'flow-particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: radial-gradient(circle, #4ecdc4, #26d0ce);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10;
+        `;
+        
+        // Start from tree position (left side)
+        particle.style.left = '10%';
+        particle.style.top = '60%';
+        
+        container.appendChild(particle);
+        
+        // Animate to CPU (center)
+        setTimeout(() => {
+            particle.style.transition = 'all 2s ease-in-out';
+            particle.style.left = '50%';
+            particle.style.top = '40%';
+        }, 100);
+        
+        // Animate to house (right side)
+        setTimeout(() => {
+            particle.style.left = '90%';
+            particle.style.top = '60%';
+        }, 2100);
+        
+        // Remove particle
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, 4200);
+    }
+    
+    // Create flowing particles at intervals
+    const flowInterval = setInterval(() => {
+        if (particles.length < maxFlowParticles) {
+            createFlowParticle();
+        }
+    }, 800);
+    
+    return flowInterval;
+}
+
 // Setup scroll animations and section visibility
 function setupScrollAnimations() {
     const observerOptions = {
@@ -245,6 +475,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupScrollAnimations();
     setupNavigation();
     setupSDGGrid();
+    setupParticleRing();
+    setupPathDrawing();
     
     // Start hero animation
     setTimeout(() => {

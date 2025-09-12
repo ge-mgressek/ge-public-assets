@@ -1,4 +1,19 @@
 body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #365314; }
+
+/* Path drawing animation */
+@keyframes drawPath {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Particle ring rotation */
+.co2-particle-v1 {
+    animation: particleOrbit 10s linear infinite;
+}
+
+@keyframes particleOrbit {
+    from { transform: rotate(0deg) translateX(0) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(0) rotate(-360deg); }
+}
         .hero-display-area {
             display: flex;
             flex-direction: column;
