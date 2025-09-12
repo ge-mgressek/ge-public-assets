@@ -336,9 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 function animate(now) {
-                    // TEMPORARILY DISABLED FOR ERROR TESTING
-                    return;
-                    
                     animationFrameId = requestAnimationFrame(animate);
                     try {
                         // Guard against zero-sized canvas
