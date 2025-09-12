@@ -56,8 +56,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const heroCanvas = document.getElementById('co2-animation-canvas');
             if (heroCanvas) {
                 const ctx = heroCanvas.getContext('2d');
+                if (!ctx) {
+                    console.error('Failed to get 2D context for hero canvas');
+                    return;
+                }
+                
+                // Feature detection for Path2D
+                const hasPath2D = 'Path2D' in window;
+                if (!hasPath2D) {
+                    console.warn('Path2D not supported, using fallback');
+                }
+                
                 let particles = [];
-                const numParticles = 300;
+                const isMobile = window.matchMedia('(max-width: 767px)').matches;
+                const numParticles = isMobile ? 60 : 300; // Further reduce particles on mobile for stability
                 let animationFrameId;
 
                 const cpuImage = new Image();
@@ -69,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const recycleImage = new Image();
                 recycleImage.src = recycleImageUrl;
 
-                const housePath = new Path2D("M4.39999 37.8L50.4 4.79999L96.4 37.8V83H4.39999V37.8Z");
+                const housePath = hasPath2D ? new Path2D("M4.39999 37.8L50.4 4.79999L96.4 37.8V83H4.39999V37.8Z") : null;
 
                 let allImagesLoaded = false;
                 Promise.all([
@@ -79,12 +91,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 ]).then(() => {
                     allImagesLoaded = true;
                     const isMobile = window.matchMedia('(max-width: 767px)').matches;
-                    if (!animationFrameId && !isMobile) {
+                    if (!animationFrameId) {
                         resizeCanvas();
+                        // Enable animation on all devices but with extra safeguards on mobile
+                        if (isMobile) {
+                            console.log('Starting hero animation on mobile with enhanced stability');
+                        }
                         animate();
-                    } else if (isMobile) {
-                        // Skip animation on mobile to prevent errors from blocking content
-                        console.log('Hero animation disabled on mobile for stability');
                     }
                 });
 
@@ -307,7 +320,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.lineWidth = 3;
                     ctx.setLineDash([400, 400]);
                     ctx.lineDashOffset = 400 - (productCycle.drawProgress * 400);
-                    ctx.stroke(housePath);
+                    if (hasPath2D && housePath) {
+                        ctx.stroke(housePath);
+                    } else {
+                        // Fallback for browsers without Path2D
+                        ctx.beginPath();
+                        ctx.moveTo(4.39999, 37.8);
+                        ctx.lineTo(50.4, 4.79999);
+                        ctx.lineTo(96.4, 37.8);
+                        ctx.lineTo(96.4, 83);
+                        ctx.lineTo(4.39999, 83);
+                        ctx.lineTo(4.39999, 37.8);
+                        ctx.stroke();
+                    }
                     ctx.setLineDash([]);
 
                     ctx.font = `bold ${Math.max(10, heroCanvas.width * 0.012)}px Inter, sans-serif`;
@@ -338,14 +363,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 function animate(now) {
                     animationFrameId = requestAnimationFrame(animate);
                     try {
-                        // Guard against zero-sized canvas
-                        if (!heroCanvas.width || !heroCanvas.height) {
+                        // Guard against zero-sized canvas and null context
+                        if (!heroCanvas.width || !heroCanvas.height || !ctx) {
                             return;
                         }
                         if (!productCycle.lastStateChange) productCycle.lastStateChange = now;
                         ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
-                        particles.forEach(p => { p.update(); p.draw(); });
-                        drawOutputs(now);
+                        try {
+                            particles.forEach(p => { p.update(); p.draw(); });
+                        } catch (particleError) {
+                            console.error('Particle error:', particleError);
+                        }
+                        
+                        try {
+                            drawOutputs(now);
+                        } catch (drawError) {
+                            console.error('Draw outputs error:', drawError);
+                        }
                     } catch (error) {
                         console.error('Hero animation error:', error);
                         cancelAnimationFrame(animationFrameId);
@@ -1527,7 +1561,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-            });
 
 
         // End form processing
