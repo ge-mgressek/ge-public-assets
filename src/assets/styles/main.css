@@ -5,18 +5,22 @@ body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #3653
             height: 100vh;
         }
         
-        /* Mobile portrait: Allow container to grow and guarantee animation space */
+        /* Mobile portrait: Use stable viewport units to prevent scroll-induced resizing */
         @media (max-width: 767px) and (orientation: portrait) {
             .hero-display-area {
-                min-height: 130dvh; /* Use min-height instead of fixed height */
+                height: 100svh; /* Use stable viewport height */
+                min-height: 130svh; /* Fallback for browsers without svh */
+                min-height: 130vh;
             }
             .animation-wrapper {
-                min-height: 60vh; /* Guarantee minimum animation canvas space */
+                min-height: 51svh; /* Reduced by 15% with stable units */
+                min-height: 51vh; /* Fallback */
             }
         }
         .animation-wrapper {
             position: relative;
-            flex-grow: 1; /* Allows this area to fill available space */
+            flex-grow: 1;
+            max-height: 65vh; /* Limit animation area to ~15% smaller than typical full height */
             background-image: url('/assets/images/GE-plantation.jpg');
             background-size: cover;
             background-position: center;
