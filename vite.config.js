@@ -2,9 +2,8 @@ import { defineConfig } from 'vite';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 export default defineConfig({
-  root: 'src',
   build: {
-    outDir: '../dist',
+    outDir: 'dist', // <--- CORRECTED
     emptyOutDir: true
   },
   server: {
