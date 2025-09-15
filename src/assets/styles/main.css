@@ -21,7 +21,7 @@ body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #3653
             position: relative;
             flex-grow: 1;
             max-height: 65vh; /* Limit animation area to ~15% smaller than typical full height */
-            background-image: url('/assets/images/GE-plantation.jpg');
+            background-image: url('/images/GE-plantation.jpg');
             background-size: cover;
             background-position: center;
             overflow: hidden;
@@ -77,7 +77,7 @@ body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #3653
             width: 100%;
             height: 400px; 
             background-color: #fef2f2; /* Subtle red background */
-            background-image: url('/assets/images/GE-NetZeroFire.png');
+            background-image: url('/images/GE-NetZeroFire.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;

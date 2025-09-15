@@ -8,10 +8,7 @@ import sdgWheelImageUrl from '/src/assets/images/GE-SDG-Wheel.png';
 import recycleImageUrl from '/src/assets/images/Recycle.png';
 import dynamicImgUrl from '/src/assets/images/GE-Logo-Tile.png';
 
-// 2. Glob imports for dynamic assets
-// Import all the SDG goal images at once using a glob pattern.
-// The `{ eager: true }` option loads them immediately.
-const sdgImageModules = import.meta.glob('/src/assets/images/E-WEB-Goal-*.png', { eager: true });
+// 2. SDG images are now served from public/images/ directory
 
 
 // SDG data needed by the hero animation
@@ -582,7 +579,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const item = document.createElement('div');
                 item.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
                 const img = document.createElement('img');
-                img.src = `/src/assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
+                img.src = `/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
                 img.alt = `SDG Goal ${goal.id}`;
                 img.className = 'w-full h-auto';
                 item.appendChild(img);
@@ -602,17 +599,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const img = document.createElement('img');
                 
-                // 2. Construct the path key just like you were before.
-                const imagePath = `/src/assets/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
-                
-                // 3. Look up the correct image URL from the object we created.
-                // The `.default` property holds the final URL.
-                if (sdgImageModules[imagePath] && sdgImageModules[imagePath].default) {
-                    img.src = sdgImageModules[imagePath].default;
-                } else {
-                    console.error('SDG image not found:', imagePath);
-                    return; // Skip this item if image not found
-                }
+                // Use direct path to public images
+                const imagePath = `/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
+                img.src = imagePath;
 
                 img.alt = `SDG Goal ${goal.id}`;
                 img.className = 'w-full h-auto';
