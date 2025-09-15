@@ -273,10 +273,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.arc(centerX, centerY, haloRadius, 0, Math.PI * 2);
                     ctx.fill();
                     
-                    // Draw CPU at normal size - clean and crisp
+                    // Draw CPU at normal size with white parts removed
                     ctx.shadowColor = 'transparent';
                     ctx.shadowBlur = 0;
-                    ctx.drawImage(cpuImage, cpuIcon.x, cpuIcon.y, cpuIcon.width, cpuIcon.height);
+                    
+                    // Create a temporary canvas to process the image
+                    const tempCanvas = document.createElement('canvas');
+                    const tempCtx = tempCanvas.getContext('2d');
+                    tempCanvas.width = cpuIcon.width;
+                    tempCanvas.height = cpuIcon.height;
+                    
+                    // Draw the image to temp canvas
+                    tempCtx.drawImage(cpuImage, 0, 0, cpuIcon.width, cpuIcon.height);
+                    
+                    // Get image data and remove white pixels
+                    const imageData = tempCtx.getImageData(0, 0, cpuIcon.width, cpuIcon.height);
+                    const data = imageData.data;
+                    
+                    for (let i = 0; i < data.length; i += 4) {
+                        // If pixel is white or very light (R, G, B > 240), make it transparent
+                        if (data[i] > 240 && data[i + 1] > 240 && data[i + 2] > 240) {
+                            data[i + 3] = 0; // Set alpha to 0 (transparent)
+                        }
+                    }
+                    
+                    tempCtx.putImageData(imageData, 0, 0);
+                    ctx.drawImage(tempCanvas, cpuIcon.x, cpuIcon.y);
 
                     // --- SDG Wheel and Text ---
                     if (sdgWheel.radius > 0) {
@@ -1113,10 +1135,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fill();
 
                     const logoSize = radius * 1.2;
-                    // Draw clean CPU image
+                    // Remove any shadows or outlines from CPU
                     ctx.shadowColor = 'transparent';
                     ctx.shadowBlur = 0;
-                    ctx.drawImage(coreImages.cpu, x - logoSize / 2, y - logoSize / 2, logoSize, logoSize);
+                    
+                    // Create a temporary canvas to process the core CPU image
+                    const tempCoreCanvas = document.createElement('canvas');
+                    const tempCoreCtx = tempCoreCanvas.getContext('2d');
+                    tempCoreCanvas.width = logoSize;
+                    tempCoreCanvas.height = logoSize;
+                    
+                    // Draw the image to temp canvas
+                    tempCoreCtx.drawImage(coreImages.cpu, 0, 0, logoSize, logoSize);
+                    
+                    // Get image data and remove white pixels
+                    const coreImageData = tempCoreCtx.getImageData(0, 0, logoSize, logoSize);
+                    const coreData = coreImageData.data;
+                    
+                    for (let i = 0; i < coreData.length; i += 4) {
+                        // If pixel is white or very light (R, G, B > 240), make it transparent
+                        if (coreData[i] > 240 && coreData[i + 1] > 240 && coreData[i + 2] > 240) {
+                            coreData[i + 3] = 0; // Set alpha to 0 (transparent)
+                        }
+                    }
+                    
+                    tempCoreCtx.putImageData(coreImageData, 0, 0);
+                    ctx.drawImage(tempCoreCanvas, x - logoSize / 2, y - logoSize / 2);
                 }
 
                 function drawCoreCarbonCounter() {
