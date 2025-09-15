@@ -259,21 +259,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     // --- CPU ---
                     const pulse = (Math.sin(Date.now() / 650) + 1) / 2;
                     
-                    // Draw pulsing halo effect
+                    // Draw pulsing halo effect - more prominent
                     const centerX = cpuIcon.x + cpuIcon.width / 2;
                     const centerY = cpuIcon.y + cpuIcon.height / 2;
-                    const haloRadius = Math.max(cpuIcon.width, cpuIcon.height) * (0.6 + pulse * 0.4);
+                    const haloRadius = Math.max(cpuIcon.width, cpuIcon.height) * (0.8 + pulse * 0.6);
                     
-                    const gradHalo = ctx.createRadialGradient(centerX, centerY, haloRadius * 0.3, centerX, centerY, haloRadius);
-                    gradHalo.addColorStop(0, 'rgba(132, 169, 140, 0.6)');
-                    gradHalo.addColorStop(0.7, 'rgba(132, 169, 140, 0.2)');
+                    const gradHalo = ctx.createRadialGradient(centerX, centerY, haloRadius * 0.2, centerX, centerY, haloRadius);
+                    gradHalo.addColorStop(0, 'rgba(132, 169, 140, 0.9)');
+                    gradHalo.addColorStop(0.5, 'rgba(132, 169, 140, 0.4)');
                     gradHalo.addColorStop(1, 'rgba(132, 169, 140, 0)');
                     ctx.fillStyle = gradHalo;
                     ctx.beginPath();
                     ctx.arc(centerX, centerY, haloRadius, 0, Math.PI * 2);
                     ctx.fill();
                     
-                    // Draw CPU at normal size
+                    // Draw CPU at normal size with no shadows or outlines
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
                     ctx.drawImage(cpuImage, cpuIcon.x, cpuIcon.y, cpuIcon.width, cpuIcon.height);
 
                     // --- SDG Wheel and Text ---
@@ -1111,6 +1113,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     ctx.fill();
 
                     const logoSize = radius * 1.2;
+                    // Remove any shadows or outlines from CPU
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
                     ctx.drawImage(coreImages.cpu, x - logoSize / 2, y - logoSize / 2, logoSize, logoSize);
                 }
 
