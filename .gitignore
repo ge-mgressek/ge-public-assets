@@ -1,5 +1,5 @@
-# Dependencies
+attached_assets/
+Screenshot*
+*.log
 node_modules/
-
-# Build output
-dist/
+.DS_Store
