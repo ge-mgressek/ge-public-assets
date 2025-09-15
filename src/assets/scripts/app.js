@@ -258,16 +258,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // --- CPU ---
                     const pulse = (Math.sin(Date.now() / 650) + 1) / 2;
-                    const shadowBlur = 20 + (pulse * 30);
-                    const scale = 1 + (pulse * 0.15);
-                    const newWidth = cpuIcon.width * scale;
-                    const newHeight = cpuIcon.height * scale;
-                    const newX = cpuIcon.x - (newWidth - cpuIcon.width) / 2;
-                    const newY = cpuIcon.y - (newHeight - cpuIcon.height) / 2;
-                    ctx.shadowColor = 'rgba(132, 169, 140, 1)';
-                    ctx.shadowBlur = shadowBlur;
-                    ctx.drawImage(cpuImage, newX, newY, newWidth, newHeight);
-                    ctx.shadowBlur = 0;
+                    
+                    // Draw pulsing halo effect
+                    const centerX = cpuIcon.x + cpuIcon.width / 2;
+                    const centerY = cpuIcon.y + cpuIcon.height / 2;
+                    const haloRadius = Math.max(cpuIcon.width, cpuIcon.height) * (0.6 + pulse * 0.4);
+                    
+                    const gradHalo = ctx.createRadialGradient(centerX, centerY, haloRadius * 0.3, centerX, centerY, haloRadius);
+                    gradHalo.addColorStop(0, 'rgba(132, 169, 140, 0.6)');
+                    gradHalo.addColorStop(0.7, 'rgba(132, 169, 140, 0.2)');
+                    gradHalo.addColorStop(1, 'rgba(132, 169, 140, 0)');
+                    ctx.fillStyle = gradHalo;
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, haloRadius, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Draw CPU at normal size
+                    ctx.drawImage(cpuImage, cpuIcon.x, cpuIcon.y, cpuIcon.width, cpuIcon.height);
 
                     // --- SDG Wheel and Text ---
                     if (sdgWheel.radius > 0) {
