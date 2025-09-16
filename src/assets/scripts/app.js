@@ -1,6 +1,6 @@
-// Import Tailwind CSS and main styles
-import '../styles/tailwind.css';
-import '../styles/main.css';
+// CSS is temporarily loaded via CDN and HTML links for immediate fix
+// import '../styles/tailwind.css';
+// import '../styles/main.css';
 
 // Import Chart.js
 import Chart from 'chart.js/auto';
