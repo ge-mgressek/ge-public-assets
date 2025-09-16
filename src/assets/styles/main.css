@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #365314; }
         .hero-display-area {
             display: flex;

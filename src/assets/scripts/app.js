@@ -1,3 +1,9 @@
+// Import Tailwind CSS
+import '../styles/tailwind.css';
+
+// Import Chart.js
+import Chart from 'chart.js/auto';
+
 // 1. Static imports for single assets - needed for  proper bundling
 import palmFrondUrl from '/src/assets/images/GE-PalmFrond.png';
 import coconutTreeUrl from '/src/assets/images/CoconutTree.png';
@@ -10,6 +16,9 @@ import dynamicImgUrl from '/src/assets/images/GE-Logo-Tile.png';
 
 // Google Analytics integration
 import { initGA, trackPageView, trackEvent, trackScrollDepth, trackTimeOnPage } from './analytics.js';
+
+// Make Chart available globally for compatibility
+window.Chart = Chart;
 
 // 2. SDG images are now served from public/images/ directory
 
