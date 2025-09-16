@@ -1600,6 +1600,80 @@ document.addEventListener('DOMContentLoaded', () => {
         enableScrollTracking();
         startTimeTracking();
         trackEngagementEvents();
+        // Initialize enhanced scroll spy and progress bar
+        initializeScrollSpyAndProgress();
     }, 1000); // Delay to ensure DOM is fully loaded
+
+    // Enhanced Scroll Spy and Progress Bar Implementation
+    function initializeScrollSpyAndProgress() {
+        const progressBar = document.getElementById('progress-bar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        
+        if (!progressBar || sections.length === 0) return;
+
+        function updateNavigationAndProgress() {
+            const scrollTop = window.scrollY;
+            const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+            
+            // Guard against edge case where document height equals viewport height
+            const scrollPercent = documentHeight <= 0 ? 0 : Math.min((scrollTop / documentHeight) * 100, 100);
+            
+            // Update progress bar
+            progressBar.style.width = scrollPercent + '%';
+            
+            // Update active navigation link
+            let activeSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                
+                if (scrollTop >= sectionTop && scrollTop < sectionBottom) {
+                    activeSection = section.id;
+                }
+            });
+            
+            // Update nav link active states
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + activeSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Throttled scroll handler for performance
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (scrollTimeout) return;
+            scrollTimeout = setTimeout(() => {
+                updateNavigationAndProgress();
+                scrollTimeout = null;
+            }, 16); // ~60fps
+        }, { passive: true });
+        
+        // Initial call
+        updateNavigationAndProgress();
+
+        // Smooth scroll for navigation links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 80; // Account for header
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Track navigation click
+                    trackEvent('click', 'navigation', targetId);
+                }
+            });
+        });
+    }
 
 
