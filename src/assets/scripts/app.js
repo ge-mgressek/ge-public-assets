@@ -1,5 +1,6 @@
-// Import Tailwind CSS
+// Import Tailwind CSS and main styles
 import '../styles/tailwind.css';
+import '../styles/main.css';
 
 // Import Chart.js
 import Chart from 'chart.js/auto';
