@@ -8,6 +8,9 @@ import sdgWheelImageUrl from '/src/assets/images/GE-SDG-Wheel.png';
 import recycleImageUrl from '/src/assets/images/Recycle.png';
 import dynamicImgUrl from '/src/assets/images/GE-Logo-Tile.png';
 
+// Google Analytics integration
+import { initGA, trackPageView, trackEvent, trackScrollDepth, trackTimeOnPage } from './analytics.js';
+
 // 2. SDG images are now served from public/images/ directory
 
 
@@ -1534,5 +1537,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
         // End form processing
+
+    // Initialize Google Analytics
+    initGA();
+    
+    // Track initial page view
+    trackPageView();
+    
+    // Add scroll depth tracking
+    let scrollTrackingEnabled = false;
+    const enableScrollTracking = () => {
+        if (!scrollTrackingEnabled) {
+            window.addEventListener('scroll', trackScrollDepth, { passive: true });
+            scrollTrackingEnabled = true;
+        }
+    };
+    
+    // Add time on page tracking
+    let timeTrackingInterval;
+    const startTimeTracking = () => {
+        timeTrackingInterval = setInterval(trackTimeOnPage, 30000); // Every 30 seconds
+    };
+    
+    // Track engagement events
+    const trackEngagementEvents = () => {
+        // Track clicks on important elements
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('button') || e.target.closest('a')) {
+                const element = e.target.closest('button') || e.target.closest('a');
+                const text = element.textContent?.trim().substring(0, 50) || 'unknown';
+                trackEvent('click', 'navigation', text);
+            }
+        });
+        
+        // Track section visibility
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    trackEvent('section_view', 'engagement', sectionId);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        // Observe all major sections
+        document.querySelectorAll('section[id]').forEach(section => {
+            observer.observe(section);
+        });
+    };
+
+    // Initialize analytics tracking
+    setTimeout(() => {
+        enableScrollTracking();
+        startTimeTracking();
+        trackEngagementEvents();
+    }, 1000); // Delay to ensure DOM is fully loaded
 
 
