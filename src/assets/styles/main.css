@@ -1,4 +1,4 @@
-@reference "tailwindcss";
+@import "./tailwind.css";
 
 body { font-family: 'Inter', sans-serif; background-color: #F8F7F2; color: #365314; }
 
