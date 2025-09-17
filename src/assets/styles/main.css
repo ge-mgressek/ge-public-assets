@@ -318,8 +318,8 @@ html {
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 2rem;
+            min-height: 80vh;
+            padding: 3rem 2rem;
             position: relative;
         }
 
