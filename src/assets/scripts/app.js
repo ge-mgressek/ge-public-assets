@@ -60,19 +60,20 @@ window.addEventListener('unhandledrejection', (event) => {
     console.error('Unhandled promise rejection:', event.reason);
 });
 
-// Video Lazy Loading with Intersection Observer
+// Enhanced Video Lazy Loading with Intersection Observer
 function initVideoLazyLoading() {
     const lazyVideos = document.querySelectorAll('[data-lazy-video]');
     
     if ('IntersectionObserver' in window) {
         const videoObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
+                const video = entry.target;
                 if (entry.isIntersecting) {
-                    const video = entry.target;
                     video.play().catch(e => {
                         console.log('Video autoplay failed:', e);
                     });
-                    videoObserver.unobserve(video);
+                } else {
+                    video.pause();
                 }
             });
         }, {
@@ -84,11 +85,26 @@ function initVideoLazyLoading() {
             videoObserver.observe(video);
         });
     } else {
-        // Fallback for browsers without Intersection Observer
+        // Fallback for browsers without Intersection Observer - click to play
         lazyVideos.forEach((video) => {
-            video.play().catch(e => {
-                console.log('Video autoplay failed:', e);
+            video.style.cursor = 'pointer';
+            video.addEventListener('click', function() {
+                if (video.paused) {
+                    video.play().catch(e => {
+                        console.log('Video play failed:', e);
+                    });
+                } else {
+                    video.pause();
+                }
             });
+            // Add play button overlay for visual cue
+            const playButton = document.createElement('div');
+            playButton.innerHTML = '▶️';
+            playButton.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;pointer-events:none;opacity:0.8;';
+            video.parentNode.style.position = 'relative';
+            video.parentNode.appendChild(playButton);
+            video.addEventListener('play', () => playButton.style.display = 'none');
+            video.addEventListener('pause', () => playButton.style.display = 'block');
         });
     }
 }
