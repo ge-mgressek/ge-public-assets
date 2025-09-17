@@ -13,6 +13,27 @@ export default defineConfig({
     allowedHosts: true
   },
   plugins: [
-    ViteImageOptimizer(),
+    ViteImageOptimizer({
+      // Comprehensive image optimization for Cloudflare build
+      include: /\.(jpe?g|png|gif|tiff|bmp|svg)$/i,
+      gifsicle: { 
+        optimizationLevel: 7, 
+        interlaced: false 
+      },
+      mozjpeg: { 
+        quality: 85,
+        progressive: true 
+      },
+      pngquant: { 
+        quality: [0.8, 0.9], 
+        speed: 4 
+      },
+      svgo: {
+        plugins: [
+          { name: 'removeViewBox', active: false },
+          { name: 'removeEmptyAttrs', active: false }
+        ]
+      },
+    }),
   ],
 });
