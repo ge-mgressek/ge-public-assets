@@ -60,7 +60,42 @@ window.addEventListener('unhandledrejection', (event) => {
     console.error('Unhandled promise rejection:', event.reason);
 });
 
+// Video Lazy Loading with Intersection Observer
+function initVideoLazyLoading() {
+    const lazyVideos = document.querySelectorAll('[data-lazy-video]');
+    
+    if ('IntersectionObserver' in window) {
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const video = entry.target;
+                    video.play().catch(e => {
+                        console.log('Video autoplay failed:', e);
+                    });
+                    videoObserver.unobserve(video);
+                }
+            });
+        }, {
+            rootMargin: '50px 0px',
+            threshold: 0.25
+        });
+
+        lazyVideos.forEach((video) => {
+            videoObserver.observe(video);
+        });
+    } else {
+        // Fallback for browsers without Intersection Observer
+        lazyVideos.forEach((video) => {
+            video.play().catch(e => {
+                console.log('Video autoplay failed:', e);
+            });
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize video lazy loading
+    initVideoLazyLoading();
 
             // --- CO2 Flow Animation (Hero) ---
             const heroCanvas = document.getElementById('co2-animation-canvas');
