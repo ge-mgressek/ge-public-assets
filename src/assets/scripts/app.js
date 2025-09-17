@@ -1,6 +1,6 @@
-// CSS is temporarily loaded via CDN and HTML links for immediate fix
-// import '../styles/tailwind.css';
-// import '../styles/main.css';
+// CSS imports for proper bundling
+import '../styles/tailwind.css';
+import '../styles/main.css';
 
 // Import Chart.js
 import Chart from 'chart.js/auto';
