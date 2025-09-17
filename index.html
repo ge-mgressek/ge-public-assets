@@ -38,11 +38,27 @@
     <!-- Tailwind CSS and Chart.js now bundled with Vite -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Load Google Fonts asynchronously -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
     
     
     <!-- Load main CSS for custom styles -->
-    <link rel="stylesheet" href="/src/assets/styles/main.css">
+    <!-- Critical CSS inlined for above-the-fold content -->
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background-color: #F8F7F2; color: #365314; }
+        .scroll-progress { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 40; background: rgba(52, 83, 20, 0.1); }
+        .scroll-progress-bar { height: 100%; background: linear-gradient(90deg, #365314, #D4AF37); width: 0%; transition: width 0.3s ease; }
+        .nav-link.active { color: #D4AF37 !important; border-bottom-color: #D4AF37 !important; font-weight: 600; }
+        html { scroll-behavior: smooth; }
+        .hero-display-area { display: flex; flex-direction: column; height: 100vh; }
+        .animation-wrapper { position: relative; flex-grow: 1; max-height: 65vh; background-image: url('/images/GE-plantation.jpg'); background-size: cover; background-position: center; overflow: hidden; }
+    </style>
+    <!-- Preload critical hero image for faster LCP -->
+    <link rel="preload" href="/images/GE-plantation.jpg" as="image" fetchpriority="high">
+    <!-- Load non-critical CSS asynchronously -->
+    <link rel="preload" href="/src/assets/styles/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/src/assets/styles/main.css"></noscript>
     
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
@@ -93,7 +109,7 @@
                     <a href="#hero">
                         <picture>
                             <source srcset="/images/GE-CropX.webp" type="image/webp">
-                            <img class="h-12 w-auto" src="/images/GE-CropX.png" alt="Globe-Eco Logo">
+                            <img class="h-12 w-auto" src="/images/GE-CropX.png" alt="Globe-Eco Logo" fetchpriority="high">
                         </picture>
                     </a>
                 </div>
@@ -174,7 +190,7 @@
                     <div class="text-center">
                          <picture>
                             <source srcset="/images/GE-CoconutCarbonCycle.webp" type="image/webp">
-                            <img src="/images/GE-CoconutCarbonCycle.png" alt="Globe-Eco Carbon Cycle Diagram" class="rounded-lg shadow-lg mx-auto">
+                            <img src="/images/GE-CoconutCarbonCycle.png" alt="Globe-Eco Carbon Cycle Diagram" class="rounded-lg shadow-lg mx-auto" loading="lazy">
                         </picture>
                     </div>
                 </div>
@@ -201,18 +217,18 @@
                             <div id="animation-container-v2" class="rounded-lg flex-grow">
                                 <picture>
                                     <source srcset="/images/CoconutTree.webp" type="image/webp">
-                                    <img id="tree-v2" src="/images/CoconutTree.png" alt="Coconut Tree">
+                                    <img id="tree-v2" src="/images/CoconutTree.png" alt="Coconut Tree" loading="lazy">
                                 </picture>
                                 <picture>
                                     <source srcset="/images/GE-PalmFrond.webp" type="image/webp">
-                                    <img id="frond-v2" src="/images/GE-PalmFrond.png" alt="Palm Frond">
+                                    <img id="frond-v2" src="/images/GE-PalmFrond.png" alt="Palm Frond" loading="lazy">
                                 </picture>
                                 <div id="co2-particle-container-v2">
                                     <!-- Particles are spawned and animated by JS -->
                                 </div>
                                 <picture>
                                     <source srcset="/images/GE-CPU.webp" type="image/webp">
-                                    <img id="cpu-v2" src="/images/GE-CPU.png" alt="CPU">
+                                    <img id="cpu-v2" src="/images/GE-CPU.png" alt="CPU" loading="lazy">
                                 </picture>
                                 <svg id="drawing-svg-v2" viewBox="0 0 800 400">
                                     <path id="path-connector" class="drawing-path" d="M 500,260 L 600,260" />
@@ -445,7 +461,7 @@
                         <div class="flex flex-col items-center max-w-xs">
                            <picture>
                                 <source srcset="/images/GE-CPU.webp" type="image/webp">
-                                <img src="/images/GE-CPU.png" alt="Globe-Eco CPU" class="h-24 w-auto mx-auto mb-4">
+                                <img src="/images/GE-CPU.png" alt="Globe-Eco CPU" class="h-24 w-auto mx-auto mb-4" loading="lazy">
                             </picture>
                             <h3 class="text-2xl font-bold mb-2">2. The CPU</h3>
                             <p class="text-gray-600">Our Coconut Processing Unit (CPU)—a fully automated, self-powered micro-factory—processes the biomass using proprietary technology.</p>
@@ -607,7 +623,7 @@
                                 <div class="mt-6 mb-6 text-center">
                                     <picture>
                                         <source srcset="/images/GE-CPU.webp" type="image/webp">
-                                        <img src="/images/GE-CPU.png" alt="Globe-Eco CPU" class="mx-auto w-[25vw] h-auto rounded-full shadow-lg">
+                                        <img src="/images/GE-CPU.png" alt="Globe-Eco CPU" class="mx-auto w-[25vw] h-auto rounded-full shadow-lg" loading="lazy">
                                     </picture>
                                 </div>
                                 <div class="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-r-lg">
@@ -627,14 +643,14 @@
                                      <div class="slide fade">
                                          <picture>
                                             <source srcset="/images/WP-Philippine_Eagle.webp" type="image/webp">
-                                            <img src="/images/WP-Philippine_Eagle.jpg" class="rounded-lg shadow-lg w-full">
+                                            <img src="/images/WP-Philippine_Eagle.jpg" class="rounded-lg shadow-lg w-full" loading="lazy">
                                         </picture>
                                          <p class="text-center text-sm text-green-600 mt-2">The critically endangered Philippine Eagle.</p>
                                      </div>
                                      <div class="slide fade">
                                          <picture>
                                             <source srcset="/images/WP-Tarsier-GG.webp" type="image/webp">
-                                            <img src="/images/WP-Tarsier-GG.jpg" class="rounded-lg shadow-lg w-full">
+                                            <img src="/images/WP-Tarsier-GG.jpg" class="rounded-lg shadow-lg w-full" loading="lazy">
                                         </picture>
                                          <p class="text-center text-sm text-green-600 mt-2">The endangered Philippine Tarsier.</p>
                                      </div>
@@ -949,7 +965,7 @@
                                 <source srcset="/images/GE-CropX.webp" type="image/webp">
                                 <img src="/images/GE-CropX.png" 
                                      alt="Globe-Eco Logo" 
-                                     class="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mx-auto">
+                                     class="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 mx-auto" loading="lazy">
                             </picture>
                         </div>
 
