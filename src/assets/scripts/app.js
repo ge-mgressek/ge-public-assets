@@ -6,8 +6,8 @@ import '../styles/main.css';
 import heroBgUrl from '../images/GE-plantation.jpg';
 import logoUrl from '../images/GE-CropX.png';
 
-// Import SDG goal images using glob pattern
-const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
+// Import SDG goal images using non-eager loading for better performance  
+const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: false, query: '?url', import: 'default' });
 
 // Import other critical images that need JavaScript loading
 import carbonCycleUrl from '../images/GE-CoconutCarbonCycle-optimized.webp';
@@ -26,8 +26,16 @@ import alchemistUrl from '../images/GE-MG-Alchemist.png';
 import sageUrl from '../images/GE-RK-Sage2.png';
 import adventureTicketUrl from '../images/GE-AdventureTicket.png';
 
-// Import Chart.js
-import Chart from 'chart.js/auto';
+// Dynamic Chart.js loader for performance
+let Chart = null;
+async function loadChart() {
+    if (!Chart) {
+        const chartModule = await import('chart.js/auto');
+        Chart = chartModule.default;
+        window.Chart = Chart; // For compatibility
+    }
+    return Chart;
+}
 
 // 1. Static imports for single assets - needed for  proper bundling
 import sdgWheelUrl from '../images/GE-SDG-Wheel.png';
@@ -38,8 +46,7 @@ import netZeroFireUrl from '../images/GE-NetZeroFire.webp';
 // Google Analytics integration
 import { initGA, trackPageView, trackEvent, trackScrollDepth, trackTimeOnPage } from './analytics.js';
 
-// Make Chart available globally for compatibility
-window.Chart = Chart;
+// Chart.js will be loaded dynamically when charts are needed
 
 // 2. SDG images are now served from public/images/ directory
 
@@ -129,19 +136,31 @@ function initVideoLazyLoading() {
     }
 }
 
-// Setup SDG images with proper Vite-processed URLs
-function setupSdgImages() {
-    // Map goal numbers to their image URLs
-    const goalImageMap = {};
-    Object.entries(sdgImages).forEach(([path, url]) => {
-        const match = path.match(/E-WEB-Goal-(\d+)\.png$/);
-        if (match) {
-            goalImageMap[parseInt(match[1])] = url;
-        }
-    });
+// Setup SDG images with dynamic loading for better performance
+async function setupSdgImages() {
+    const sdgGoalImages = document.querySelectorAll('.sdg-grid-item img, .sdg-goal-img');
+    if (sdgGoalImages.length === 0) {
+        console.warn('No SDG goal images found');
+        return;
+    }
     
-    // Update SDG grid images
-    document.querySelectorAll('.sdg-grid-item img').forEach(img => {
+    console.log('Starting SDG grid loading with', Object.keys(sdgImages).length, 'items');
+    
+    // Load SDG images dynamically - proper async loading pattern
+    const loaders = Object.entries(sdgImages);
+    const goalImageMap = {};
+    
+    await Promise.all(loaders.map(async ([path, loadFunction]) => {
+        const imageModule = await loadFunction();
+        const match = path.match(/E-WEB-Goal-(\\d+)\\.png$/);
+        if (match) {
+            const goalNumber = parseInt(match[1]);
+            goalImageMap[goalNumber] = imageModule.default;
+        }
+    }));
+    
+    // Apply loaded images to DOM elements
+    sdgGoalImages.forEach(img => {
         const goalNumber = parseInt(img.dataset.goalId || img.getAttribute('data-goal'));
         if (goalNumber && goalImageMap[goalNumber]) {
             img.src = goalImageMap[goalNumber];
@@ -171,8 +190,8 @@ function setupCriticalImages() {
         logoImg.src = logoUrl;
     }
     
-    // Set up SDG images  
-    setupSdgImages();
+    // Set up SDG images (async)
+    setupSdgImages().catch(e => console.error('SDG images setup failed:', e));
     
     // Set up all other images
     setupOtherImages();
@@ -616,7 +635,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             };
-            Chart.register(povertyLinePlugin);
+            // Chart.js will be loaded when needed
+            window.povertyLinePlugin = povertyLinePlugin;
 
 
             // --- Rest of the page's JS ---
@@ -751,12 +771,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let charts = {};
 
-            const createChart = (id, config) => {
+            const createChart = async (id, config) => {
                 const ctx = document.getElementById(id).getContext('2d');
                 if (charts[id]) {
                     charts[id].destroy();
                 }
-                charts[id] = new Chart(ctx, config);
+                const ChartClass = await loadChart();
+                ChartClass.register(window.povertyLinePlugin);
+                charts[id] = new ChartClass(ctx, config);
             };
 
 

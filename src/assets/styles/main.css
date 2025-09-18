@@ -62,7 +62,7 @@ html {
             position: relative;
             flex-grow: 1;
             max-height: 65vh; /* Limit animation area to ~15% smaller than typical full height */
-            background-image: url('/images/GE-plantation.jpg');
+            /* Background image set via JavaScript for proper Vite optimization */
             background-size: cover;
             background-position: center;
             overflow: hidden;
