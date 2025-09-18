@@ -30,14 +30,9 @@ import adventureTicketUrl from '../images/GE-AdventureTicket.png';
 import Chart from 'chart.js/auto';
 
 // 1. Static imports for single assets - needed for  proper bundling
-import palmFrondUrl from '/src/assets/images/GE-PalmFrond.png';
-import coconutTreeUrl from '/src/assets/images/CoconutTree.png';
-import sdgWheelUrl from '/src/assets/images/GE-SDG-Wheel.png';
-import cpuUrl from '/src/assets/images/GE-CPU.png';
-import cpuImageUrl from '/src/assets/images/GE-CPU.png';
-import sdgWheelImageUrl from '/src/assets/images/GE-SDG-Wheel.png';
-import recycleImageUrl from '/src/assets/images/Recycle.png';
-import dynamicImgUrl from '/src/assets/images/GE-Logo-Tile.png';
+import sdgWheelUrl from '../images/GE-SDG-Wheel.png';
+import recycleImageUrl from '../images/Recycle.png';
+import dynamicImgUrl from '../images/GE-Logo-Tile.png';
 
 // Google Analytics integration
 import { initGA, trackPageView, trackEvent, trackScrollDepth, trackTimeOnPage } from './analytics.js';
@@ -234,10 +229,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 let animationFrameId;
 
                 const cpuImage = new Image();
-                cpuImage.src = cpuImageUrl;
+                cpuImage.src = cpuUrl;
 
                 const sdgImage = new Image();
-                sdgImage.src = sdgWheelImageUrl;
+                sdgImage.src = sdgWheelUrl;
 
                 const recycleImage = new Image();
                 recycleImage.src = recycleImageUrl;
