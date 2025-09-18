@@ -33,6 +33,7 @@ import Chart from 'chart.js/auto';
 import sdgWheelUrl from '../images/GE-SDG-Wheel.png';
 import recycleImageUrl from '../images/Recycle.png';
 import dynamicImgUrl from '../images/GE-Logo-Tile.png';
+import netZeroFireUrl from '../images/GE-NetZeroFire.png';
 
 // Google Analytics integration
 import { initGA, trackPageView, trackEvent, trackScrollDepth, trackTimeOnPage } from './analytics.js';
@@ -175,6 +176,9 @@ function setupCriticalImages() {
     
     // Set up all other images
     setupOtherImages();
+    
+    // Set up animation container backgrounds
+    setupAnimationBackgrounds();
 }
 
 // Setup other critical images with proper Vite-processed URLs
@@ -211,6 +215,15 @@ function setupOtherImages() {
     document.querySelectorAll('img[alt="Globe-Eco CPU"]').forEach(img => {
         img.src = cpuUrl;
     });
+}
+
+// Setup animation container backgrounds with proper Vite-processed URLs
+function setupAnimationBackgrounds() {
+    // Set NetZero Fire background for "The Problem" animation
+    const animationContainer = document.getElementById('animation-container-v1');
+    if (animationContainer) {
+        animationContainer.style.backgroundImage = `url(${netZeroFireUrl})`;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
