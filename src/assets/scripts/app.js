@@ -195,6 +195,9 @@ function setupCriticalImages() {
     // Set up all other images
     setupOtherImages();
     
+    // Set video poster images
+    setupVideoPoster();
+    
     // Set up animation container backgrounds
     setupAnimationBackgrounds();
 }
@@ -241,6 +244,14 @@ function setupAnimationBackgrounds() {
     const animationContainer = document.getElementById('animation-container-v1');
     if (animationContainer) {
         animationContainer.style.backgroundImage = `url(${netZeroFireUrl})`;
+    }
+}
+
+// Setup video poster images with proper Vite-processed URLs
+function setupVideoPoster() {
+    const bukoJoeVideo = document.getElementById('buko-joe-video');
+    if (bukoJoeVideo) {
+        bukoJoeVideo.poster = husksUrl;
     }
 }
 
