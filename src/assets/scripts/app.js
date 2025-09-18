@@ -779,9 +779,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const img = document.createElement('img');
                 
-                // Use direct path to public images
-                const imagePath = `/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
-                img.src = imagePath;
+                // Use imported Vite-processed images
+                const goalNumber = goal.id;
+                const goalImageKey = Object.keys(sdgImages).find(path => 
+                    path.includes(`E-WEB-Goal-${String(goalNumber).padStart(2, '0')}.png`)
+                );
+                img.src = goalImageKey ? sdgImages[goalImageKey] : `/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
 
                 img.alt = `SDG Goal ${goal.id}`;
                 img.className = 'w-full h-auto';
