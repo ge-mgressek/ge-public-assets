@@ -52,10 +52,10 @@
         .nav-link.active { color: #D4AF37 !important; border-bottom-color: #D4AF37 !important; font-weight: 600; }
         html { scroll-behavior: smooth; }
         .hero-display-area { display: flex; flex-direction: column; height: 100vh; }
-        .animation-wrapper { position: relative; flex-grow: 1; max-height: 65vh; background-image: url('/src/assets/src/assets/images/GE-plantation.jpg'); background-size: cover; background-position: center; overflow: hidden; }
+        .animation-wrapper { position: relative; flex-grow: 1; max-height: 65vh; background-size: cover; background-position: center; overflow: hidden; }
     </style>
     <!-- Preload critical hero image for faster LCP -->
-    <link rel="preload" href="/src/assets/src/assets/images/GE-plantation.jpg" as="image" fetchpriority="high">
+    <!-- Hero image preload will be handled via JavaScript -->
     <!-- Note: Non-critical CSS is handled by Vite bundling for production builds -->
     
     <!-- Schema.org Structured Data -->
@@ -105,7 +105,7 @@
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0">
                     <a href="#hero">
-                        <img class="h-12 w-auto" src="/src/assets/src/assets/images/GE-CropX.png" alt="Globe-Eco Logo" fetchpriority="high">
+                        <img class="h-12 w-auto" alt="Globe-Eco Logo" fetchpriority="high">
                     </a>
                 </div>
     <div class="hidden md:block">

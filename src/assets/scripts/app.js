@@ -2,6 +2,13 @@
 import '../styles/tailwind.css';
 import '../styles/main.css';
 
+// Import critical images for proper Vite processing
+import heroBgUrl from '../images/GE-plantation.jpg';
+import logoUrl from '../images/GE-CropX.png';
+
+// Import SDG goal images using glob pattern
+const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
+
 // Import Chart.js
 import Chart from 'chart.js/auto';
 
@@ -109,7 +116,56 @@ function initVideoLazyLoading() {
     }
 }
 
+// Setup SDG images with proper Vite-processed URLs
+function setupSdgImages() {
+    // Map goal numbers to their image URLs
+    const goalImageMap = {};
+    Object.entries(sdgImages).forEach(([path, url]) => {
+        const match = path.match(/E-WEB-Goal-(\d+)\.png$/);
+        if (match) {
+            goalImageMap[parseInt(match[1])] = url;
+        }
+    });
+    
+    // Update SDG grid images
+    document.querySelectorAll('.sdg-item img').forEach(img => {
+        const goalNumber = parseInt(img.dataset.goalId || img.getAttribute('data-goal'));
+        if (goalNumber && goalImageMap[goalNumber]) {
+            img.src = goalImageMap[goalNumber];
+        }
+    });
+}
+
+// Setup critical images with proper Vite-processed URLs
+function setupCriticalImages() {
+    // Set hero background image
+    const heroWrapper = document.querySelector('.animation-wrapper');
+    if (heroWrapper) {
+        heroWrapper.style.backgroundImage = `url(${heroBgUrl})`;
+        
+        // Create preload link for hero image
+        const preloadLink = document.createElement('link');
+        preloadLink.rel = 'preload';
+        preloadLink.as = 'image';
+        preloadLink.href = heroBgUrl;
+        preloadLink.setAttribute('fetchpriority', 'high');
+        document.head.appendChild(preloadLink);
+    }
+    
+    // Set main logo
+    const logoImg = document.querySelector('img[alt="Globe-Eco Logo"]');
+    if (logoImg) {
+        logoImg.src = logoUrl;
+    }
+    
+    // Set up SDG images  
+    setupSdgImages();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Set up critical images with Vite-processed URLs
+    setupCriticalImages();
+    
     // Initialize video lazy loading
     initVideoLazyLoading();
 
