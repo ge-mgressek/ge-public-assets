@@ -9,6 +9,23 @@ import logoUrl from '../images/GE-CropX.png';
 // Import SDG goal images using glob pattern
 const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
 
+// Import other critical images that need JavaScript loading
+import carbonCycleUrl from '../images/GE-CoconutCarbonCycle.png';
+import coconutTreeUrl from '../images/CoconutTree.png';
+import palmFrondUrl from '../images/GE-PalmFrond.png';
+import cpuUrl from '../images/GE-CPU.png';
+import cpuConstellationUrl from '../images/GE-CPU Constellation.png';
+import husksUrl from '../images/GE-Husks.png';
+import cocoWoodUrl from '../images/GE-CocoWood.jpg';
+import co2DataUrl from '../images/co2-data-1751-2024.png';
+import eagleUrl from '../images/WP-Philippine_Eagle.jpg';
+import tarsierUrl from '../images/WP-Tarsier-GG.jpg';
+import cocoSmokeUrl from '../images/GE-Coco Smoke.png';
+import prosperFutureUrl from '../images/GE-ProsperFuture.png';
+import alchemistUrl from '../images/GE-MG-Alchemist.png';
+import sageUrl from '../images/GE-RK-Sage2.png';
+import adventureTicketUrl from '../images/GE-AdventureTicket.png';
+
 // Import Chart.js
 import Chart from 'chart.js/auto';
 
@@ -160,6 +177,45 @@ function setupCriticalImages() {
     
     // Set up SDG images  
     setupSdgImages();
+    
+    // Set up all other images
+    setupOtherImages();
+}
+
+// Setup other critical images with proper Vite-processed URLs
+function setupOtherImages() {
+    // Map image IDs/selectors to their imported URLs
+    const imageMap = {
+        'img[alt="Globe-Eco Carbon Cycle Diagram"]': carbonCycleUrl,
+        '#tree-v2': coconutTreeUrl,
+        '#frond-v2': palmFrondUrl,
+        '#cpu-v2': cpuUrl,
+        'img[alt="Globe-Eco CPU Constellation"]': cpuConstellationUrl,
+        'img[alt="Coconut Husks"]': husksUrl,
+        'img[alt="Globe-Eco CPU"]': cpuUrl,
+        'img[alt="Globe-Eco CocoWood"]': cocoWoodUrl,
+        'img[alt="IPCC chart showing the increase in CO2 from 1751 to 2024"]': co2DataUrl,
+        'img[alt*="Philippine"]': eagleUrl,
+        'img[alt*="Tarsier"]': tarsierUrl,
+        'img[alt="Black carbon smog from burning coconut waste"]': cocoSmokeUrl,
+        'img[alt*="vision of a futuristic"]': prosperFutureUrl,
+        'img[alt="Matthew Grecsek"]': alchemistUrl,
+        'img[alt="Robert Knighton"]': sageUrl,
+        'img[alt*="Adventure Ticket"]': adventureTicketUrl
+    };
+    
+    // Apply the mapped URLs
+    Object.entries(imageMap).forEach(([selector, url]) => {
+        const img = document.querySelector(selector);
+        if (img) {
+            img.src = url;
+        }
+    });
+    
+    // Special case for multiple CPU images
+    document.querySelectorAll('img[alt="Globe-Eco CPU"]').forEach(img => {
+        img.src = cpuUrl;
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
