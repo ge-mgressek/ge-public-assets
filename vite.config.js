@@ -14,10 +14,8 @@ export default defineConfig({
   },
   plugins: [
     ViteImageOptimizer({
-      // Comprehensive image optimization for all images including public folder
+      // Comprehensive image optimization for assets folder
       include: /\.(jpe?g|png|gif|tiff|bmp|svg)$/i,
-      // Process images in both imported assets AND public folder
-      includePublic: true,
       gifsicle: { 
         optimizationLevel: 7, 
         interlaced: false 
@@ -36,9 +34,6 @@ export default defineConfig({
           { name: 'removeEmptyAttrs', active: false }
         ]
       },
-      // Additional optimization settings for public folder
-      cache: false, // Ensure fresh optimization on each build
-      cacheLocation: '.vite-imageopt-cache'
     }),
   ],
 });
