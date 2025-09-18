@@ -140,7 +140,7 @@ function setupSdgImages() {
     });
     
     // Update SDG grid images
-    document.querySelectorAll('.sdg-item img').forEach(img => {
+    document.querySelectorAll('.sdg-grid-item img').forEach(img => {
         const goalNumber = parseInt(img.dataset.goalId || img.getAttribute('data-goal'));
         if (goalNumber && goalImageMap[goalNumber]) {
             img.src = goalImageMap[goalNumber];
@@ -759,7 +759,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const item = document.createElement('div');
                 item.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
                 const img = document.createElement('img');
-                img.src = `/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
+                
+                // Use imported Vite-processed images
+                const goalNumber = goal.id;
+                const goalImageKey = Object.keys(sdgImages).find(path => 
+                    path.includes(`E-WEB-Goal-${String(goalNumber).padStart(2, '0')}.png`)
+                );
+                img.src = goalImageKey ? sdgImages[goalImageKey] : '';
+                img.setAttribute('data-goal', goal.id);
                 img.alt = `SDG Goal ${goal.id}`;
                 img.className = 'w-full h-auto';
                 item.appendChild(img);
@@ -784,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const goalImageKey = Object.keys(sdgImages).find(path => 
                     path.includes(`E-WEB-Goal-${String(goalNumber).padStart(2, '0')}.png`)
                 );
-                img.src = goalImageKey ? sdgImages[goalImageKey] : `/images/E-WEB-Goal-${String(goal.id).padStart(2, '0')}.png`;
+                img.src = goalImageKey ? sdgImages[goalImageKey] : '';
 
                 img.alt = `SDG Goal ${goal.id}`;
                 img.className = 'w-full h-auto';
