@@ -10,11 +10,11 @@ import logoUrl from '../images/GE-CropX.png';
 const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
 
 // Import other critical images that need JavaScript loading
-import carbonCycleUrl from '../images/GE-CoconutCarbonCycle.png';
+import carbonCycleUrl from '../images/GE-CoconutCarbonCycle-optimized.webp';
 import coconutTreeUrl from '../images/CoconutTree.png';
 import palmFrondUrl from '../images/GE-PalmFrond.png';
-import cpuUrl from '../images/GE-CPU.png';
-import cpuConstellationUrl from '../images/GE-CPU Constellation.png';
+import cpuUrl from '../images/GE-CPU-small.webp';
+import cpuConstellationUrl from '../images/GE-CPU-Constellation-optimized.webp';
 import husksUrl from '../images/GE-Husks.png';
 import cocoWoodUrl from '../images/GE-CocoWood.jpg';
 import co2DataUrl from '../images/co2-data-1751-2024.png';
@@ -33,7 +33,7 @@ import Chart from 'chart.js/auto';
 import sdgWheelUrl from '../images/GE-SDG-Wheel.png';
 import recycleImageUrl from '../images/Recycle.png';
 import dynamicImgUrl from '../images/GE-Logo-Tile.png';
-import netZeroFireUrl from '../images/GE-NetZeroFire.png';
+import netZeroFireUrl from '../images/GE-NetZeroFire.webp';
 
 // Google Analytics integration
 import { initGA, trackPageView, trackEvent, trackScrollDepth, trackTimeOnPage } from './analytics.js';
