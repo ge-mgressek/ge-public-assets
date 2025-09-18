@@ -6,8 +6,8 @@ import '../styles/main.css';
 import heroBgUrl from '../images/GE-plantation.jpg';
 import logoUrl from '../images/GE-CropX.png';
 
-// Import SDG goal images using non-eager loading for better performance  
-const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: false, query: '?url', import: 'default' });
+// Import SDG goal images with eager loading to prevent scroll delays
+const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
 
 // Import other critical images that need JavaScript loading
 import carbonCycleUrl from '../images/GE-CoconutCarbonCycle-optimized.webp';
@@ -136,8 +136,8 @@ function initVideoLazyLoading() {
     }
 }
 
-// Setup SDG images with dynamic loading for better performance
-async function setupSdgImages() {
+// Setup SDG images with proper Vite-processed URLs
+function setupSdgImages() {
     const sdgGoalImages = document.querySelectorAll('.sdg-grid-item img, .sdg-goal-img');
     if (sdgGoalImages.length === 0) {
         console.warn('No SDG goal images found');
@@ -146,20 +146,17 @@ async function setupSdgImages() {
     
     console.log('Starting SDG grid loading with', Object.keys(sdgImages).length, 'items');
     
-    // Load SDG images dynamically - proper async loading pattern
-    const loaders = Object.entries(sdgImages);
+    // Map goal numbers to their image URLs using eager imports
     const goalImageMap = {};
-    
-    await Promise.all(loaders.map(async ([path, loadFunction]) => {
-        const imageModule = await loadFunction();
-        const match = path.match(/E-WEB-Goal-(\\d+)\\.png$/);
+    Object.entries(sdgImages).forEach(([path, url]) => {
+        const match = path.match(/E-WEB-Goal-(\d+)\.png$/);
         if (match) {
             const goalNumber = parseInt(match[1]);
-            goalImageMap[goalNumber] = imageModule.default;
+            goalImageMap[goalNumber] = url;
         }
-    }));
+    });
     
-    // Apply loaded images to DOM elements
+    // Apply loaded images to DOM elements immediately
     sdgGoalImages.forEach(img => {
         const goalNumber = parseInt(img.dataset.goalId || img.getAttribute('data-goal'));
         if (goalNumber && goalImageMap[goalNumber]) {
@@ -853,7 +850,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Load SDG images after tiles are created
-            setupSdgImages().catch(e => console.error('SDG images setup failed:', e));
+            setupSdgImages();
 
             // --- Add Dynamic Globe-Eco Tile ---
             const dynamicTile = document.createElement('div');
