@@ -13,7 +13,7 @@ const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: false,
 import carbonCycleUrl from '../images/GE-CoconutCarbonCycle-optimized.webp';
 import coconutTreeUrl from '../images/CoconutTree.png';
 import palmFrondUrl from '../images/GE-PalmFrond.png';
-import cpuUrl from '../images/GE-CPU-small.webp';
+import cpuUrl from '../images/GE-CPU-medium.webp';
 import cpuConstellationUrl from '../images/GE-CPU-Constellation-optimized.webp';
 import husksUrl from '../images/GE-Husks.png';
 import cocoWoodUrl from '../images/GE-CocoWood.jpg';
@@ -190,8 +190,7 @@ function setupCriticalImages() {
         logoImg.src = logoUrl;
     }
     
-    // Set up SDG images (async)
-    setupSdgImages().catch(e => console.error('SDG images setup failed:', e));
+    // SDG images will be loaded after tiles are created in the impact section
     
     // Set up all other images
     setupOtherImages();
@@ -819,21 +818,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 sdgGrid.appendChild(item);
             });
 */
+            // Create SDG tiles dynamically with proper data attributes for async loading
             sdgData.forEach(goal => {
                 const item = document.createElement('div');
                 item.className = 'sdg-grid-item rounded-md p-2 cursor-pointer';
 
                 const img = document.createElement('img');
-                
-                // Use imported Vite-processed images
-                const goalNumber = goal.id;
-                const goalImageKey = Object.keys(sdgImages).find(path => 
-                    path.includes(`E-WEB-Goal-${String(goalNumber).padStart(2, '0')}.png`)
-                );
-                img.src = goalImageKey ? sdgImages[goalImageKey] : '';
-
+                img.setAttribute('data-goal', goal.id);
                 img.alt = `SDG Goal ${goal.id}`;
-                img.className = 'w-full h-auto';
+                img.className = 'w-full h-auto sdg-goal-img';
+                // Placeholder while loading
+                img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiNmM2Y0ZjYiLz48L3N2Zz4=';
+                
                 item.appendChild(img);
 
                 item.addEventListener('mouseover', () => {
@@ -845,6 +841,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 sdgGrid.appendChild(item);
             });
 
+            // Load SDG images after tiles are created
+            setupSdgImages().catch(e => console.error('SDG images setup failed:', e));
 
             // --- Add Dynamic Globe-Eco Tile ---
             const dynamicTile = document.createElement('div');
