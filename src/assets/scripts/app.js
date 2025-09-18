@@ -284,10 +284,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 function resizeCanvas() {
                     const parent = heroCanvas.parentElement;
-                    if (!parent || parent.offsetWidth === 0 || parent.offsetHeight === 0) return; // Guard against zero dimensions
+                    if (!parent) return;
+                    // Batch layout reads to avoid forced reflows
+                    const parentWidth = parent.offsetWidth;
+                    const parentHeight = parent.offsetHeight;
+                    if (parentWidth === 0 || parentHeight === 0) return; // Guard against zero dimensions
                     try {
-                        heroCanvas.width = parent.offsetWidth;
-                        heroCanvas.height = parent.offsetHeight;
+                        heroCanvas.width = parentWidth;
+                        heroCanvas.height = parentHeight;
                     } catch (error) {
                         console.error('Canvas resize error:', error);
                         return;
@@ -1001,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 function drawHouse() {
                     preparePath(pathHouseBase);
                     preparePath(pathHouseRoof);
-                    void pathHouseBase.offsetWidth;
+                    // Removed forced reflow for performance
                     pathHouseBase.style.animationDuration = '2s';
                     pathHouseBase.classList.add('draw-animation');
                     setTimeout(() => {
@@ -1128,10 +1132,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 function coreSetup() {
                     const parent = canvas.parentElement;
                     const dpr = window.devicePixelRatio || 1;
-                    canvas.width = parent.clientWidth * dpr;
-                    canvas.height = parent.clientHeight * dpr;
-                    ctx.scale(dpr, dpr);                       const w = canvas.clientWidth;
-                    const h = canvas.clientHeight;
+                    // Batch layout reads to avoid forced reflows
+                    const parentWidth = parent.clientWidth;
+                    const parentHeight = parent.clientHeight;
+                    canvas.width = parentWidth * dpr;
+                    canvas.height = parentHeight * dpr;
+                    ctx.scale(dpr, dpr);
+                    const w = parentWidth;
+                    const h = parentHeight;
 
                     elements = {
                     tree: { x: w * 0.15, y: h * 0.7, width: w * 0.12, height: (w * 0.12) * (coreImages.tree.height / coreImages.tree.width) },
@@ -1794,6 +1802,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!progressBar || sections.length === 0) return;
 
+        // Cache section positions to avoid repeated layout reads
+        let sectionPositions = [];
+        function cacheSectionPositions() {
+            sectionPositions = Array.from(sections).map(section => ({
+                id: section.id,
+                top: section.offsetTop - 100,
+                bottom: section.offsetTop + section.offsetHeight
+            }));
+        }
+        
+        // Initial cache and recache on resize
+        cacheSectionPositions();
+        window.addEventListener('resize', cacheSectionPositions);
+        
         function updateNavigationAndProgress() {
             const scrollTop = window.scrollY;
             const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -1804,16 +1826,14 @@ document.addEventListener('DOMContentLoaded', () => {
             // Update progress bar
             progressBar.style.width = scrollPercent + '%';
             
-            // Update active navigation link
+            // Update active navigation link using cached positions
             let activeSection = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionBottom = sectionTop + section.offsetHeight;
-                
-                if (scrollTop >= sectionTop && scrollTop < sectionBottom) {
+            for (const section of sectionPositions) {
+                if (scrollTop >= section.top && scrollTop < section.bottom) {
                     activeSection = section.id;
+                    break;
                 }
-            });
+            }
             
             // Update nav link active states
             navLinks.forEach(link => {
