@@ -118,7 +118,7 @@ html {
             width: 100%;
             height: 400px; 
             background-color: #fef2f2; /* Subtle red background */
-            background-image: url('/images/GE-NetZeroFire.png');
+            /* Background image set via JavaScript for Vite optimization */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
