@@ -386,12 +386,16 @@ function setupHeroPicture() {
                 'jpeg': 'image/jpeg'
             };
             
-            Object.entries(heroPicture.sources).forEach(([format, srcset]) => {
-                const sourceEl = document.createElement('source');
-                sourceEl.srcset = srcset;
-                sourceEl.type = formatMimeTypes[format] || `image/${format}`;
-                sourceEl.sizes = '100vw';
-                heroPictureEl.insertBefore(sourceEl, heroImg);
+            // Ensure proper order: AVIF first, then WebP, then JPEG for best format selection
+            const formatOrder = ['avif', 'webp', 'jpeg', 'jpg'];
+            formatOrder.forEach(format => {
+                if (heroPicture.sources[format]) {
+                    const sourceEl = document.createElement('source');
+                    sourceEl.srcset = heroPicture.sources[format];
+                    sourceEl.type = formatMimeTypes[format] || `image/${format}`;
+                    sourceEl.sizes = '100vw';
+                    heroPictureEl.insertBefore(sourceEl, heroImg);
+                }
             });
         }
         
