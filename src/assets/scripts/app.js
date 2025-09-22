@@ -32,7 +32,7 @@ if (heroPicture && typeof heroPicture === 'object' && heroPicture.img) {
 const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
 
 // Import other critical images that need JavaScript loading
-import carbonCycleUrl from '../images/GE-CoconutCarbonCycle-optimized.webp';
+import carbonCyclePicture from '../images/GE-CoconutCarbonCycle-optimized.webp?preset=content&as=picture';
 import coconutTreeUrl from '../images/CoconutTree.png';
 import palmFrondUrl from '../images/GE-PalmFrond.png';
 import cpuPicture from '../images/GE-CPU-medium.webp?preset=content';
@@ -40,11 +40,15 @@ import cpuConstellationPicture from '../images/GE-CPU-Constellation-optimized.we
 // Fallback URLs for canvas/animation use
 const cpuUrl = cpuPicture?.img?.src || cpuPicture;
 const cpuConstellationUrl = cpuConstellationPicture?.img?.src || cpuConstellationPicture;
+const carbonCycleUrl = carbonCyclePicture?.img?.src || carbonCyclePicture;
+const cocoWoodUrl = cocoWoodPicture?.img?.src || cocoWoodPicture;
+const eagleUrl = eaglePicture?.img?.src || eaglePicture;
+const tarsierUrl = tarsierPicture?.img?.src || tarsierPicture;
 import husksUrl from '../images/GE-Husks.png';
-import cocoWoodUrl from '../images/GE-CocoWood.jpg';
+import cocoWoodPicture from '../images/GE-CocoWood.jpg?preset=content&as=picture';
 import co2DataUrl from '../images/co2-data-1751-2024.png';
-import eagleUrl from '../images/WP-Philippine_Eagle.jpg';
-import tarsierUrl from '../images/WP-Tarsier-GG.jpg';
+import eaglePicture from '../images/WP-Philippine_Eagle.jpg?preset=content&as=picture';
+import tarsierPicture from '../images/WP-Tarsier-GG.jpg?preset=content&as=picture';
 import cocoSmokeUrl from '../images/GE-Coco Smoke.png';
 import prosperFutureUrl from '../images/GE-ProsperFuture.png';
 import alchemistUrl from '../images/GE-MG-Alchemist.png';
@@ -206,6 +210,33 @@ function setupCpuImages() {
     });
 }
 
+// Setup responsive large content images with srcset
+function setupLargeImages() {
+    // Setup Carbon Cycle Diagram
+    const carbonCycleImg = document.querySelector('img[alt="Globe-Eco Carbon Cycle Diagram"]');
+    if (carbonCycleImg && carbonCyclePicture) {
+        setupResponsiveImage(carbonCycleImg, carbonCyclePicture, 'Carbon Cycle Diagram');
+    }
+    
+    // Setup CocoWood image
+    const cocoWoodImg = document.querySelector('img[alt="Globe-Eco CocoWood"]');
+    if (cocoWoodImg && cocoWoodPicture) {
+        setupResponsiveImage(cocoWoodImg, cocoWoodPicture, 'CocoWood');
+    }
+    
+    // Setup Philippine Eagle image
+    const eagleImg = document.querySelector('img[alt*="Philippine"]');
+    if (eagleImg && eaglePicture) {
+        setupResponsiveImage(eagleImg, eaglePicture, 'Philippine Eagle');
+    }
+    
+    // Setup Tarsier image
+    const tarsierImg = document.querySelector('img[alt*="Tarsier"]');
+    if (tarsierImg && tarsierPicture) {
+        setupResponsiveImage(tarsierImg, tarsierPicture, 'Tarsier');
+    }
+}
+
 // Generic helper to setup responsive images
 function setupResponsiveImage(imgElement, pictureData, imageName) {
     if (!imgElement || !pictureData) return;
@@ -276,6 +307,9 @@ function setupCriticalImages() {
     // Set up responsive CPU images
     setupCpuImages();
     
+    // Set up responsive large content images
+    setupLargeImages();
+    
     // Set up animation container backgrounds
     setupAnimationBackgrounds();
 }
@@ -283,16 +317,13 @@ function setupCriticalImages() {
 // Setup other critical images with proper Vite-processed URLs
 function setupOtherImages() {
     // Map image IDs/selectors to their imported URLs
+    // Note: CPU, Carbon Cycle, CocoWood, Eagle, and Tarsier images are now handled by responsive picture elements
     const imageMap = {
-        'img[alt="Globe-Eco Carbon Cycle Diagram"]': carbonCycleUrl,
         '#tree-v2': coconutTreeUrl,
         '#frond-v2': palmFrondUrl,
         '#cpu-v2': cpuUrl,
         'img[alt="Coconut Husks"]': husksUrl,
-        'img[alt="Globe-Eco CocoWood"]': cocoWoodUrl,
         'img[alt="IPCC chart showing the increase in CO2 from 1751 to 2024"]': co2DataUrl,
-        'img[alt*="Philippine"]': eagleUrl,
-        'img[alt*="Tarsier"]': tarsierUrl,
         'img[alt="Black carbon smog from burning coconut waste"]': cocoSmokeUrl,
         'img[alt*="vision of a futuristic"]': prosperFutureUrl,
         'img[alt="Matthew Grecsek"]': alchemistUrl,
