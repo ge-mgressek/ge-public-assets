@@ -4,6 +4,9 @@
   "exclude": [
     "/assets/*",
     "/src/assets/*",
+    "/images/*",
+    "/videos/*",
+    "/icon/*",
     "*.js",
     "*.css", 
     "*.ico",
@@ -20,6 +23,8 @@
     "*.eot",
     "*.json",
     "*.xml",
-    "*.txt"
+    "*.txt",
+    "*.mp4",
+    "*.webm"
   ]
 }
