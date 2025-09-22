@@ -35,8 +35,11 @@ const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, 
 import carbonCycleUrl from '../images/GE-CoconutCarbonCycle-optimized.webp';
 import coconutTreeUrl from '../images/CoconutTree.png';
 import palmFrondUrl from '../images/GE-PalmFrond.png';
-import cpuUrl from '../images/GE-CPU-medium.webp';
-import cpuConstellationUrl from '../images/GE-CPU-Constellation-optimized.webp';
+import cpuPicture from '../images/GE-CPU-medium.webp?preset=content';
+import cpuConstellationPicture from '../images/GE-CPU-Constellation-optimized.webp?preset=content';
+// Fallback URLs for canvas/animation use
+const cpuUrl = cpuPicture?.img?.src || cpuPicture;
+const cpuConstellationUrl = cpuConstellationPicture?.img?.src || cpuConstellationPicture;
 import husksUrl from '../images/GE-Husks.png';
 import cocoWoodUrl from '../images/GE-CocoWood.jpg';
 import co2DataUrl from '../images/co2-data-1751-2024.png';
@@ -187,6 +190,70 @@ function setupSdgImages() {
     });
 }
 
+// Setup responsive CPU images with srcset
+function setupCpuImages() {
+    // Setup CPU Constellation image
+    const cpuConstellationImg = document.querySelector('img[alt="Globe-Eco CPU Constellation"]');
+    if (cpuConstellationImg && cpuConstellationPicture) {
+        setupResponsiveImage(cpuConstellationImg, cpuConstellationPicture, 'CPU Constellation');
+    }
+    
+    // Setup CPU images
+    document.querySelectorAll('img[alt="Globe-Eco CPU"]').forEach(img => {
+        if (cpuPicture) {
+            setupResponsiveImage(img, cpuPicture, 'CPU');
+        }
+    });
+}
+
+// Generic helper to setup responsive images
+function setupResponsiveImage(imgElement, pictureData, imageName) {
+    if (!imgElement || !pictureData) return;
+    
+    // Create picture wrapper if not exists
+    let pictureEl = imgElement.closest('picture');
+    if (!pictureEl) {
+        pictureEl = document.createElement('picture');
+        imgElement.parentNode.insertBefore(pictureEl, imgElement);
+        pictureEl.appendChild(imgElement);
+    }
+    
+    // Clear existing sources
+    pictureEl.querySelectorAll('source').forEach(source => source.remove());
+    
+    // Add responsive sources
+    if (pictureData && typeof pictureData === 'object' && pictureData.sources) {
+        const formatMimeTypes = {
+            'avif': 'image/avif',
+            'webp': 'image/webp', 
+            'jpeg': 'image/jpeg'
+        };
+        
+        Object.entries(pictureData.sources).forEach(([format, srcset]) => {
+            const sourceEl = document.createElement('source');
+            sourceEl.srcset = srcset;
+            sourceEl.type = formatMimeTypes[format] || `image/${format}`;
+            sourceEl.sizes = '(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 25vw';
+            pictureEl.insertBefore(sourceEl, imgElement);
+        });
+    }
+    
+    // Set fallback image
+    if (pictureData.img) {
+        imgElement.src = pictureData.img.src;
+        if (pictureData.img.srcset) {
+            imgElement.srcset = pictureData.img.srcset;
+        }
+        imgElement.sizes = '(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 25vw';
+    } else if (typeof pictureData === 'string') {
+        imgElement.src = pictureData;
+    }
+    
+    // Add lazy loading for non-critical images
+    imgElement.loading = 'lazy';
+    imgElement.decoding = 'async';
+}
+
 // Setup critical images with proper Vite-processed URLs
 function setupCriticalImages() {
     // Set up responsive hero picture element
@@ -206,6 +273,9 @@ function setupCriticalImages() {
     // Set video poster images
     setupVideoPoster();
     
+    // Set up responsive CPU images
+    setupCpuImages();
+    
     // Set up animation container backgrounds
     setupAnimationBackgrounds();
 }
@@ -218,9 +288,7 @@ function setupOtherImages() {
         '#tree-v2': coconutTreeUrl,
         '#frond-v2': palmFrondUrl,
         '#cpu-v2': cpuUrl,
-        'img[alt="Globe-Eco CPU Constellation"]': cpuConstellationUrl,
         'img[alt="Coconut Husks"]': husksUrl,
-        'img[alt="Globe-Eco CPU"]': cpuUrl,
         'img[alt="Globe-Eco CocoWood"]': cocoWoodUrl,
         'img[alt="IPCC chart showing the increase in CO2 from 1751 to 2024"]': co2DataUrl,
         'img[alt*="Philippine"]': eagleUrl,
@@ -240,10 +308,7 @@ function setupOtherImages() {
         }
     });
     
-    // Special case for multiple CPU images
-    document.querySelectorAll('img[alt="Globe-Eco CPU"]').forEach(img => {
-        img.src = cpuUrl;
-    });
+    // CPU images are now handled by responsive picture elements
 }
 
 // Setup animation container backgrounds with proper Vite-processed URLs
