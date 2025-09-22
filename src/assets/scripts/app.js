@@ -6,27 +6,7 @@ import '../styles/main.css';
 import heroPicture from '../images/GE-plantation.jpg?preset=hero';
 import logoUrl from '../images/GE-CropX.png';
 
-// Create preload immediately when module loads (not waiting for DOMContentLoaded)
-if (heroPicture && typeof heroPicture === 'object' && heroPicture.img) {
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'image';
-    preloadLink.href = heroPicture.img.src;
-    if (heroPicture.img.srcset) {
-        preloadLink.setAttribute('imagesrcset', heroPicture.img.srcset);
-        preloadLink.setAttribute('imagesizes', '100vw');
-    }
-    preloadLink.setAttribute('fetchpriority', 'high');
-    document.head.appendChild(preloadLink);
-} else if (typeof heroPicture === 'string') {
-    // Fallback for string URL
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'image';
-    preloadLink.href = heroPicture;
-    preloadLink.setAttribute('fetchpriority', 'high');
-    document.head.appendChild(preloadLink);
-}
+// Hero preload is now handled statically in HTML for better performance
 
 // Import SDG goal images with eager loading to prevent scroll delays
 const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
@@ -165,7 +145,7 @@ function initVideoLazyLoading() {
     }
 }
 
-// Setup SDG images with proper Vite-processed URLs
+// Setup SDG images with lazy loading for performance
 function setupSdgImages() {
     const sdgGoalImages = document.querySelectorAll('.sdg-grid-item img, .sdg-goal-img');
     if (sdgGoalImages.length === 0) {
@@ -173,7 +153,7 @@ function setupSdgImages() {
         return;
     }
     
-    console.log('Starting SDG grid loading with', Object.keys(sdgImages).length, 'items');
+    console.log('Setting up lazy loading for', Object.keys(sdgImages).length, 'SDG images');
     
     // Map goal numbers to their image URLs using eager imports
     const goalImageMap = {};
@@ -185,13 +165,46 @@ function setupSdgImages() {
         }
     });
     
-    // Apply loaded images to DOM elements immediately
+    // Store image URLs in data attributes for lazy loading
     sdgGoalImages.forEach(img => {
         const goalNumber = parseInt(img.dataset.goalId || img.getAttribute('data-goal'));
         if (goalNumber && goalImageMap[goalNumber]) {
-            img.src = goalImageMap[goalNumber];
+            img.dataset.src = goalImageMap[goalNumber]; // Store URL for lazy loading
+            img.removeAttribute('src'); // Remove src to prevent immediate loading
+            img.loading = 'lazy'; // Browser-native lazy loading as fallback
         }
     });
+    
+    // Set up IntersectionObserver for lazy loading
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '50px' // Start loading 50px before the image is visible
+        });
+        
+        sdgGoalImages.forEach(img => {
+            if (img.dataset.src) {
+                imageObserver.observe(img);
+            }
+        });
+    } else {
+        // Fallback for older browsers: load images immediately
+        sdgGoalImages.forEach(img => {
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+            }
+        });
+    }
 }
 
 // Setup responsive CPU images with srcset
@@ -288,7 +301,7 @@ function setupResponsiveImage(imgElement, pictureData, imageName) {
 // Setup critical images with proper Vite-processed URLs
 function setupCriticalImages() {
     // Set up responsive hero picture element
-    setupHeroPicture();
+    // setupHeroPicture() - now static in HTML
     
     // Set main logo
     const logoImg = document.querySelector('img[alt="Globe-Eco Logo"]');
@@ -359,75 +372,27 @@ function setupVideoPoster() {
     }
 }
 
-// Setup responsive hero picture with srcset and preload
-function setupHeroPicture() {
-    const heroPictureEl = document.getElementById('hero-picture');
-    const heroImg = document.getElementById('hero-bg');
-    
-    if (!heroPictureEl || !heroImg) {
-        console.warn('Hero picture elements not found');
-        return;
-    }
-    
-    // Debug: Check what heroPicture contains  
-    // console.log('Hero picture structure:', heroPicture);
-    
-    // Clear existing sources
-    heroPictureEl.querySelectorAll('source').forEach(source => source.remove());
-    
-    // Check if heroPicture has the expected structure
-    if (heroPicture && typeof heroPicture === 'object') {
-        // Handle vite-imagetools picture format - sources is an object with format keys
-        if (heroPicture.sources && typeof heroPicture.sources === 'object') {
-            // Create source elements for each format (AVIF, WebP, JPEG)
-            const formatMimeTypes = {
-                'avif': 'image/avif',
-                'webp': 'image/webp', 
-                'jpeg': 'image/jpeg'
-            };
-            
-            // Ensure proper order: AVIF first, then WebP, then JPEG for best format selection
-            const formatOrder = ['avif', 'webp', 'jpeg', 'jpg'];
-            formatOrder.forEach(format => {
-                if (heroPicture.sources[format]) {
-                    const sourceEl = document.createElement('source');
-                    sourceEl.srcset = heroPicture.sources[format];
-                    sourceEl.type = formatMimeTypes[format] || `image/${format}`;
-                    sourceEl.sizes = '100vw';
-                    heroPictureEl.insertBefore(sourceEl, heroImg);
-                }
-            });
-        }
-        
-        // Set fallback image
-        if (heroPicture.img) {
-            heroImg.src = heroPicture.img.src;
-            if (heroPicture.img.srcset) {
-                heroImg.srcset = heroPicture.img.srcset; 
-            }
-            heroImg.sizes = '100vw';
-            
-            // Preload is already created at module load time for early discovery
-        } else {
-            // Fallback: if it's just a URL string, use it directly
-            heroImg.src = heroPicture;
-            // Preload is already created at module load time for early discovery
-        }
-    } else {
-        console.warn('Unexpected heroPicture format:', typeof heroPicture);
-    }
-}
+// Hero picture is now static in HTML for faster LCP - no JavaScript setup needed
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Set up critical images with Vite-processed URLs
+    // Set up critical images with Vite-processed URLs  
     setupCriticalImages();
+    
+    // Hero picture is now static in HTML - no setup needed
     
     // Initialize video lazy loading
     initVideoLazyLoading();
 
             // --- CO2 Flow Animation (Hero) ---
             const heroCanvas = document.getElementById('co2-animation-canvas');
-            if (heroCanvas) {
+            
+            // Disable animation on mobile devices and when user prefers reduced motion
+            const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            // Debug: console.log('Animation check:', { screenWidth: window.innerWidth, isMobile, prefersReducedMotion });
+            
+            if (heroCanvas && !isMobile && !prefersReducedMotion) {
                 const ctx = heroCanvas.getContext('2d');
                 let particles = [];
                 const numParticles = 300;
@@ -451,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     new Promise(resolve => { recycleImage.onload = () => resolve(); })
                 ]).then(() => {
                     allImagesLoaded = true;
-                    console.log('Hero animation enabled for all devices');
+                    console.log('Hero animation enabled for desktop (mobile disabled for performance)');
                     if (!animationFrameId) {
                         resizeCanvas();
                         animate();
@@ -746,6 +711,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         animate();
                     }, 100); // Debounce resize by 100ms
                 });
+            } else {
+                console.log('Hero animation disabled:', { isMobile, prefersReducedMotion });
             }
 
             // --- Slideshow ---
@@ -965,7 +932,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 
-                console.log('Starting SDG grid loading with', sdgData.length, 'items');
+                console.log('Creating SDG grid tiles with', sdgData.length, 'items (lazy loading applied)');
 /*
             sdgData.forEach(goal => {
                 const item = document.createElement('div');
