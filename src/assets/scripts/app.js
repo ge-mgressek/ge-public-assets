@@ -1296,7 +1296,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 coreImages.frond.src = '/assets/images/GE-PalmFrond.png';
                 coreImages.tree.src = '/assets/images/CoconutTree.png';
                 coreImages.sdg.src = '/assets/images/GE-SDG-Wheel.png';
-                coreImages.cpu.src = '/assets/images/GE-CPU.png';
+                coreImages.cpu.src = '/assets/images/GE-CPU-small.webp';
 
                 Object.values(coreImages).forEach(img => {
                     img.onload = coreImageLoaded;
