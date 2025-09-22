@@ -35,20 +35,9 @@ import alchemistUrl from '../images/GE-MG-Alchemist.png';
 import sageUrl from '../images/GE-RK-Sage2.png';
 import adventureTicketUrl from '../images/GE-AdventureTicket.png';
 
-// Mobile detection for performance optimization
-function isMobileDevice() {
-    return window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-}
-
-// Dynamic Chart.js loader for performance - DISABLED ON MOBILE for TBT optimization
+// Dynamic Chart.js loader for performance
 let Chart = null;
 async function loadChart() {
-    // Skip Chart.js entirely on mobile devices to reduce TBT
-    if (isMobileDevice()) {
-        console.log('Skipping Chart.js on mobile for better performance');
-        return null;
-    }
-    
     if (!Chart) {
         const chartModule = await import('chart.js/auto');
         Chart = chartModule.default;
@@ -922,23 +911,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let charts = {};
 
             const createChart = async (id, config) => {
-                // Skip chart creation on mobile devices
-                if (isMobileDevice()) {
-                    console.log(`Skipping chart creation for ${id} on mobile device`);
-                    // Show static message instead of chart
-                    const canvas = document.getElementById(id);
-                    if (canvas && canvas.parentElement) {
-                        canvas.parentElement.innerHTML = '<div class="text-center p-4 text-gray-600"><p>📊 Chart available on desktop</p><p class="text-sm mt-2">Visit on a larger screen for interactive data visualization</p></div>';
-                    }
-                    return;
-                }
-                
                 const ctx = document.getElementById(id).getContext('2d');
                 if (charts[id]) {
                     charts[id].destroy();
                 }
                 const ChartClass = await loadChart();
-                if (!ChartClass) return; // Safety check
                 ChartClass.register(window.povertyLinePlugin);
                 charts[id] = new ChartClass(ctx, config);
             };
