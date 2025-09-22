@@ -36,11 +36,20 @@
     <meta name="author" content="Globe-Eco">
     
     <!-- Tailwind CSS and Chart.js now bundled with Vite -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Load Google Fonts asynchronously -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+    <!-- Mobile: Use system fonts for instant render -->
+    <style>
+        @media (max-width: 768px) {
+            body, .font-family { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif !important; }
+        }
+        @media (min-width: 769px) {
+            /* Desktop: Load Inter font asynchronously */
+            body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+        }
+    </style>
+    <!-- Desktop only: Load Google Fonts asynchronously -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" media="(min-width: 769px)">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin media="(min-width: 769px)">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" media="(min-width: 769px)">
     
     
     <!-- Load main CSS for custom styles -->
@@ -55,7 +64,8 @@
         .animation-wrapper { position: relative; flex-grow: 1; max-height: 65vh; background-size: cover; background-position: center; overflow: hidden; }
     </style>
     <!-- Preload critical hero image for faster LCP -->
-    <link rel="preload" as="image" href="/images/GE-plantation.jpg" type="image/jpeg">
+    <link rel="preload" as="image" href="/images/GE-plantation-mobile-ultra.jpg" type="image/jpeg" media="(max-width: 768px)">
+    <link rel="preload" as="image" href="/images/GE-plantation.jpg" type="image/jpeg" media="(min-width: 769px)">
     <!-- Note: Non-critical CSS is handled by Vite bundling for production builds -->
     
     <!-- Schema.org Structured Data -->
@@ -149,7 +159,9 @@
         <section id="hero" class="hero-display-area">
             <div class="animation-wrapper">
                 <picture id="hero-picture" class="absolute inset-0 -z-10">
-                    <!-- Fallback image with dimensions to prevent CLS -->
+                    <!-- Mobile-optimized hero for faster LCP -->
+                    <source srcset="/images/GE-plantation-mobile-ultra.jpg" media="(max-width: 768px)">
+                    <!-- Desktop hero image -->
                     <img id="hero-bg" src="/images/GE-plantation.jpg" alt="Globe-Eco coconut plantation sustainable carbon capture" fetchpriority="high" class="w-full h-full object-cover" loading="eager" width="1920" height="884" />
                 </picture>
                 <canvas id="co2-animation-canvas"></canvas>
