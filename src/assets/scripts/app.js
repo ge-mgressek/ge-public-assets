@@ -3,8 +3,30 @@ import '../styles/tailwind.css';
 import '../styles/main.css';
 
 // Import critical images for proper Vite processing
-import heroBgUrl from '../images/GE-plantation.jpg';
+import heroPicture from '../images/GE-plantation.jpg?preset=hero';
 import logoUrl from '../images/GE-CropX.png';
+
+// Create preload immediately when module loads (not waiting for DOMContentLoaded)
+if (heroPicture && typeof heroPicture === 'object' && heroPicture.img) {
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'image';
+    preloadLink.href = heroPicture.img.src;
+    if (heroPicture.img.srcset) {
+        preloadLink.setAttribute('imagesrcset', heroPicture.img.srcset);
+        preloadLink.setAttribute('imagesizes', '100vw');
+    }
+    preloadLink.setAttribute('fetchpriority', 'high');
+    document.head.appendChild(preloadLink);
+} else if (typeof heroPicture === 'string') {
+    // Fallback for string URL
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'image';
+    preloadLink.href = heroPicture;
+    preloadLink.setAttribute('fetchpriority', 'high');
+    document.head.appendChild(preloadLink);
+}
 
 // Import SDG goal images with eager loading to prevent scroll delays
 const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
@@ -167,19 +189,8 @@ function setupSdgImages() {
 
 // Setup critical images with proper Vite-processed URLs
 function setupCriticalImages() {
-    // Set hero background image
-    const heroWrapper = document.querySelector('.animation-wrapper');
-    if (heroWrapper) {
-        heroWrapper.style.backgroundImage = `url(${heroBgUrl})`;
-        
-        // Create preload link for hero image
-        const preloadLink = document.createElement('link');
-        preloadLink.rel = 'preload';
-        preloadLink.as = 'image';
-        preloadLink.href = heroBgUrl;
-        preloadLink.setAttribute('fetchpriority', 'high');
-        document.head.appendChild(preloadLink);
-    }
+    // Set up responsive hero picture element
+    setupHeroPicture();
     
     // Set main logo
     const logoImg = document.querySelector('img[alt="Globe-Eco Logo"]');
@@ -249,6 +260,61 @@ function setupVideoPoster() {
     const bukoJoeVideo = document.getElementById('buko-joe-video');
     if (bukoJoeVideo) {
         bukoJoeVideo.poster = husksUrl;
+    }
+}
+
+// Setup responsive hero picture with srcset and preload
+function setupHeroPicture() {
+    const heroPictureEl = document.getElementById('hero-picture');
+    const heroImg = document.getElementById('hero-bg');
+    
+    if (!heroPictureEl || !heroImg) {
+        console.warn('Hero picture elements not found');
+        return;
+    }
+    
+    // Debug: Check what heroPicture contains  
+    // console.log('Hero picture structure:', heroPicture);
+    
+    // Clear existing sources
+    heroPictureEl.querySelectorAll('source').forEach(source => source.remove());
+    
+    // Check if heroPicture has the expected structure
+    if (heroPicture && typeof heroPicture === 'object') {
+        // Handle vite-imagetools picture format - sources is an object with format keys
+        if (heroPicture.sources && typeof heroPicture.sources === 'object') {
+            // Create source elements for each format (AVIF, WebP, JPEG)
+            const formatMimeTypes = {
+                'avif': 'image/avif',
+                'webp': 'image/webp', 
+                'jpeg': 'image/jpeg'
+            };
+            
+            Object.entries(heroPicture.sources).forEach(([format, srcset]) => {
+                const sourceEl = document.createElement('source');
+                sourceEl.srcset = srcset;
+                sourceEl.type = formatMimeTypes[format] || `image/${format}`;
+                sourceEl.sizes = '100vw';
+                heroPictureEl.insertBefore(sourceEl, heroImg);
+            });
+        }
+        
+        // Set fallback image
+        if (heroPicture.img) {
+            heroImg.src = heroPicture.img.src;
+            if (heroPicture.img.srcset) {
+                heroImg.srcset = heroPicture.img.srcset; 
+            }
+            heroImg.sizes = '100vw';
+            
+            // Preload is already created at module load time for early discovery
+        } else {
+            // Fallback: if it's just a URL string, use it directly
+            heroImg.src = heroPicture;
+            // Preload is already created at module load time for early discovery
+        }
+    } else {
+        console.warn('Unexpected heroPicture format:', typeof heroPicture);
     }
 }
 

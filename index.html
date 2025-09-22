@@ -148,6 +148,10 @@
     <main>
         <section id="hero" class="hero-display-area">
             <div class="animation-wrapper">
+                <picture id="hero-picture" class="absolute inset-0 -z-10">
+                    <!-- Responsive hero background - populated by JavaScript -->
+                    <img id="hero-bg" alt="" fetchpriority="high" class="w-full h-full object-cover" loading="eager" />
+                </picture>
                 <canvas id="co2-animation-canvas"></canvas>
             </div>
             <div class="hero-banner">
