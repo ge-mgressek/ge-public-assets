@@ -37,8 +37,8 @@ import coconutTreeUrl from '../images/CoconutTree.png';
 import palmFrondUrl from '../images/GE-PalmFrond.png';
 import cpuPicture from '../images/GE-CPU-medium.webp?preset=content';
 import cpuConstellationPicture from '../images/GE-CPU-Constellation-optimized.webp?preset=content';
-// Fallback URLs for canvas/animation use
-const cpuUrl = cpuPicture?.img?.src || cpuPicture;
+// Fallback URLs for canvas/animation use - Use transparent CPU image
+const cpuUrl = '/src/assets/images/GE-CPU-small.webp';
 const cpuConstellationUrl = cpuConstellationPicture?.img?.src || cpuConstellationPicture;
 const carbonCycleUrl = carbonCyclePicture?.img?.src || carbonCyclePicture;
 const cocoWoodUrl = cocoWoodPicture?.img?.src || cocoWoodPicture;
@@ -1296,7 +1296,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 coreImages.frond.src = '/assets/images/GE-PalmFrond.png';
                 coreImages.tree.src = '/assets/images/CoconutTree.png';
                 coreImages.sdg.src = '/assets/images/GE-SDG-Wheel.png';
-                coreImages.cpu.src = '/assets/images/GE-CPU-small.webp';
+                coreImages.cpu.src = '/src/assets/images/GE-CPU-small.webp';
 
                 Object.values(coreImages).forEach(img => {
                     img.onload = coreImageLoaded;
@@ -1312,7 +1312,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 coreImages.frond.src = palmFrondUrl;
                 coreImages.tree.src = coconutTreeUrl;
                 coreImages.sdg.src = sdgWheelUrl;
-                coreImages.cpu.src = cpuUrl;
+                coreImages.cpu.src = '/src/assets/images/GE-CPU-small.webp';
 
                 Object.values(coreImages).forEach(img => {
                     img.onload = coreImageLoaded;
