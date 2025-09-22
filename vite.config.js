@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+import { imagetools } from 'vite-imagetools';
 
 export default defineConfig({
   build: {
@@ -13,8 +14,42 @@ export default defineConfig({
     allowedHosts: true
   },
   plugins: [
+    // Responsive image generation for imports
+    imagetools({
+      defaultDirectives: (url) => {
+        // Define responsive presets based on query params
+        if (url.searchParams.has('preset')) {
+          const preset = url.searchParams.get('preset');
+          
+          switch (preset) {
+            case 'hero':
+              return new URLSearchParams({
+                format: 'avif;webp;jpg',
+                quality: '85',
+                w: '480;768;1024;1200;1600;1920',
+                as: 'picture'
+              });
+            case 'content':
+              return new URLSearchParams({
+                format: 'avif;webp;jpg', 
+                quality: '85',
+                w: '320;640;960;1280',
+                as: 'picture'
+              });
+            case 'thumbnail':
+              return new URLSearchParams({
+                format: 'avif;webp;jpg',
+                quality: '85', 
+                w: '80;160;320',
+                as: 'picture'
+              });
+          }
+        }
+        return url.searchParams;
+      }
+    }),
     ViteImageOptimizer({
-      // Comprehensive image optimization for assets folder
+      // Comprehensive image optimization for assets folder  
       include: /\.(jpe?g|png|gif|tiff|bmp|svg)$/i,
       gifsicle: { 
         optimizationLevel: 7, 

@@ -29,6 +29,7 @@
     "autoprefixer": "^10.4.21",
     "chart.js": "^4.5.0",
     "serve": "^14.2.5",
-    "tailwindcss": "^4.1.13"
+    "tailwindcss": "^4.1.13",
+    "vite-imagetools": "^8.0.0"
   }
 }
