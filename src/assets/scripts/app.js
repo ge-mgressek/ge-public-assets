@@ -386,13 +386,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- CO2 Flow Animation (Hero) ---
             const heroCanvas = document.getElementById('co2-animation-canvas');
             
-            // Disable animation on mobile devices and when user prefers reduced motion
-            const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            // Only disable animation when user prefers reduced motion (mobile animation re-enabled)
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             
-            // Debug: console.log('Animation check:', { screenWidth: window.innerWidth, isMobile, prefersReducedMotion });
+            // Debug: console.log('Animation check:', { screenWidth: window.innerWidth, prefersReducedMotion });
             
-            if (heroCanvas && !isMobile && !prefersReducedMotion) {
+            if (heroCanvas && !prefersReducedMotion) {
                 const ctx = heroCanvas.getContext('2d');
                 let particles = [];
                 const numParticles = 300;
@@ -416,7 +415,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     new Promise(resolve => { recycleImage.onload = () => resolve(); })
                 ]).then(() => {
                     allImagesLoaded = true;
-                    console.log('Hero animation enabled for desktop (mobile disabled for performance)');
+                    console.log('Hero animation enabled');
                     if (!animationFrameId) {
                         resizeCanvas();
                         animate();
@@ -712,7 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 100); // Debounce resize by 100ms
                 });
             } else {
-                console.log('Hero animation disabled:', { isMobile, prefersReducedMotion });
+                console.log('Hero animation disabled due to reduced motion preference');
             }
 
             // --- Slideshow ---
