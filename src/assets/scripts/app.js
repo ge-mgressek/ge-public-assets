@@ -396,6 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let particles = [];
                 const numParticles = 300;
                 let animationFrameId;
+                let isHeroVisible = true; // Track hero viewport visibility
 
                 const cpuImage = new Image();
                 cpuImage.src = cpuUrl;
@@ -421,6 +422,34 @@ document.addEventListener('DOMContentLoaded', () => {
                         animate();
                     }
                 });
+
+                // Add viewport observer to pause/resume hero animation
+                const heroObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const wasVisible = isHeroVisible;
+                        isHeroVisible = entry.isIntersecting;
+                        
+                        if (isHeroVisible && !wasVisible && allImagesLoaded) {
+                            // Resume animation when hero becomes visible
+                            console.log('Hero animation resumed (viewport visible)');
+                            if (!animationFrameId) {
+                                animate();
+                            }
+                        } else if (!isHeroVisible && wasVisible) {
+                            // Pause animation when hero leaves viewport
+                            console.log('Hero animation paused (viewport hidden)');
+                            if (animationFrameId) {
+                                cancelAnimationFrame(animationFrameId);
+                                animationFrameId = null;
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.1, // Trigger when 10% visible
+                    rootMargin: '50px' // Start animation 50px before entering viewport
+                });
+
+                heroObserver.observe(heroCanvas);
 
                 const cpuIcon = { x: 0, y: 0, width: 120, height: 120 };
                 const sdgWheel = { x: 0, y: 0, radius: 0, rotation: 0 };
@@ -683,19 +712,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 function animate(now) {
-                    animationFrameId = requestAnimationFrame(animate);
-                    try {
-                        // Guard against zero-sized canvas
-                        if (!heroCanvas.width || !heroCanvas.height) {
-                            return;
+                    // Only continue animation if hero is visible in viewport
+                    if (isHeroVisible) {
+                        animationFrameId = requestAnimationFrame(animate);
+                        try {
+                            // Guard against zero-sized canvas
+                            if (!heroCanvas.width || !heroCanvas.height) {
+                                return;
+                            }
+                            if (!productCycle.lastStateChange) productCycle.lastStateChange = now;
+                            ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+                            particles.forEach(p => { p.update(); p.draw(); });
+                            drawOutputs(now);
+                        } catch (error) {
+                            console.error('Hero animation error:', error);
+                            cancelAnimationFrame(animationFrameId);
+                            animationFrameId = null;
                         }
-                        if (!productCycle.lastStateChange) productCycle.lastStateChange = now;
-                        ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
-                        particles.forEach(p => { p.update(); p.draw(); });
-                        drawOutputs(now);
-                    } catch (error) {
-                        console.error('Hero animation error:', error);
-                        cancelAnimationFrame(animationFrameId);
+                    } else {
+                        // Animation paused - cancel the frame
                         animationFrameId = null;
                     }
                 }
@@ -714,9 +749,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Hero animation disabled due to reduced motion preference');
             }
 
-            // --- Slideshow ---
+            // --- Slideshow with Viewport Detection ---
             let slideIndex = 0;
-            showSlides();
+            let slideshowTimeout;
+            let isSlideshowVisible = true;
+            
+            // Add viewport observer for slideshow container
+            const slideshowContainer = document.querySelector('.slides-container') || document.querySelector('.slideshow');
+            if (slideshowContainer) {
+                const slideshowObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const wasVisible = isSlideshowVisible;
+                        isSlideshowVisible = entry.isIntersecting;
+                        
+                        if (isSlideshowVisible && !wasVisible) {
+                            console.log('Slideshow resumed (viewport visible)');
+                            showSlides(); // Resume slideshow
+                        } else if (!isSlideshowVisible && wasVisible) {
+                            console.log('Slideshow paused (viewport hidden)');
+                            if (slideshowTimeout) {
+                                clearTimeout(slideshowTimeout);
+                                slideshowTimeout = null;
+                            }
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                slideshowObserver.observe(slideshowContainer);
+            }
+            
+            showSlides(); // Start slideshow
 
             function showSlides() {
                 let i;
@@ -728,7 +790,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 slideIndex++;
                 if (slideIndex > slides.length) {slideIndex = 1}
                 slides[slideIndex-1].style.display = "block";
-                setTimeout(showSlides, 4000); // Change image every 4 seconds
+                
+                // Only set timeout if slideshow is visible
+                if (isSlideshowVisible) {
+                    slideshowTimeout = setTimeout(showSlides, 4000); // Change image every 4 seconds
+                }
             }
 
             // --- Poverty Line Plugin for Chart.js ---
@@ -1152,6 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let particleInterval;
                 let particles = [];
                 let animationFrameId_v2;
+                let isParticleAnimationVisible = true; // Track particle animation viewport visibility
 
                 function preparePath(pathElement) {
                     if(!pathElement) return;
@@ -1199,24 +1266,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 function animateParticles() {
-                    const now = Date.now();
-                    for (let i = particles.length - 1; i >= 0; i--) {
-                        const p = particles[i];
-                        const timeElapsed = now - p.startTime;
-                        let t = timeElapsed / p.duration;
+                    // Only continue animation if particle container is visible in viewport
+                    if (isParticleAnimationVisible) {
+                        const now = Date.now();
+                        for (let i = particles.length - 1; i >= 0; i--) {
+                            const p = particles[i];
+                            const timeElapsed = now - p.startTime;
+                            let t = timeElapsed / p.duration;
 
-                        if (t >= 1) {
-                            p.element.remove();
-                            particles.splice(i, 1);
-                            continue;
+                            if (t >= 1) {
+                                p.element.remove();
+                                particles.splice(i, 1);
+                                continue;
+                            }
+
+                            const x = Math.pow(1 - t, 3) * p.p0.x + 3 * Math.pow(1 - t, 2) * t * p.p1.x + 3 * (1 - t) * t * t * p.p2.x + t * t * t * p.p3.x;
+                            const y = Math.pow(1 - t, 3) * p.p0.y + 3 * Math.pow(1 - t, 2) * t * p.p1.y + 3 * (1 - t) * t * t * p.p2.y + t * t * t * p.p3.y;
+
+                            p.element.style.transform = `translate(${x}px, ${y}px)`;
                         }
-
-                        const x = Math.pow(1 - t, 3) * p.p0.x + 3 * Math.pow(1 - t, 2) * t * p.p1.x + 3 * (1 - t) * t * t * p.p2.x + t * t * t * p.p3.x;
-                        const y = Math.pow(1 - t, 3) * p.p0.y + 3 * Math.pow(1 - t, 2) * t * p.p1.y + 3 * (1 - t) * t * t * p.p2.y + t * t * t * p.p3.y;
-
-                        p.element.style.transform = `translate(${x}px, ${y}px)`;
+                        animationFrameId_v2 = requestAnimationFrame(animateParticles);
+                    } else {
+                        // Pause particle animation
+                        animationFrameId_v2 = null;
                     }
-                    animationFrameId_v2 = requestAnimationFrame(animateParticles);
                 }
 
                 function runAnimation() {
@@ -1226,11 +1299,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     particleContainer.innerHTML = '';
                     particles = [];
 
-                    drawHouse();
-                    particleInterval = setInterval(spawnParticle, 500);
-                    animateParticles();
+                    if (isParticleAnimationVisible) {
+                        drawHouse();
+                        particleInterval = setInterval(spawnParticle, 500);
+                        animateParticles();
+                    }
                 }
-                runAnimation();
+
+                // Add viewport observer for particle animation container
+                const particleObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const wasVisible = isParticleAnimationVisible;
+                        isParticleAnimationVisible = entry.isIntersecting;
+                        
+                        if (isParticleAnimationVisible && !wasVisible) {
+                            console.log('Particle animation resumed (viewport visible)');
+                            runAnimation(); // Resume particle animation
+                        } else if (!isParticleAnimationVisible && wasVisible) {
+                            console.log('Particle animation paused (viewport hidden)');
+                            clearTimeout(houseLoopTimeout);
+                            clearInterval(particleInterval);
+                            cancelAnimationFrame(animationFrameId_v2);
+                            particleInterval = null;
+                            animationFrameId_v2 = null;
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '50px' });
+
+                particleObserver.observe(particleContainer);
+                runAnimation(); // Initial start
             };
 
             // --- Regenerative Core Animation ---
@@ -1243,6 +1340,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let coreParticles = [];
                 let coreAnimationStarted = false;
                 let coreAnimationFrameId;
+                let isCoreAnimationVisible = true; // Track core animation viewport visibility
 
                 const coreImages = {
                     frond: new Image(),
@@ -1262,6 +1360,29 @@ document.addEventListener('DOMContentLoaded', () => {
                         coreAnimate();
                     }
                 }
+
+                // Add viewport observer for core animation canvas  
+                const coreObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const wasVisible = isCoreAnimationVisible;
+                        isCoreAnimationVisible = entry.isIntersecting;
+                        
+                        if (isCoreAnimationVisible && !wasVisible && coreAnimationStarted) {
+                            console.log('Core animation resumed (viewport visible)');
+                            if (!coreAnimationFrameId) {
+                                coreAnimate();
+                            }
+                        } else if (!isCoreAnimationVisible && wasVisible) {
+                            console.log('Core animation paused (viewport hidden)');
+                            if (coreAnimationFrameId) {
+                                cancelAnimationFrame(coreAnimationFrameId);
+                                coreAnimationFrameId = null;
+                            }
+                        }
+                    });
+                }, { threshold: 0.1, rootMargin: '50px' });
+
+                coreObserver.observe(canvas);
 /*
                 coreImages.frond.src = '/assets/images/GE-PalmFrond.png';
                 coreImages.tree.src = '/assets/images/CoconutTree.png';
@@ -1711,20 +1832,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 function coreAnimate() {
-                    coreAnimationFrameId = requestAnimationFrame(coreAnimate);
-                    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+                    // Only continue animation if core canvas is visible in viewport
+                    if (isCoreAnimationVisible) {
+                        coreAnimationFrameId = requestAnimationFrame(coreAnimate);
+                        ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
-                    drawCoreScene();
-                    drawCoreConveyor();
-                    drawMainCore();
-                    drawCoreCarbonCounter();
-                    drawCoreFronds();
-                    drawCoreBuildingHouse();
-                    drawCoreParticles();
-                    drawCoreCaptions();
+                        drawCoreScene();
+                        drawCoreConveyor();
+                        drawMainCore();
+                        drawCoreCarbonCounter();
+                        drawCoreFronds();
+                        drawCoreBuildingHouse();
+                        drawCoreParticles();
+                        drawCoreCaptions();
 
-                    coreUpdate();
-
+                        coreUpdate();
+                    } else {
+                        // Animation paused - cancel the frame
+                        coreAnimationFrameId = null;
+                    }
                  }
 
                 window.addEventListener('resize', () => {
