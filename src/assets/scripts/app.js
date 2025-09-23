@@ -113,8 +113,8 @@ function initVideoLazyLoading() {
                 }
             });
         }, {
-            rootMargin: '50px 0px',
-            threshold: 0.25
+            rootMargin: '400px 0px', // Start loading/playing videos 400px before they enter viewport
+            threshold: 0.1 // Lower threshold for earlier detection
         });
 
         lazyVideos.forEach((video) => {
