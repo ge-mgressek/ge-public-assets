@@ -183,6 +183,7 @@ function setupSdgImages() {
     // Store image URLs in data attributes for lazy loading
     sdgGoalImages.forEach(img => {
         const goalNumber = parseInt(img.dataset.goalId || img.getAttribute('data-goal'));
+        console.log('Processing SDG image for goal', goalNumber, 'URL:', goalImageMap[goalNumber]);
         if (goalNumber && goalImageMap[goalNumber]) {
             img.dataset.src = goalImageMap[goalNumber]; // Store URL for lazy loading
             img.removeAttribute('src'); // Remove src to prevent immediate loading
@@ -1064,6 +1065,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Load SDG images after tiles are created
             setupSdgImages();
+            
+            // Debug: Log created tiles
+            console.log('SDG grid now has', sdgGrid.children.length, 'tiles');
 
             // --- Add Dynamic Globe-Eco Tile ---
             const dynamicTile = document.createElement('div');
@@ -1086,19 +1090,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const fadeObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
+                        console.log('Making section visible:', entry.target.id);
                         entry.target.classList.add('visible');
                         // Once visible, stop observing to prevent bouncing
                         fadeObserver.unobserve(entry.target);
                     }
                 });
             }, { 
-                threshold: 0.25, // Increased threshold to reduce sensitivity
-                rootMargin: '-50px 0px' // Requires section to be more clearly in view
+                threshold: 0.1, // Reduced threshold to be more sensitive
+                rootMargin: '0px 0px' // No margin requirement
             });
 
             document.querySelectorAll('.section-fade-in').forEach(section => {
+                console.log('Setting up fade observer for section:', section.id);
                 section.classList.add('fade-ready'); // Make invisible before observing
                 fadeObserver.observe(section);
+                
+                // For debugging: Force impact section to be visible
+                if (section.id === 'impact') {
+                    setTimeout(() => {
+                        console.log('Force making impact section visible');
+                        section.classList.add('visible');
+                    }, 1000);
+                }
             });
 
             // --- Observer for Chart Animations ---
