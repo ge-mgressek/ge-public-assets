@@ -4,12 +4,12 @@
 This is a static website for Globe-Eco, showcasing their carbon capture technology using coconut waste. The site presents their breakthrough in converting coconut plantation waste into carbon-negative building materials.
 
 ## Recent Changes
-- **2025-09-26**: Fixed critical CSS compilation issue causing blank "Our Impact" section
-  - Resolved Vite development server Tailwind CSS processing problem
-  - Moved Tailwind directives directly into main.css (@tailwind base/components/utilities)
-  - Switched workflow to production build + serve for stable CSS compilation
-  - Verified all utility classes compile correctly and Impact section displays properly
-  - Layout stability issues resolved, no more bouncing or blank sections
+- **2025-09-26**: Fixed critical JavaScript import issue causing missing 17 SDG tiles in "Our Impact" section
+  - Resolved import.meta.glob dynamic import compatibility issue with production builds
+  - Replaced dynamic glob import with individual static imports for all 17 SDG images
+  - Verified all UN Sustainable Development Goal tiles now display correctly
+  - Preserved lazy loading functionality and mobile performance optimizations
+  - Layout stability and content visibility fully restored
 - **2025-09-11**: Successfully imported and configured for Replit environment
   - Updated Vite configuration for 0.0.0.0:5000 hosting
   - Removed HMR clientPort to prevent proxy connection issues

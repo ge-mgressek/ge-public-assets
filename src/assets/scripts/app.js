@@ -8,8 +8,30 @@ import logoUrl from '../images/GE-CropX.png';
 
 // Hero preload is now handled statically in HTML for better performance
 
-// Import SDG goal images with eager loading to prevent scroll delays
-const sdgImages = import.meta.glob('../images/E-WEB-Goal-*.png', { eager: true, query: '?url', import: 'default' });
+// Import SDG goal images - using individual imports for production build compatibility
+import sdg01 from '../images/E-WEB-Goal-01.png';
+import sdg02 from '../images/E-WEB-Goal-02.png';
+import sdg03 from '../images/E-WEB-Goal-03.png';
+import sdg04 from '../images/E-WEB-Goal-04.png';
+import sdg05 from '../images/E-WEB-Goal-05.png';
+import sdg06 from '../images/E-WEB-Goal-06.png';
+import sdg07 from '../images/E-WEB-Goal-07.png';
+import sdg08 from '../images/E-WEB-Goal-08.png';
+import sdg09 from '../images/E-WEB-Goal-09.png';
+import sdg10 from '../images/E-WEB-Goal-10.png';
+import sdg11 from '../images/E-WEB-Goal-11.png';
+import sdg12 from '../images/E-WEB-Goal-12.png';
+import sdg13 from '../images/E-WEB-Goal-13.png';
+import sdg14 from '../images/E-WEB-Goal-14.png';
+import sdg15 from '../images/E-WEB-Goal-15.png';
+import sdg16 from '../images/E-WEB-Goal-16.png';
+import sdg17 from '../images/E-WEB-Goal-17.png';
+
+const sdgImages = {
+    1: sdg01, 2: sdg02, 3: sdg03, 4: sdg04, 5: sdg05, 6: sdg06,
+    7: sdg07, 8: sdg08, 9: sdg09, 10: sdg10, 11: sdg11, 12: sdg12,
+    13: sdg13, 14: sdg14, 15: sdg15, 16: sdg16, 17: sdg17
+};
 
 // Import other critical images that need JavaScript loading
 import carbonCyclePicture from '../images/GE-CoconutCarbonCycle-optimized.webp?preset=content&as=picture';
@@ -155,15 +177,8 @@ function setupSdgImages() {
     
     console.log('Setting up lazy loading for', Object.keys(sdgImages).length, 'SDG images');
     
-    // Map goal numbers to their image URLs using eager imports
-    const goalImageMap = {};
-    Object.entries(sdgImages).forEach(([path, url]) => {
-        const match = path.match(/E-WEB-Goal-(\d+)\.png$/);
-        if (match) {
-            const goalNumber = parseInt(match[1]);
-            goalImageMap[goalNumber] = url;
-        }
-    });
+    // Use the direct image mapping
+    const goalImageMap = sdgImages;
     
     // Store image URLs in data attributes for lazy loading
     sdgGoalImages.forEach(img => {
