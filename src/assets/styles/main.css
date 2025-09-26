@@ -470,8 +470,8 @@ html {
             -webkit-text-fill-color: transparent;
         }
 
-        .alchemist-image {
-            object-position: 60% 30%;
+        img.alchemist-image {
+            object-position: 60% 30% !important;
             transform: rotate(3deg);
         }
 
