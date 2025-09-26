@@ -1082,6 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             document.querySelectorAll('.section-fade-in').forEach(section => {
+                section.classList.add('fade-ready'); // Make invisible before observing
                 fadeObserver.observe(section);
             });
 
