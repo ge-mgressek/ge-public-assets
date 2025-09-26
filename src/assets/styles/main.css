@@ -470,7 +470,8 @@ html {
         }
 
         .alchemist-image {
-            object-position: center 20%;
+            object-position: center center;
+            transform: rotate(3deg);
         }
 
         .card {

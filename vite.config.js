@@ -32,7 +32,7 @@ export default defineConfig({
             case 'content':
               return new URLSearchParams({
                 format: 'avif;webp;jpg', 
-                quality: '85',
+                quality: '95',
                 w: '320;640;960;1280',
                 as: 'picture'
               });
@@ -56,7 +56,7 @@ export default defineConfig({
         interlaced: false 
       },
       mozjpeg: { 
-        quality: 85,
+        quality: 95,
         progressive: true 
       },
       pngquant: { 
