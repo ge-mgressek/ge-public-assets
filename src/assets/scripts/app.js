@@ -31,7 +31,7 @@ import eaglePicture from '../images/WP-Philippine_Eagle.jpg?preset=content&as=pi
 import tarsierPicture from '../images/WP-Tarsier-GG.jpg?preset=content&as=picture';
 import cocoSmokeUrl from '../images/GE-Coco Smoke.png';
 import prosperFutureUrl from '../images/GE-ProsperFuture.png';
-import alchemistUrl from '../images/GE-MG-Alchemist.png';
+import alchemistUrl from '../images/GE-Alchemist-MG.png';
 import sageUrl from '../images/GE-RK-Sage2.png';
 import adventureTicketUrl from '../images/GE-AdventureTicket.png';
 
