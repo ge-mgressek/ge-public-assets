@@ -10,6 +10,8 @@ This is a static website for Globe-Eco, showcasing their carbon capture technolo
   - Verified all UN Sustainable Development Goal tiles now display correctly
   - **MAJOR FIX**: Eliminated layout shifting by disabling problematic fade-in animations
   - All sections now remain visible throughout scroll for stable, consistent layout
+  - **BIODIVERSITY SECTION FIX**: Added consistent h-64 height to eagle and tarsier images to prevent layout shifting during slideshow transitions
+  - Fixed Matthew Grecsek portrait positioning in "Our Story" section using CSS object-position (60% 30%)
   - Preserved lazy loading functionality and mobile performance optimizations
   - Layout stability and content visibility fully restored
 - **2025-09-11**: Successfully imported and configured for Replit environment
