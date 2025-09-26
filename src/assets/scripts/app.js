@@ -2075,11 +2075,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Cache section positions to avoid repeated layout reads
         let sectionPositions = [];
         function cacheSectionPositions() {
-            sectionPositions = Array.from(sections).map(section => ({
+            sectionPositions = Array.from(sections).map((section, index) => ({
                 id: section.id,
                 top: section.offsetTop - 100,
-                bottom: section.offsetTop + section.offsetHeight
+                rawBottom: section.offsetTop + section.offsetHeight
             }));
+            
+            // Fix overlaps by ensuring each section ends before the next begins
+            for (let i = 0; i < sectionPositions.length; i++) {
+                const current = sectionPositions[i];
+                const next = sectionPositions[i + 1];
+                
+                if (next) {
+                    // Ensure current section ends before next section starts
+                    current.bottom = Math.min(current.rawBottom, next.top - 1);
+                } else {
+                    current.bottom = current.rawBottom;
+                }
+                delete current.rawBottom;
+            }
         }
         
         // Initial cache and recache on resize
@@ -2134,6 +2148,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const targetId = link.getAttribute('href').substring(1);
                 const targetSection = document.getElementById(targetId);
                 
+                // Navigation link clicked
+                
                 if (targetSection) {
                     const offsetTop = targetSection.offsetTop - 80; // Account for header
                     window.scrollTo({
@@ -2148,4 +2164,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
+    // Initialize the scroll spy
+    initializeScrollSpyAndProgress();
