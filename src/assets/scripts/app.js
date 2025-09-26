@@ -1162,26 +1162,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
 
-            const header = document.getElementById('main-header');
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('main section');
-
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 80) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').substring(1) === current) {
-                        link.classList.add('active');
-                    }
-                });
-            });
+            // Navigation highlighting is now handled by the enhanced scroll spy system below
 
             // --- Carbon Cycle Animation Setup ---
             const setupCarbonCycleAnimationV1 = () => {
