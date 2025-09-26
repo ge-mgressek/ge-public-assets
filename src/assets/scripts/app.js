@@ -1071,14 +1071,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const fadeObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        console.log('Making section visible:', entry.target.id);
                         entry.target.classList.add('visible');
+                        // Once visible, stop observing to prevent bouncing
+                        fadeObserver.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.1 });
+            }, { 
+                threshold: 0.25, // Increased threshold to reduce sensitivity
+                rootMargin: '-50px 0px' // Requires section to be more clearly in view
+            });
 
             document.querySelectorAll('.section-fade-in').forEach(section => {
-                console.log('Observing section:', section.id);
                 fadeObserver.observe(section);
             });
 
