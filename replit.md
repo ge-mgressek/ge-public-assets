@@ -4,6 +4,12 @@
 This is a static website for Globe-Eco, showcasing their carbon capture technology using coconut waste. The site presents their breakthrough in converting coconut plantation waste into carbon-negative building materials.
 
 ## Recent Changes
+- **2025-09-26**: Fixed critical CSS compilation issue causing blank "Our Impact" section
+  - Resolved Vite development server Tailwind CSS processing problem
+  - Moved Tailwind directives directly into main.css (@tailwind base/components/utilities)
+  - Switched workflow to production build + serve for stable CSS compilation
+  - Verified all utility classes compile correctly and Impact section displays properly
+  - Layout stability issues resolved, no more bouncing or blank sections
 - **2025-09-11**: Successfully imported and configured for Replit environment
   - Updated Vite configuration for 0.0.0.0:5000 hosting
   - Removed HMR clientPort to prevent proxy connection issues
@@ -36,5 +42,6 @@ This is a static website for Globe-Eco, showcasing their carbon capture technolo
 ## Development
 - Port: 5000
 - Host: 0.0.0.0 (required for Replit)
-- HMR: Auto-configured for proxy compatibility
-- Workflow: "Frontend Server" running npm run dev
+- CSS Compilation: Production build approach for stable Tailwind processing
+- Workflow: "Frontend Server" running `npm run build && npx serve -s dist`
+- Note: Development server had Tailwind CSS compilation issues, resolved by using production builds
