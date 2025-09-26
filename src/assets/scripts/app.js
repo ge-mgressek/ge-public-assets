@@ -175,7 +175,6 @@ function setupSdgImages() {
         return;
     }
     
-    console.log('Setting up lazy loading for', Object.keys(sdgImages).length, 'SDG images');
     
     // Use the direct image mapping
     const goalImageMap = sdgImages;
@@ -183,7 +182,6 @@ function setupSdgImages() {
     // Store image URLs in data attributes for lazy loading
     sdgGoalImages.forEach(img => {
         const goalNumber = parseInt(img.dataset.goalId || img.getAttribute('data-goal'));
-        console.log('Processing SDG image for goal', goalNumber, 'URL:', goalImageMap[goalNumber]);
         if (goalNumber && goalImageMap[goalNumber]) {
             img.dataset.src = goalImageMap[goalNumber]; // Store URL for lazy loading
             img.removeAttribute('src'); // Remove src to prevent immediate loading
@@ -1013,7 +1011,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 
-                console.log('Creating SDG grid tiles with', sdgData.length, 'items (lazy loading applied)');
 /*
             sdgData.forEach(goal => {
                 const item = document.createElement('div');
@@ -1066,8 +1063,6 @@ document.addEventListener('DOMContentLoaded', () => {
             // Load SDG images after tiles are created
             setupSdgImages();
             
-            // Debug: Log created tiles
-            console.log('SDG grid now has', sdgGrid.children.length, 'tiles');
 
             // --- Add Dynamic Globe-Eco Tile ---
             const dynamicTile = document.createElement('div');
@@ -1086,33 +1081,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             sdgGrid.appendChild(dynamicTile);
 
-            // --- Observer for fade-in effect ---
-            const fadeObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        console.log('Making section visible:', entry.target.id);
-                        entry.target.classList.add('visible');
-                        // Once visible, stop observing to prevent bouncing
-                        fadeObserver.unobserve(entry.target);
-                    }
-                });
-            }, { 
-                threshold: 0.1, // Reduced threshold to be more sensitive
-                rootMargin: '0px 0px' // No margin requirement
-            });
-
+            // --- Disabled fade-in observer to prevent layout shifting ---
+            // All sections now remain visible by default for stable layout
             document.querySelectorAll('.section-fade-in').forEach(section => {
-                console.log('Setting up fade observer for section:', section.id);
-                section.classList.add('fade-ready'); // Make invisible before observing
-                fadeObserver.observe(section);
-                
-                // For debugging: Force impact section to be visible
-                if (section.id === 'impact') {
-                    setTimeout(() => {
-                        console.log('Force making impact section visible');
-                        section.classList.add('visible');
-                    }, 1000);
-                }
+                section.classList.add('visible'); // Ensure all sections are visible
             });
 
             // --- Observer for Chart Animations ---
