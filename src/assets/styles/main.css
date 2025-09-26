@@ -471,7 +471,7 @@ html {
         }
 
         .alchemist-image {
-            object-position: center center;
+            object-position: 60% 30%;
             transform: rotate(3deg);
         }
 
